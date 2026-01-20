@@ -108,13 +108,6 @@ Once installed, coding agents will automatically activate these skills when help
 
 ---
 
-## Requirements
-
-- Mastra packages installed in `node_modules`
-- Coding agent supporting agent skills (Claude Code, Cursor, etc.)
-
----
-
 ## Manual Installation
 
 If not using `npx add-skill`:
