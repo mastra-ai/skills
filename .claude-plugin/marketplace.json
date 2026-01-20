@@ -1,0 +1,21 @@
+{
+  "name": "mastra-agent-skills",
+  "version": "1.0.0",
+  "author": {
+    "name": "Mastra",
+    "email": "team@mastra.ai"
+  },
+  "plugins": [
+    {
+      "name": "mastra-skills",
+      "description": "Skills for building AI applications with Mastra: look up APIs from embedded docs and follow documented patterns for agents, workflows, and project setup",
+      "skills": [
+        "./skills/mastra-embeded-docs-look-up",
+        "./skills/mastra-best-practices",
+        "./skills/create-mastra"
+      ],
+      "source": "./",
+      "strict": false
+    }
+  ]
+}
