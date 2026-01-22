@@ -11,210 +11,181 @@ metadata:
 
 # Create Mastra Skill
 
-Guide for adding AI agents and workflows to TypeScript/JavaScript applications using Mastra.
+Complete guide for creating new Mastra AI agent projects. Includes both quickstart CLI method and detailed manual installation with full working code examples.
 
-**For code examples and syntax, see [mastra.ai/docs](https://mastra.ai/docs).**
-
----
-
-## Decision Tree
-
-```
-Is this a new/empty project?
-├─ YES → New project setup
-│   1. Run npm create mastra@latest
-│   2. Choose package manager
-│   3. CLI generates weather agent example
-│   4. Add API keys to .env
-│   5. Run npm run dev
-│   6. Test in Studio (localhost:4111)
-│   7. Customize/add agents
-│
-└─ NO → Add to existing project
-    1. Analyze project structure
-    2. Install @mastra/core
-    3. Configure TypeScript (ES2022)
-    4. Create src/mastra/ directory
-    5. Add agents/workflows
-    6. Export Mastra instance
-    7. Integrate into routes
-```
+**Official documentation: [mastra.ai/docs](https://mastra.ai/docs)**
 
 ---
 
-## Installation
+## Getting Started
 
-**Quick start (new projects):**
+When a user wants to create a Mastra project, ask them:
+
+**"How would you like to create your Mastra project?"**
+
+1. **Automatic Setup** - I'll run `npm create mastra@latest` for you and handle everything
+2. **Interactive Guide** - I'll walk you through each step and you can approve before I run commands
+3. **Manual Installation** - I'll help you set up the project manually with full control
+
+Based on their choice:
+- **Option 1**: Run the CLI command directly, prompt for provider/API key, then execute
+- **Option 2**: Ask for provider choice, API key, then run command and guide through testing
+- **Option 3**: Guide through manual installation step-by-step with user approval at each stage
+
+---
+
+## Prerequisites
+
+- An API key from a supported model provider (OpenAI, Anthropic, Google, etc.)
+
+---
+
+## Quick Start
+
+Create a new Mastra project with one command:
+
 ```bash
 npm create mastra@latest
 ```
 
-**Manual (existing projects):**
+**Other package managers:**
 ```bash
-npm install @mastra/core zod
-npm install -D typescript @types/node mastra
+pnpm create mastra@latest
+yarn create mastra@latest
+bun create mastra@latest
 ```
 
-**Common packages:**
-| Package | Use case |
-|---------|----------|
-| `@mastra/core` | Core agents/workflows (required) |
-| `@mastra/memory` | Memory/conversation history |
-| `@mastra/rag` | RAG/vector search |
-| `@mastra/deployer` | Deployment tools |
+---
+
+## What the CLI Does
+
+The `npm create mastra@latest` command:
+1. Creates a new project directory
+2. Prompts you to select a model provider:
+   - OpenAI (recommended if undecided)
+   - Anthropic
+   - Google
+   - Other supported providers
+3. Asks for your API key
+4. Generates a complete project structure:
+   - `src/mastra/index.ts` - Mastra instance configuration
+   - `src/mastra/tools/weather-tool.ts` - Example weather tool
+   - `src/mastra/agents/weather-agent.ts` - Example weather agent
+   - `package.json` with scripts
+   - `tsconfig.json` with required settings
+   - `.env` file with your API key
+5. Installs all dependencies
+
+---
+
+## Setup Steps
+
+1. **Run the command from anywhere on your machine:**
+   ```bash
+   npm create mastra@latest
+   ```
+
+2. **When prompted:**
+   - Select a model provider (OpenAI, Anthropic, Google, etc.)
+   - OpenAI is recommended if you're undecided
+   - Enter your API key for the selected provider
+
+3. **The CLI will generate:**
+   - A new project directory
+   - `src/mastra/index.ts` with configuration and memory settings
+   - `src/mastra/tools/weather-tool.ts` with an example tool
+   - `src/mastra/agents/weather-agent.ts` with an example agent
+   - All necessary configuration files
+
+4. **Start the dev server:**
+   ```bash
+   cd <your-project-directory>
+   npm run dev
+   ```
+
+5. **Access Studio at** `http://localhost:4111` to test your agent
+
+---
+
+## CLI Flags
+
+**Skip the example agent:**
+```bash
+npm create mastra@latest --no-example
+```
+
+**Use a specific template:**
+```bash
+npm create mastra@latest --template <template-name>
+```
+
+---
+
+## Bun Users: Extra Steps Required
+
+Due to a known issue, Bun users must run these additional commands after project creation:
+
+```bash
+bun add @mastra/server@latest
+rm -rf node_modules bun.lock
+bun install
+```
+
+---
+
+## Generated Project Structure
+
+```
+my-mastra-app/
+├── src/
+│   └── mastra/
+│       ├── index.ts              # Mastra configuration
+│       ├── agents/
+│       │   └── weather-agent.ts  # Example agent
+│       └── tools/
+│           └── weather-tool.ts   # Example tool
+├── package.json
+└── .env                          # Your API keys
+```
 
 ---
 
 ## Environment Variables
 
+After project creation, your `.env` file will contain:
+
 ```env
-# Choose your model provider (one or more)
+# Your selected model provider
 OPENAI_API_KEY=sk-...
+# or
 ANTHROPIC_API_KEY=sk-ant-...
+# or
 GOOGLE_GENERATIVE_AI_API_KEY=...
-
-# Optional: Memory/storage
-DATABASE_URL=postgresql://...
-REDIS_URL=redis://...
 ```
 
 ---
 
-## Project Structure
+## Manual Installation (Alternative Method)
 
-**Location:** `src/mastra/` (CLI looks here, or use custom path)
+If you prefer not to use the CLI or need custom setup, follow these complete steps:
 
-```
-src/mastra/
-├── tools/              # Custom tool definitions
-│   └── weather-tool.ts
-├── agents/             # Agent configurations
-│   └── my-agent.ts
-├── workflows/          # Workflow definitions
-│   └── my-workflow.ts
-└── index.ts           # Mastra instance (exports)
+### Step 1: Create Project Directory
+```bash
+mkdir my-first-agent && cd my-first-agent
+npm init -y
 ```
 
----
+### Step 2: Install Dependencies
 
-## Agent Config (agents/my-agent.ts)
-
-**Minimal config:**
-```typescript
-import { Agent } from '@mastra/core';
-
-export const myAgent = new Agent({
-  name: 'my-agent',
-  instructions: 'You are a helpful assistant',
-  model: {
-    provider: 'OPENAI',  // or ANTHROPIC, GOOGLE
-    name: 'gpt-4o'
-  }
-});
+```bash
+npm install -D typescript @types/node mastra@latest
+npm install @mastra/core@latest zod@^4
 ```
 
-**With tools:**
-```typescript
-import { Agent } from '@mastra/core';
-import { myTool } from '../tools/my-tool';
-
-export const myAgent = new Agent({
-  name: 'my-agent',
-  instructions: 'You help users with tasks',
-  model: { provider: 'OPENAI', name: 'gpt-4o' },
-  tools: [myTool]
-});
-```
-
-**With memory:**
-```typescript
-export const chatAgent = new Agent({
-  name: 'chat-agent',
-  memory: memoryInstance,
-  model: { provider: 'OPENAI', name: 'gpt-4o' }
-});
-
-// Use with threadId for continuity
-await chatAgent.generate('Hello', { threadId: 'user-123' });
-```
-
----
-
-## Workflow Config (workflows/my-workflow.ts)
-
-**Basic workflow:**
-```typescript
-import { createWorkflow, createStep } from '@mastra/core';
-import { z } from 'zod';
-
-const step1 = createStep({
-  id: 'validate'
-})
-  .input(z.object({ data: z.string() }))
-  .output(z.object({ valid: z.boolean() }))
-  .execute(async ({ context }) => {
-    return { valid: true };
-  });
-
-export const myWorkflow = createWorkflow({ name: 'my-workflow' })
-  .then(step1)
-  .commit();
-```
-
-**Workflow methods:**
-- `.start()` - Executes all steps, returns results
-- `.stream()` - Emits events during execution
-- `.createRunAsync()` - Instantiates run
-- `.restart()` - Resumes after disconnect
-
----
-
-## Mastra Instance (index.ts)
-
-**Export your Mastra instance:**
-```typescript
-import { Mastra } from '@mastra/core';
-import { myAgent } from './agents/my-agent';
-import { myWorkflow } from './workflows/my-workflow';
-
-export const mastra = new Mastra({
-  agents: { myAgent },
-  workflows: { myWorkflow }
-});
-```
-
-**Access in code:**
-```typescript
-// ✅ Recommended
-const agent = mastra.getAgent('myAgent');
-const workflow = mastra.getWorkflow('myWorkflow');
-
-// ❌ Less ideal (bypasses Mastra instance)
-import { myAgent } from './agents/my-agent';
-```
-
----
-
-## TypeScript Config (Required)
-
-**Critical settings:**
-```json
-{
-  "compilerOptions": {
-    "target": "ES2022",
-    "module": "ES2022",
-    "moduleResolution": "bundler"
-  }
-}
-```
-
-**CommonJS will cause errors. Must use ES2022 modules.**
-
----
-
-## Development Scripts
+### Step 3: Configure Package Scripts
 
 Add to `package.json`:
+
 ```json
 {
   "scripts": {
@@ -224,111 +195,150 @@ Add to `package.json`:
 }
 ```
 
-**Testing with Studio:**
+### Step 4: Configure TypeScript
+
+Create `tsconfig.json`:
+
+```json
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "ES2022",
+    "moduleResolution": "bundler",
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "skipLibCheck": true,
+    "noEmit": true,
+    "outDir": "dist"
+  },
+  "include": ["src/**/*"]
+}
+```
+
+**Important:** Mastra requires `"module": "ES2022"` and `"moduleResolution": "bundler"`. CommonJS will cause errors.
+
+### Step 5: Create Environment File
+
+Create `.env` with your API key:
+
+```env
+GOOGLE_GENERATIVE_AI_API_KEY=<your-api-key>
+```
+
+Or use `OPENAI_API_KEY`, `ANTHROPIC_API_KEY`, etc.
+
+### Step 6: Create Weather Tool
+
+Create `src/mastra/tools/weather-tool.ts`:
+
+```typescript
+import { createTool } from "@mastra/core/tools";
+import { z } from "zod";
+
+export const weatherTool = createTool({
+  id: "get-weather",
+  description: "Get current weather for a location",
+  inputSchema: z.object({
+    location: z.string().describe("City name"),
+  }),
+  outputSchema: z.object({
+    output: z.string(),
+  }),
+  execute: async () => {
+    return { output: "The weather is sunny" };
+  },
+});
+```
+
+### Step 7: Create Weather Agent
+
+Create `src/mastra/agents/weather-agent.ts`:
+
+```typescript
+import { Agent } from "@mastra/core/agent";
+import { weatherTool } from "../tools/weather-tool";
+
+export const weatherAgent = new Agent({
+  id: "weather-agent",
+  name: "Weather Agent",
+  instructions: `You are a helpful weather assistant. Always ask for location if none provided.`,
+  model: "google/gemini-2.5-pro",
+  tools: { weatherTool },
+});
+```
+
+**Note:** Model format is `"provider/model-name"`. Examples:
+- `"google/gemini-2.5-pro"`
+- `"openai/gpt-4o"`
+- `"anthropic/claude-3-5-sonnet-20241022"`
+
+### Step 8: Create Mastra Entry Point
+
+Create `src/mastra/index.ts`:
+
+```typescript
+import { Mastra } from "@mastra/core";
+import { weatherAgent } from "./agents/weather-agent";
+
+export const mastra = new Mastra({
+  agents: { weatherAgent },
+});
+```
+
+### Step 9: Launch Development Server
+
 ```bash
 npm run dev
 ```
-Access at http://localhost:4111 for visual testing.
+
+Access Studio at `http://localhost:4111` to test your agent.
 
 ---
 
-## Framework Integration
+## Verifying Your Project
 
-| Framework | File | Handler |
-|-----------|------|---------|
-| Next.js App Router | `app/api/mastra/route.ts` | POST handler with `mastra.getAgent()` |
-| Next.js Pages | `pages/api/mastra.ts` | API route handler |
-| Express | Any file | `app.post('/api/agent/:name', ...)` |
-| Fastify | Any file | `fastify.post('/api/agent/:name', ...)` |
-
-### Next.js Example
-
-`app/api/mastra/route.ts`
-```typescript
-import { mastra } from '@/mastra';
-
-export async function POST(req: Request) {
-  const { agent, message } = await req.json();
-  const agentInstance = mastra.getAgent(agent);
-  const response = await agentInstance.generate(message);
-  return Response.json(response);
-}
+After creation, verify these files exist:
+```
+your-project/
+├── src/mastra/
+│   ├── index.ts
+│   ├── agents/weather-agent.ts
+│   └── tools/weather-tool.ts
+├── package.json
+├── tsconfig.json
+└── .env
 ```
 
-### Express Example
-
-```typescript
-import express from 'express';
-import { mastra } from './mastra';
-
-const app = express();
-
-app.post('/api/agent/:name', async (req, res) => {
-  const agent = mastra.getAgent(req.params.name);
-  const response = await agent.generate(req.body.message);
-  res.json(response);
-});
+Start the dev server:
+```bash
+npm run dev
 ```
+
+Access Studio at `http://localhost:4111` to test your agent.
 
 ---
 
-## Common Patterns
+## Next Steps
 
-### Structured Output
-```typescript
-import { z } from 'zod';
+After creating your project with `create mastra`:
 
-const response = await agent.generate('Extract: John, age 30', {
-  output: z.object({
-    name: z.string(),
-    age: z.number()
-  })
-});
-// response.object is typed and validated
-```
-
-### Streaming Responses
-```typescript
-const stream = await agent.stream('Tell me a story');
-for await (const chunk of stream) {
-  console.log(chunk);
-}
-```
-
-### Agent Parameters
-| Parameter | Default | Purpose |
-|-----------|---------|---------|
-| `maxSteps` | 5 | Limits sequential LLM calls |
-| `onStepFinish` | - | Monitors multi-step progress |
-| `onFinish` | - | Callback when complete |
-
----
-
-## Setup Checklist
-
-- [ ] Node.js 20+ installed
-- [ ] Project created (CLI or manual)
-- [ ] TypeScript ES2022 configured
-- [ ] `@mastra/core` and `zod` installed
-- [ ] API keys in .env
-- [ ] `src/mastra/` directory created
-- [ ] At least one agent/workflow defined
-- [ ] Mastra instance exported
-- [ ] Dev scripts in package.json
-- [ ] Studio accessible at localhost:4111
+- **Customize the example agent** in `src/mastra/agents/weather-agent.ts`
+- **Add new agents** - see [Agents documentation](https://mastra.ai/docs/agents/overview)
+- **Create workflows** - see [Workflows documentation](https://mastra.ai/docs/workflows/overview)
+- **Add more tools** to extend agent capabilities
+- **Integrate into your app** - see framework guides at [mastra.ai/docs](https://mastra.ai/docs)
 
 ---
 
 ## Troubleshooting
 
-| Issue | Fix |
-|-------|-----|
-| "Cannot find module" | Verify ES2022 in tsconfig (not CommonJS) |
-| "API key not found" | Add provider key to .env |
-| Agent not responding | Check model provider and API key |
-| Studio won't start | Verify `mastra dev` in package.json |
-| TypeScript errors | Use `moduleResolution: "bundler"` |
-| Tools not working | Add tool to agent's `tools` array |
+| Issue | Solution |
+|-------|----------|
+| API key not found | Make sure your `.env` file has the correct key |
+| Studio won't start | Check that port 4111 is available |
+| Bun installation issues | Follow the Bun-specific steps above |
+| Command not found | Ensure you're using Node.js 20+ |
 
 ---
 
