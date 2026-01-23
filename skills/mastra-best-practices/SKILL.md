@@ -67,31 +67,44 @@ GOOGLE_GENERATIVE_AI_API_KEY=...
 ### Basic Agent
 ```typescript
 new Agent({
-  name: 'my-agent',
+  id: 'my-agent',
+  name: 'My Agent',
   instructions: 'You are helpful',
-  model: { provider: 'OPENAI', name: 'gpt-4o' },
-  tools: [myTool]  // optional
+  model: 'openai/gpt-4o',
+  tools: { myTool }  // optional
 })
 ```
 
 ### Basic Workflow
 ```typescript
-createWorkflow({ name: 'my-workflow' })
+createWorkflow({
+  id: 'my-workflow',
+  inputSchema: z.object({ input: z.string() }),
+  outputSchema: z.object({ output: z.string() })
+})
   .then(step1)
   .commit()
 ```
 
 ### Structured Output
 ```typescript
-await agent.generate('Extract: John, 30', {
-  output: z.object({ name: z.string(), age: z.number() })
+const response = await agent.generate('Extract: John, 30', {
+  structuredOutput: {
+    schema: z.object({
+      name: z.string(),
+      age: z.number()
+    })
+  }
 })
+console.log(response.object) // Access via .object property
 ```
 
 ### Streaming
 ```typescript
 const stream = await agent.stream('Tell a story')
-for await (const chunk of stream) { console.log(chunk) }
+for await (const chunk of stream.fullStream) {
+  console.log(chunk)
+}
 ```
 
 ---
