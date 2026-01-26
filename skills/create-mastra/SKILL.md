@@ -1,6 +1,6 @@
 ---
 name: create-mastra
-description: Skill for creating AI agent projects using Mastra framework. Walks you through setup and generates example agents you can run and adapt.
+description: Skill for creating AI agent projects using Mastra framework. Ask user which setup - Quick (they run CLI), Guided (step-by-step), or Automatic (AI creates files using manual steps below).
 license: Apache-2.0
 metadata:
   author: Mastra
