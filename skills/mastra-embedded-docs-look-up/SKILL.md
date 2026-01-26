@@ -1,7 +1,7 @@
 ---
-name: mastra-embeded-docs-look-up
+name: mastra-embedded-docs-look-up
 # prettier-ignore
-description: Look up Mastra API documentation embedded in node_modules/@mastra/*/dist/docs/ for accurate API signatures. Use for Agent, Workflow, Tool, Memory configuration questions and code validation.
+description: Mastra packages ship with embedded docs in node_modules/@mastra/*/dist/docs/. Use these for accurate API signatures that match your installed version.
 license: Apache-2.0
 metadata:
   author: Mastra
@@ -77,7 +77,7 @@ ls node_modules/@mastra/core/dist/docs/
 
 ## Why Use This
 
-- Embedded docs match installed version
-- Mastra is in active beta (APIs change frequently)
+- Embedded docs match installed version exactly
+- Mastra evolves quickly — installed docs stay in sync
 - Training data may be outdated
 - Type definitions include JSDoc and examples

@@ -10,7 +10,7 @@ npx add-skill mastra-ai/skills
 
 ## Included Skills
 
-### 📚 mastra-embeded-docs-look-up
+### 📚 mastra-embedded-docs-look-up
 
 Look up Mastra API signatures from embedded documentation in `node_modules/@mastra/*/dist/docs/`. Ensures docs match installed version.
 
