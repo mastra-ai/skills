@@ -1,7 +1,6 @@
 ---
 name: mastra-best-practices
-# prettier-ignore
-description: Mastra architectural patterns. Covers agent vs workflow choice, project structure, TypeScript ES2022 requirements, API keys setup, and accessing via mastra.getAgent/getWorkflow.
+description: Quick reference for Mastra conventions. When to use agents vs workflows, required TypeScript config, project structure, and common code patterns.
 license: Apache-2.0
 metadata:
   author: Mastra
