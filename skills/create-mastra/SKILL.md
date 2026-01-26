@@ -18,18 +18,13 @@ Complete guide for creating new Mastra AI agent projects. Includes both quicksta
 
 ## Getting Started
 
-When a user wants to create a Mastra project, ask them:
+Ask: **"How would you like to create your Mastra project?"**
 
-**"How would you like to create your Mastra project?"**
+1. **Quick Setup** - Copy and run: `npm create mastra@latest`
+2. **Guided Setup** - I walk you through each step, you approve commands
+3. **Automatic Setup** ⭐ - I create everything, just give me your API key
 
-1. **Automatic Setup** - I'll run `npm create mastra@latest` for you and handle everything
-2. **Interactive Guide** - I'll walk you through each step and you can approve before I run commands
-3. **Manual Installation** - I'll help you set up the project manually with full control
-
-Based on their choice:
-- **Option 1**: Run the CLI command directly, prompt for provider/API key, then execute
-- **Option 2**: Ask for provider choice, API key, then run command and guide through testing
-- **Option 3**: Guide through manual installation step-by-step with user approval at each stage
+> **For AI agents:** The CLI is interactive. Use **Automatic Setup** — create files using the steps in "Automatic Setup / Manual Installation" below.
 
 ---
 
@@ -39,7 +34,7 @@ Based on their choice:
 
 ---
 
-## Quick Start
+## Quick Setup (User runs CLI)
 
 Create a new Mastra project with one command:
 
@@ -53,56 +48,6 @@ pnpm create mastra@latest
 yarn create mastra@latest
 bun create mastra@latest
 ```
-
----
-
-## What the CLI Does
-
-The `npm create mastra@latest` command:
-1. Creates a new project directory
-2. Prompts you to select a model provider:
-   - OpenAI (recommended if undecided)
-   - Anthropic
-   - Google
-   - Other supported providers
-3. Asks for your API key
-4. Generates a complete project structure:
-   - `src/mastra/index.ts` - Mastra instance configuration
-   - `src/mastra/tools/weather-tool.ts` - Example weather tool
-   - `src/mastra/agents/weather-agent.ts` - Example weather agent
-   - `package.json` with scripts
-   - `tsconfig.json` with required settings
-   - `.env` file with your API key
-5. Installs all dependencies
-
----
-
-## Setup Steps
-
-1. **Run the command from anywhere on your machine:**
-   ```bash
-   npm create mastra@latest
-   ```
-
-2. **When prompted:**
-   - Select a model provider (OpenAI, Anthropic, Google, etc.)
-   - OpenAI is recommended if you're undecided
-   - Enter your API key for the selected provider
-
-3. **The CLI will generate:**
-   - A new project directory
-   - `src/mastra/index.ts` with configuration and memory settings
-   - `src/mastra/tools/weather-tool.ts` with an example tool
-   - `src/mastra/agents/weather-agent.ts` with an example agent
-   - All necessary configuration files
-
-4. **Start the dev server:**
-   ```bash
-   cd <your-project-directory>
-   npm run dev
-   ```
-
-5. **Access Studio at** `http://localhost:4111` to test your agent
 
 ---
 
@@ -120,41 +65,11 @@ npm create mastra@latest --template <template-name>
 
 ---
 
-## Generated Project Structure
+## Automatic Setup / Manual Installation
 
-```
-my-mastra-app/
-├── src/
-│   └── mastra/
-│       ├── index.ts              # Mastra configuration
-│       ├── agents/
-│       │   └── weather-agent.ts  # Example agent
-│       └── tools/
-│           └── weather-tool.ts   # Example tool
-├── package.json
-└── .env                          # Your API keys
-```
+**Use this for Automatic Setup** (AI creates all files) or when you prefer manual control.
 
----
-
-## Environment Variables
-
-After project creation, your `.env` file will contain:
-
-```env
-# Your selected model provider
-OPENAI_API_KEY=sk-...
-# or
-ANTHROPIC_API_KEY=sk-ant-...
-# or
-GOOGLE_GENERATIVE_AI_API_KEY=...
-```
-
----
-
-## Manual Installation (Alternative Method)
-
-If you prefer not to use the CLI or need custom setup, follow these complete steps:
+Follow these steps to create a complete Mastra project:
 
 ### Step 1: Create Project Directory
 ```bash
@@ -286,29 +201,6 @@ export const mastra = new Mastra({
 
 ### Step 9: Launch Development Server
 
-```bash
-npm run dev
-```
-
-Access Studio at `http://localhost:4111` to test your agent.
-
----
-
-## Verifying Your Project
-
-After creation, verify these files exist:
-```
-your-project/
-├── src/mastra/
-│   ├── index.ts
-│   ├── agents/weather-agent.ts
-│   └── tools/weather-tool.ts
-├── package.json
-├── tsconfig.json
-└── .env
-```
-
-Start the dev server:
 ```bash
 npm run dev
 ```
