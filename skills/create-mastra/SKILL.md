@@ -1,7 +1,6 @@
 ---
 name: create-mastra
-# prettier-ignore
-description: Skill for creating AI agent projects using Mastra framework. Guide for adding agents/workflows to TypeScript/JavaScript apps.
+description: Skill for creating AI agent projects using Mastra framework. Walks you through setup and generates example agents you can run and adapt.
 license: Apache-2.0
 metadata:
   author: Mastra
@@ -117,18 +116,6 @@ npm create mastra@latest --no-example
 **Use a specific template:**
 ```bash
 npm create mastra@latest --template <template-name>
-```
-
----
-
-## Bun Users: Extra Steps Required
-
-Due to a known issue, Bun users must run these additional commands after project creation:
-
-```bash
-bun add @mastra/server@latest
-rm -rf node_modules bun.lock
-bun install
 ```
 
 ---
@@ -262,7 +249,18 @@ import { weatherTool } from "../tools/weather-tool";
 export const weatherAgent = new Agent({
   id: "weather-agent",
   name: "Weather Agent",
-  instructions: `You are a helpful weather assistant. Always ask for location if none provided.`,
+  instructions: `
+      You are a helpful weather assistant that provides accurate weather information.
+
+      Your primary function is to help users get weather details for specific locations. When responding:
+      - Always ask for a location if none is provided
+      - If the location name isn't in English, please translate it
+      - If giving a location with multiple parts (e.g. "New York, NY"), use the most relevant part (e.g. "New York")
+      - Include relevant details like humidity, wind conditions, and precipitation
+      - Keep responses concise but informative
+
+      Use the weatherTool to fetch current weather data.
+`,
   model: "google/gemini-2.5-pro",
   tools: { weatherTool },
 });
@@ -337,7 +335,7 @@ After creating your project with `create mastra`:
 |-------|----------|
 | API key not found | Make sure your `.env` file has the correct key |
 | Studio won't start | Check that port 4111 is available |
-| Bun installation issues | Follow the Bun-specific steps above |
+| CommonJS errors | Ensure `tsconfig.json` uses `"module": "ES2022"` and `"moduleResolution": "bundler"` |
 | Command not found | Ensure you're using Node.js 20+ |
 
 ---
