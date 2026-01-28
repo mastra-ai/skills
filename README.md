@@ -5,7 +5,7 @@ Official agent skills for coding agents working with the [Mastra AI framework](h
 ## Installation
 
 ```bash
-npx add-skill mastra-ai/skills
+npx skills add mastra-ai/skills
 ```
 
 ## Included Skills
