@@ -14,9 +14,9 @@ npx add-skill mastra-ai/skills
 
 Look up Mastra API signatures from embedded documentation in `node_modules/@mastra/*/dist/docs/`. Ensures docs match installed version.
 
-### ✅ mastra-best-practices
+### ✨ mastra
 
-Quick reference for Mastra patterns: agent vs workflow choice, TypeScript ES2022 requirements, project structure conventions.
+Comprehensive guide for building AI applications with Mastra. Includes 27+ production-ready code patterns for agents, workflows, memory, tools, storage, and RAG. Covers troubleshooting, v1 migration, and best practices.
 
 ### 🚀 create-mastra
 
