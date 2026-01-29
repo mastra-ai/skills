@@ -19,12 +19,12 @@ Execute this process:
 
 ### Step 1: Load Test Cases
 
-Read all 50 test cases from `TEST_CASES.md`
+Read all 50 test cases from `test/TEST_CASES.md`
 
 Example test cases:
-- "Create a basic AI agent" → Should invoke `mastra` skill
-- "How do I start a new project?" → Should invoke `create-mastra` skill
-- "What parameters does X accept?" → Should invoke `mastra-embedded-docs-look-up` skill
+- "how do i make a simple chatbot with mastra?" → Should invoke `mastra` skill
+- "how do i get started with mastra?" → Should invoke `create-mastra` skill
+- "what are all the parameters for the Agent constructor?" → Should invoke `mastra-embedded-docs-look-up` skill
 
 ### Step 2: Spawn Subagents (in parallel batches)
 

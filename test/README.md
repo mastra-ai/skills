@@ -43,12 +43,13 @@ User: "run the skill tests"
 ```
 
 Claude will:
-1. Load all 50 test cases from TEST_CASES.md
+1. Load all 50 test cases from test/TEST_CASES.md
 2. Spawn subagents in parallel batches (5 at a time)
-3. Check each response for Skill tool invocations
-4. Calculate invocation rate and correctness
-5. Save results to snapshots.json
-6. Display summary report
+3. Pass natural user queries like: "how do i make a chatbot with mastra?"
+4. Check each response for Skill tool invocations
+5. Calculate invocation rate and correctness
+6. Save results to snapshots.json
+7. Display summary report
 
 ### What Claude Does
 
