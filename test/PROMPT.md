@@ -1,18 +1,30 @@
-# Test All 50 Mastra Skills
+# Test Mastra Skill Usage: 50 Test Cases
 
-Run complete skill invocation test suite by spawning 50 independent subagents.
+Test if subagents properly discover and invoke Mastra skills when given various queries.
+
+**Goal:** Verify that skill descriptions trigger invocation (instead of agents answering from training knowledge)
+
+**Skills Being Tested:**
+1. `mastra` - Main Mastra development skill
+2. `create-mastra` - Project setup skill
+3. `mastra-embedded-docs-look-up` - API verification skill
 
 ---
 
 ## Instructions for Claude
 
-When user says: **"run the skill tests"** or **"test all 50 cases"**
+When user says: **"run the skill tests"**
 
 Execute this process:
 
 ### Step 1: Load Test Cases
 
 Read all 50 test cases from `TEST_CASES.md`
+
+Example test cases:
+- "Create a basic AI agent" → Should invoke `mastra` skill
+- "How do I start a new project?" → Should invoke `create-mastra` skill
+- "What parameters does X accept?" → Should invoke `mastra-embedded-docs-look-up` skill
 
 ### Step 2: Spawn Subagents (in parallel batches)
 
@@ -28,23 +40,40 @@ For each test case:
 - Wait for batch to complete
 - Move to next batch
 
-### Step 3: Observe Results
+### Step 3: Check if Subagent Invoked Skill
 
-For each subagent response, check:
+For each subagent response, analyze:
+
+**Question:** Did the subagent invoke the Skill tool?
+
 ```typescript
-// Extract from subagent transcript
-const toolCalls = extractToolCalls(response);
-const skillCalls = toolCalls.filter(call => call.name === 'Skill');
+// Look for Skill tool invocation in transcript
+const skillCalls = response.tool_uses.filter(call => call.name === 'Skill');
 
-// Record results
+// What we're testing:
 {
-  testId: "TC-XX",
-  skillInvoked: skillCalls.length > 0,
+  testId: "TC-11",
+  query: "Create a basic AI agent",
+  expectedSkill: "mastra",
+
+  // Did subagent invoke Skill tool?
+  skillInvoked: skillCalls.length > 0,  // true = good, false = bad
+
+  // If yes, which skill?
   invokedSkill: skillCalls[0]?.parameters?.skill || null,
-  expectedSkill: testCase.expectedSkill,
-  passed: invokedSkill === expectedSkill
+
+  // Did it invoke the RIGHT skill?
+  correctSkill: invokedSkill === expectedSkill,
+
+  // Overall: Pass if correct skill invoked
+  passed: skillInvoked && correctSkill
 }
 ```
+
+**Why This Matters:**
+- If subagent doesn't invoke skill → Skill description needs improvement
+- If subagent invokes wrong skill → Skill targeting needs refinement
+- If subagent invokes correct skill → Success! ✓
 
 ### Step 4: Calculate Metrics
 
@@ -68,38 +97,48 @@ Append results to `test/snapshots.json`:
 }
 ```
 
-### Step 6: Report
+### Step 6: Report Results
 
 Display summary:
 ```
 ============================================================
-MASTRA SKILLS TEST RESULTS
+SKILL USAGE TEST RESULTS
 ============================================================
-Total Tests:        50
-Passed:             XX (XX%)
-Failed:             XX (XX%)
-Invocation Rate:    XX.X%
-Correctness Rate:   XX.X%
+Testing: Do subagents invoke Mastra skills?
 
-Target: ≥95% invocation rate
-Status: PASS/FAIL
+Total Test Cases:   50
+Skill Invoked:      XX (XX%)  ← Did agent call Skill tool?
+Correct Skill:      XX (XX%)  ← Was it the right skill?
+Failed:             XX (XX%)  ← No skill or wrong skill
+
+Target: ≥95% correct skill invocation
+Status: PASS/FAIL ✓
 
 By Category:
-  Setup & Installation:  X/10 (XX%)
-  Agent Development:     X/15 (XX%)
-  Workflows:             X/10 (XX%)
-  Tools & Integrations:  X/5  (XX%)
-  Storage & Memory:      X/5  (XX%)
-  RAG & Vector Search:   X/3  (XX%)
-  Troubleshooting:       X/2  (XX%)
+  Setup & Installation:  X/10 (XX%)  → create-mastra
+  Agent Development:     X/15 (XX%)  → mastra
+  Workflows:             X/10 (XX%)  → mastra
+  Tools & Integrations:  X/5  (XX%)  → mastra
+  Storage & Memory:      X/5  (XX%)  → mastra
+  RAG & Vector Search:   X/3  (XX%)  → mastra
+  Troubleshooting:       X/2  (XX%)  → mastra/embedded-docs
 
-Failures (if any):
-  TC-XX: "query" - Expected: skill-name, Got: other-skill
-  ...
+Failures (what needs fixing):
+  TC-18: "How do I handle agent failures?"
+    Problem: Subagent answered directly (no skill invoked)
+    Fix: Add "error handling" to mastra skill triggers
+
+  TC-22: "Track agent costs"
+    Problem: Subagent answered directly
+    Fix: Add "monitoring/costs" to mastra skill triggers
 
 ✓ Results saved to test/snapshots.json
 ============================================================
 ```
+
+**Interpretation:**
+- High % = Skill descriptions are working (agents invoke skills)
+- Low % = Skill descriptions need improvement (agents skip skills)
 
 ---
 
