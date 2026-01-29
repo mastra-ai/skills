@@ -1,162 +1,256 @@
 # Mastra Skills Test Suite
 
-Real-world testing for skill invocation by spawning independent Claude subagents.
+Real-world testing: Claude spawns subagents to measure actual skill invocation behavior.
+
+---
 
 ## How It Works
 
 **Claude Tests Claude:**
-1. Spawns fresh Claude instance (subagent) for each test
-2. Passes user query without test context
-3. Observes which tools the subagent actually calls
-4. Measures if Skill tool was invoked with correct skill name
-5. Records results in snapshots.json
 
-## Why This Approach
+1. User says: **"run the skill tests"**
+2. Claude reads PROMPT.md for instructions
+3. Claude spawns 50 independent subagents (one per test case)
+4. Each subagent gets a query like: "Create a basic AI agent..."
+5. Claude observes which tools each subagent invokes
+6. Results saved to snapshots.json
 
-**❌ Self-Testing (what we did before):**
-- "Would I invoke the skill?" → Circular reasoning
-- Estimates, not measurements
-- No proof of actual behavior
+**Why This Works:**
+- ✅ Real subagents (not self-analysis)
+- ✅ Fresh context (no test bias)
+- ✅ Actual tool calls (measured, not estimated)
+- ✅ All 50 cases (complete coverage)
 
-**✅ Subagent Testing (this approach):**
-- Real Claude instances with fresh context
-- Actual tool invocations observed
-- Measured invocation rates
-- Proof in transcripts
+---
 
 ## Files
 
-- **prompt.ts** - Test runner that spawns subagents
-- **snapshots.json** - Historical test results
-- **README.md** - This file
+```
+test/
+├── PROMPT.md         # Instructions for Claude to run tests
+├── snapshots.json    # Historical test results
+└── README.md         # This file
+```
+
+---
 
 ## Running Tests
 
-### Prerequisites
+### Simple: Just Ask Claude
 
-```bash
-npm install @anthropic-ai/sdk
-export ANTHROPIC_API_KEY=your_key_here
+```
+User: "run the skill tests"
 ```
 
-### Run Quick Test (9 cases)
+Claude will:
+1. Load all 50 test cases from TEST_CASES.md
+2. Spawn subagents in parallel batches (5 at a time)
+3. Check each response for Skill tool invocations
+4. Calculate invocation rate and correctness
+5. Save results to snapshots.json
+6. Display summary report
 
-```bash
-cd test
-npx tsx prompt.ts
+### What Claude Does
+
+```
+Running all 50 skill invocation tests...
+
+Batch 1/10 - Spawning 5 subagents...
+  TC-01: ✓ create-mastra invoked
+  TC-02: ✓ create-mastra invoked
+  TC-03: ✓ create-mastra invoked
+  TC-04: ✓ create-mastra invoked
+  TC-05: ✓ create-mastra invoked
+
+Batch 2/10...
+  TC-06: ✓ create-mastra invoked
+  ...
+
+============================================================
+MASTRA SKILLS TEST RESULTS
+============================================================
+Total Tests:        50
+Passed:             48 (96%)
+Failed:             2 (4%)
+Invocation Rate:    96.0%
+Correctness Rate:   96.0%
+
+Target: ≥95% → PASS ✓
+
+By Category:
+  Setup & Installation:  10/10 (100%)
+  Agent Development:     14/15 (93%)
+  Workflows:             10/10 (100%)
+  Tools & Integrations:  5/5 (100%)
+  Storage & Memory:      5/5 (100%)
+  RAG & Vector Search:   3/3 (100%)
+  Troubleshooting:       2/2 (100%)
+
+Failures:
+  TC-18: "How do I handle when an agent call fails?"
+    Expected: mastra, Got: none (answered directly)
+
+✓ Results saved to test/snapshots.json
+============================================================
 ```
 
-### Run Full Test (50 cases)
-
-Edit `prompt.ts` to use all test cases from `TEST_CASES.md`
-
-### View Results
-
-```bash
-cat snapshots.json | jq '.[-1]'  # Latest run
-cat snapshots.json | jq '.[-1].invocationRate'  # Just the score
-```
+---
 
 ## Test Cases
 
-See `TEST_CASES.md` for complete list of 50 test cases.
+All 50 test cases are defined in `TEST_CASES.md`
 
-**Quick Test (9 samples):**
-- TC-01: "How do I start a new Mastra project?"
-- TC-02: "I have a Next.js app. How do I add Mastra to it?"
-- TC-11: "Create a basic AI agent that can answer questions"
-- TC-13: "Build an agent that can search the web and check weather"
-- TC-16: "Create an agent that remembers previous conversations"
-- TC-26: "Create a workflow that processes data in steps"
-- TC-36: "Create a tool that calls my internal API"
-- TC-41: "Connect Mastra to my Postgres database"
-- TC-50: "What parameters does createAgent accept?"
+**By Category:**
+
+| Category | Tests | Expected Skill |
+|----------|-------|----------------|
+| Setup & Installation | TC-01 to TC-10 | create-mastra |
+| Agent Development | TC-11 to TC-25 | mastra |
+| Workflows | TC-26 to TC-35 | mastra |
+| Tools & Integrations | TC-36 to TC-40 | mastra |
+| Storage & Memory | TC-41 to TC-45 | mastra |
+| RAG & Vector Search | TC-46 to TC-48 | mastra |
+| Troubleshooting | TC-49 to TC-50 | mastra / embedded-docs-look-up |
+
+**Total:** 50 test cases covering all Mastra development scenarios
+
+---
 
 ## Success Criteria
 
 **Target:** ≥95% skill invocation rate
 
-**Metrics:**
-- `invocationRate`: % of tests where Skill tool was called
-- `correctnessRate`: % of tests where correct skill was used
-- `passed`: Tests that invoked the correct skill
+**Passing:**
+- ≥48 out of 50 tests invoke correct skill
+- All categories >90% invocation
+- No systematic failures
 
-## Example Output
+**If Tests Fail:**
+1. Claude identifies which cases failed
+2. Analyzes why skills weren't invoked
+3. Suggests skill description improvements
+4. Can re-run tests after changes
 
-```
-============================================================
-Mastra Skills Invocation Test Suite
-============================================================
-Running 9 test cases...
+---
 
-Testing TC-01: "How do I start a new Mastra project?"
-  ✓ Skill invoked: create-mastra
-  ✓ Correct: YES
+## Snapshots
 
-Testing TC-11: "Create a basic AI agent that can answer questions"
-  ✓ Skill invoked: mastra
-  ✓ Correct: YES
-
-...
-
-============================================================
-TEST RESULTS
-============================================================
-Total Tests:        9
-Passed:             9 (100.0%)
-Failed:             0 (0.0%)
-Invocation Rate:    100.0%
-Correctness Rate:   100.0%
-============================================================
-
-✓ Snapshot saved to snapshots.json
-```
-
-## Snapshot Format
+Results are saved in `snapshots.json`:
 
 ```json
-{
-  "totalTests": 9,
-  "passed": 9,
-  "failed": 0,
-  "invocationRate": 100,
-  "correctnessRate": 100,
-  "results": [
-    {
-      "testId": "TC-01",
-      "category": "setup",
-      "input": "How do I start a new Mastra project?",
-      "expectedSkill": "create-mastra",
-      "actualSkill": "create-mastra",
-      "skillInvoked": true,
-      "correctSkill": true,
-      "passed": true,
-      "timestamp": "2026-01-29T...",
-      "responseLength": 1234,
-      "toolCalls": [...]
-    }
-  ],
-  "timestamp": "2026-01-29T..."
-}
+[
+  {
+    "timestamp": "2026-01-29T15:30:00Z",
+    "totalTests": 50,
+    "passed": 48,
+    "failed": 2,
+    "invocationRate": 96.0,
+    "correctnessRate": 96.0,
+    "results": [
+      {
+        "testId": "TC-01",
+        "input": "How do I start a new Mastra project?",
+        "expectedSkill": "create-mastra",
+        "actualSkill": "create-mastra",
+        "skillInvoked": true,
+        "passed": true
+      },
+      ...
+    ]
+  }
+]
 ```
 
-## Troubleshooting
+**View Latest Results:**
+```bash
+cat snapshots.json | jq '.[-1]'
+```
 
-**Issue: Skills not available to subagent**
+**Track Progress Over Time:**
+```bash
+cat snapshots.json | jq '[.[] | {timestamp, invocationRate}]'
+```
 
-The spawned Claude instances need access to skills via the tools parameter. In Claude Code CLI, this happens automatically. For direct API usage, skills would need to be passed as tools in the API call.
+---
 
-**Issue: Rate limits**
+## Why Not TypeScript?
 
-Test runner includes 1-second delays between tests. For full 50-test suite, consider:
-- Running in batches
-- Increasing delays
-- Using different API tiers
+**Previous approach:** test/prompt.ts (TypeScript code)
+- Required npm, tsx, dependencies
+- External script, harder to use
+- Not integrated with Claude's workflow
 
-## Next Steps
+**Current approach:** test/PROMPT.md (simple prompt)
+- No dependencies
+- Just ask Claude: "run the skill tests"
+- Claude handles everything
+- Results automatically saved
 
-1. Run quick test (9 cases)
-2. Verify ≥95% invocation rate
-3. If passing, run full test (50 cases)
-4. Compare snapshot results over time
-5. Refine skill descriptions if needed
+---
+
+## Advantages
+
+1. **Simple:** No setup, just ask Claude
+2. **Integrated:** Works within Claude Code workflow
+3. **Complete:** Tests all 50 cases, not just samples
+4. **Parallel:** Runs in batches for speed
+5. **Tracked:** Historical snapshots for comparison
+6. **Honest:** Real subagent behavior, not estimates
+
+---
+
+## Example Session
+
+```
+User: "run the skill tests"
+
+Claude: "Running all 50 skill invocation tests...
+         [spawns subagents, collects results]
+
+         Results: 48/50 passed (96%)
+         Invocation Rate: 96.0% ✓
+
+         Target achieved! ≥95% skill invocation rate."
+
+User: "show me the failures"
+
+Claude: "2 test cases failed:
+
+         TC-18: Error handling question
+         - Expected: mastra
+         - Got: none (answered directly from training)
+         - Suggests: Add 'error handling' to triggers
+
+         TC-22: Cost tracking question
+         - Expected: mastra
+         - Got: none (monitoring not in triggers)
+         - Suggests: Add 'monitoring/costs' to triggers"
+
+User: "update the skill descriptions based on failures"
+
+Claude: "Updating mastra skill description...
+         [makes changes]
+
+         Ready to re-test. Say 'run the skill tests' again."
+```
+
+---
+
+## Maintenance
+
+**When to Run Tests:**
+- After updating skill descriptions
+- After adding new test cases
+- Before releasing skill updates
+- Weekly/monthly for monitoring
+
+**Iterative Improvement:**
+1. Run tests
+2. Identify failures
+3. Refine skill descriptions
+4. Re-run tests
+5. Repeat until ≥95%
+
+---
+
+**Last Updated:** 2026-01-29
