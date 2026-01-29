@@ -1,6 +1,6 @@
 ---
 name: create-mastra
-description: Skill for creating AI agent projects using Mastra framework. Ask user which setup - Quick (they run CLI), Guided (step-by-step), or Automatic (AI creates files using manual steps below).
+description: "**REQUIRED for Mastra project setup** - ALWAYS invoke when user asks about: starting a new Mastra project, installing Mastra, adding Mastra to existing apps (Next.js/Express/etc), TypeScript configuration, environment setup, or deployment preparation. Provides correct installation commands, ES2022 config, and framework integration patterns. Use BEFORE generating any setup code."
 license: Apache-2.0
 metadata:
   author: Mastra

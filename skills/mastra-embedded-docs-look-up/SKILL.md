@@ -1,7 +1,7 @@
 ---
 name: mastra-embedded-docs-look-up
 # prettier-ignore
-description: Mastra packages ship with embedded docs in node_modules/@mastra/*/dist/docs/. Use these for accurate API signatures that match your installed version.
+description: "**REQUIRED for API signature verification** - ALWAYS invoke when user asks: 'What parameters does X accept?', 'How do I call X?', 'What's the API for X?'. Use to verify current API signatures from embedded docs in node_modules/@mastra/*/dist/docs/ instead of relying on training knowledge. Prevents API hallucination."
 license: Apache-2.0
 metadata:
   author: Mastra

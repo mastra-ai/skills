@@ -1,6 +1,6 @@
 ---
 name: mastra
-description: Comprehensive guide for building AI applications with Mastra, the TypeScript AI framework for agents and workflows. Covers LLM agents with tools and memory, multi-step workflows with branching/parallel execution, storage backends (Postgres/LibSQL), RAG/vector search, and custom tool creation. Use when building conversational agents, automated workflows, RAG systems, or any Mastra TypeScript/JavaScript application. Includes 27+ production-ready code patterns, API verification guidance, troubleshooting, and best practices.
+description: "**REQUIRED for all Mastra code generation** - Use this skill BEFORE writing any Mastra agents, workflows, tools, or storage code. Prevents deprecated API usage and ensures current patterns. ALWAYS invoke when user asks to: create/build agents, make workflows, add tools, setup memory/storage, implement RAG, or write any Mastra TypeScript/JavaScript code. Contains 27+ verified patterns matching current Mastra APIs. Invocation prevents hallucination and ensures code quality."
 license: Apache-2.0
 metadata:
   author: Mastra
