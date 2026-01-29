@@ -10,8 +10,8 @@
       "name": "mastra-skills",
       "description": "Skills for building AI applications with Mastra: look up APIs from embedded docs and follow documented patterns for agents, workflows, and project setup",
       "skills": [
-        "./skills/mastra-embeded-docs-look-up",
-        "./skills/mastra-best-practices",
+        "./skills/mastra-embedded-docs-look-up",
+        "./skills/mastra",
         "./skills/create-mastra"
       ],
       "source": "./",
