@@ -1,6 +1,6 @@
 ---
 name: mastra
-description: "**REQUIRED for all Mastra code generation** - Use this skill BEFORE writing any Mastra agents, workflows, tools, or storage code. Prevents deprecated API usage and ensures current patterns. ALWAYS invoke when user asks to: create/build agents, make workflows, add tools, setup memory/storage, implement RAG, or write any Mastra TypeScript/JavaScript code. Contains 27+ verified patterns matching current Mastra APIs. Invocation prevents hallucination and ensures code quality."
+description: "**REQUIRED for all Mastra code and questions** - ALWAYS invoke when user mentions: agents, workflows, tools, memory, storage, RAG. Covers: create/build/make (any agent/workflow/tool), how to/how do I/can I (any Mastra feature), errors/troubleshooting (timeouts, failures), testing/validation, monitoring/costs, my agent/my workflow/my tool (possessive), pass data/stream/handle, upgrade/migration. Use BEFORE any Mastra code or advice. Prevents deprecated APIs, ensures current patterns, contains 27+ verified examples."
 license: Apache-2.0
 metadata:
   author: Mastra

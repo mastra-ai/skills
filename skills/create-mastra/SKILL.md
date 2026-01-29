@@ -1,6 +1,6 @@
 ---
 name: create-mastra
-description: "**REQUIRED for Mastra project setup** - ALWAYS invoke when user asks about: starting a new Mastra project, installing Mastra, adding Mastra to existing apps (Next.js/Express/etc), TypeScript configuration, environment setup, or deployment preparation. Provides correct installation commands, ES2022 config, and framework integration patterns. Use BEFORE generating any setup code."
+description: "**REQUIRED for all Mastra setup/installation** - ALWAYS invoke when user mentions: start project, install, add to app, setup, configure, environment, deployment, TypeScript config, ES2022, errors (module not found, import errors), troubleshooting installation, simple/minimal/standalone script, monorepo, CLI vs manual. Use BEFORE any installation/setup advice or code."
 license: Apache-2.0
 metadata:
   author: Mastra
