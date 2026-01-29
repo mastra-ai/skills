@@ -1,7 +1,7 @@
 ---
 name: mastra-embedded-docs-look-up
 # prettier-ignore
-description: "**REQUIRED for API signature verification** - ALWAYS invoke when user asks: 'What parameters does X accept?', 'How do I call X?', 'What's the API for X?'. Use to verify current API signatures from embedded docs in node_modules/@mastra/*/dist/docs/ instead of relying on training knowledge. Prevents API hallucination."
+description: "Look up current API signatures from installed Mastra packages in node_modules/@mastra/*/dist/docs/. Use this skill to verify exact parameters, constructor arguments, and function signatures that match the installed version. Mastra APIs evolve rapidly - embedded docs ensure accuracy. Covers: Agent constructor parameters, Workflow API, Tool API, Memory configuration, Storage options, and all @mastra/* package exports. Returns actual TypeScript definitions and JSDoc from installed packages. Always use for API verification questions to prevent outdated answers."
 license: Apache-2.0
 metadata:
   author: Mastra

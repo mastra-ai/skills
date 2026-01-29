@@ -1,6 +1,6 @@
 ---
 name: mastra
-description: "**REQUIRED for all Mastra code and questions** - ALWAYS invoke when user mentions: agents, workflows, tools, memory, storage, RAG. Covers: create/build/make (any agent/workflow/tool), how to/how do I/can I (any Mastra feature), errors/troubleshooting (timeouts, failures), testing/validation, monitoring/costs, my agent/my workflow/my tool (possessive), pass data/stream/handle, upgrade/migration. Use BEFORE any Mastra code or advice. Prevents deprecated APIs, ensures current patterns, contains 27+ verified examples."
+description: "Comprehensive Mastra development guide with 27+ production-ready patterns. Covers: agents (creation, tools, memory, streaming, structured output), workflows (sequential, branching, parallel, loops, suspend/resume), tools (custom APIs, context access, validation), storage (Postgres, LibSQL, MongoDB), memory (conversation history, semantic recall, working memory), RAG (vector search, Graph RAG), and troubleshooting. Always use this skill for Mastra code to ensure current APIs and prevent deprecated patterns. Includes TypeScript configs, model formats, common errors, and best practices."
 license: Apache-2.0
 metadata:
   author: Mastra

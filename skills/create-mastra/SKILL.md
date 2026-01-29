@@ -1,6 +1,6 @@
 ---
 name: create-mastra
-description: "**REQUIRED for all Mastra setup/installation** - ALWAYS invoke when user mentions: start project, install, add to app, setup, configure, environment, deployment, TypeScript config, ES2022, errors (module not found, import errors), troubleshooting installation, simple/minimal/standalone script, monorepo, CLI vs manual. Use BEFORE any installation/setup advice or code."
+description: "Complete project setup guide for Mastra AI framework. Covers: CLI installation (create-mastra), manual installation, TypeScript configuration (ES2022 requirements), environment setup, adding to existing projects (Next.js, Express), troubleshooting (module not found, import errors, CommonJS issues), deployment preparation, and monorepo configuration. Includes both quick setup (user runs CLI) and automatic setup (step-by-step file creation). Use this skill for all Mastra installation and setup questions to ensure correct configuration and prevent common errors."
 license: Apache-2.0
 metadata:
   author: Mastra
