@@ -56,7 +56,7 @@ Property 'memory' does not exist on type 'AgentConfig'
 - Version mismatch between docs and installed package
 
 **Solutions**:
-1. Use `mastra-embedded-docs-look-up` skill to check current API
+1. Check embedded docs (see `embedded-docs.md`) to check current API
 2. Check `node_modules/@mastra/core/dist/docs/SOURCE_MAP.json` for current exports
 3. Verify package versions: `npm list @mastra/core`
 4. Update dependencies: `npm update @mastra/core`
@@ -472,7 +472,7 @@ const agent = new Agent({
 ```bash
 # Check supported models
 ls node_modules/@mastra/core/dist/docs/
-# Use mastra-embedded-docs-look-up skill
+# See embedded-docs.md for lookup instructions
 ```
 
 ---
@@ -517,7 +517,7 @@ npx tsc --showConfig
 
 ## Getting Help
 
-1. **Check embedded docs**: Use `mastra-embedded-docs-look-up` skill
+1. **Check embedded docs**: Check embedded docs (see `embedded-docs.md`)
 2. **Search documentation**: [mastra.ai/docs](https://mastra.ai/docs)
 3. **Review examples**: Check GitHub examples and guides
 4. **Check version compatibility**: Ensure all @mastra packages are same version

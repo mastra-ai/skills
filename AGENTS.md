@@ -18,9 +18,7 @@ The **Mastra Agent Skills** repository provides official agent skills for coding
 | Directory                 | Description                                                    |
 | ------------------------- | -------------------------------------------------------------- |
 | `skills/`                 | Agent skill definitions                                        |
-| `skills/mastra/`          | Comprehensive Mastra development guide (27+ code patterns)     |
-| `skills/create-mastra/`   | Project initialization and setup guide                         |
-| `skills/mastra-embedded-docs-look-up/` | API documentation lookup from installed packages  |
+| `skills/mastra/`          | Single comprehensive Mastra skill with progressive disclosure  |
 
 ## Installation
 
@@ -32,31 +30,27 @@ npx skills add mastra-ai/skills
 
 ## Included Skills
 
-### 📚 mastra-embedded-docs-look-up
-
-Look up Mastra API signatures from embedded documentation in `node_modules/@mastra/*/dist/docs/`. Ensures documentation matches the installed version.
-
-**When to use**: Verifying current API signatures before writing code.
-
 ### ✨ mastra
 
-Comprehensive guide for building AI applications with Mastra. Includes 27+ production-ready code patterns for agents, workflows, memory, tools, storage, and RAG. Covers troubleshooting, v1 migration, and best practices.
+**Single comprehensive skill for all Mastra development.** Uses progressive disclosure to keep context low while providing deep knowledge through reference files.
 
-**When to use**: Writing Mastra code (agents, workflows, memory systems, tools, storage configurations, RAG implementations).
+**When to use**: All Mastra questions (setup, development, troubleshooting, migrations).
 
-**Key patterns covered**:
-- **Workflows**: Sequential steps, branching, parallel execution, foreach loops, suspend/resume, state management
-- **Agents**: Basic agents, agents with tools, agents with memory, semantic recall, structured output
-- **Memory**: Message history, working memory, semantic recall
-- **Tools**: Basic tools, context-aware tools, suspending tools
-- **Storage**: Postgres, LibSQL, agent-specific storage
-- **RAG**: Vector query tools, Graph RAG
+**Architecture**:
+- **Main skill** (`SKILL.md`) - Compact router with core concepts (~141 lines)
+- **Reference files** - Detailed guides for specific topics
 
-### 🚀 create-mastra
+**Reference files**:
+- `references/create-mastra.md` - Installation and project setup
+- `references/embedded-docs.md` - Look up APIs in `node_modules/@mastra/*/dist/docs/`
+- `references/remote-docs.md` - Fetch docs from `https://mastra.ai/llms.txt`
+- `references/common-errors.md` - Troubleshooting common issues
+- `references/migration-guide.md` - Version upgrade workflows
 
-Setup guide for new or existing projects. Includes installation, configuration, framework integration, and troubleshooting.
-
-**When to use**: Initializing new Mastra projects or integrating Mastra into existing applications.
+**Documentation lookup strategy**:
+1. Check embedded docs first (if packages installed)
+2. Use remote docs from `https://mastra.ai/llms.txt` (if needed)
+3. For migrations: Official docs → embedded/remote docs for fixes
 
 ## Skill File Structure
 
@@ -133,12 +127,13 @@ Contributions welcome!
 
 ### API Freshness
 
-Mastra APIs evolve rapidly. Skills should always direct users to:
+Mastra APIs evolve rapidly. The `mastra` skill teaches proper documentation lookup:
 
-1. **Use `mastra-embedded-docs-look-up` skill** for current API signatures
-2. **Check `node_modules/@mastra/*/dist/docs/`** for package-specific documentation
+1. **Check embedded docs first** (if packages installed): `node_modules/@mastra/*/dist/docs/`
+2. **Use remote docs** (if needed): `https://mastra.ai/llms.txt`
 3. **Search source code**: `node_modules/@mastra/*/src/`
-4. **Fallback to docs**: [mastra.ai/docs](https://mastra.ai/docs)
+
+See `skills/mastra/references/embedded-docs.md` and `skills/mastra/references/remote-docs.md` for detailed lookup strategies.
 
 ### Common Patterns
 
