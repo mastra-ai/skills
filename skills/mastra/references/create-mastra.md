@@ -1,16 +1,6 @@
----
-name: create-mastra
-description: "Complete project setup guide for Mastra AI framework. Covers: CLI installation (create-mastra), manual installation, TypeScript configuration (ES2022 requirements), environment setup, adding to existing projects (Next.js, Express), troubleshooting (module not found, import errors, CommonJS issues), deployment preparation, and monorepo configuration. Includes both quick setup (user runs CLI) and automatic setup (step-by-step file creation). Use this skill for all Mastra installation and setup questions to ensure correct configuration and prevent common errors."
-license: Apache-2.0
-metadata:
-  author: Mastra
-  version: "1.0.0"
-  repository: https://github.com/mastra-ai/skills
----
+# Create Mastra Reference
 
-# Create Mastra Skill
-
-Complete guide for creating new Mastra AI agent projects. Includes both quickstart CLI method and detailed manual installation with full working code examples.
+Complete guide for creating new Mastra AI agent projects. Includes both quickstart CLI method and detailed manual installation.
 
 **Official documentation: [mastra.ai/docs](https://mastra.ai/docs)**
 

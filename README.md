@@ -10,17 +10,18 @@ npx skills add mastra-ai/skills
 
 ## Included Skills
 
-### 📚 mastra-embedded-docs-look-up
-
-Look up Mastra API signatures from embedded documentation in `node_modules/@mastra/*/dist/docs/`. Ensures docs match installed version.
-
 ### ✨ mastra
 
-Comprehensive guide for building AI applications with Mastra. Includes 27+ production-ready code patterns for agents, workflows, memory, tools, storage, and RAG. Covers troubleshooting, v1 migration, and best practices.
+**Single comprehensive skill for all Mastra development.**
 
-### 🚀 create-mastra
+Uses progressive disclosure with reference files covering:
+- **Setup & Installation** (`references/create-mastra.md`) - CLI and manual project setup
+- **Embedded Docs Lookup** (`references/embedded-docs.md`) - Find APIs in `node_modules/@mastra/*/dist/docs/`
+- **Remote Docs Lookup** (`references/remote-docs.md`) - Fetch from `https://mastra.ai/llms.txt`
+- **Troubleshooting** (`references/common-errors.md`) - Common errors and solutions
+- **Migrations** (`references/migration-guide.md`) - Version upgrade workflows
 
-Setup guide for new or existing projects. Includes installation, configuration, framework integration, and troubleshooting.
+Main skill file teaches core concepts and routes to appropriate reference files based on user questions.
 
 ---
 

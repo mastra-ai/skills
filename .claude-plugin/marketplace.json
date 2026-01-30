@@ -8,11 +8,9 @@
   "plugins": [
     {
       "name": "mastra-skills",
-      "description": "Skills for building AI applications with Mastra: look up APIs from embedded docs and follow documented patterns for agents, workflows, and project setup",
+      "description": "Comprehensive Mastra AI framework skill with progressive disclosure. Teaches documentation lookup (embedded docs from node_modules, remote docs from mastra.ai/llms.txt), project setup, troubleshooting, and migrations. Single skill for all Mastra development.",
       "skills": [
-        "./skills/mastra-embedded-docs-look-up",
-        "./skills/mastra",
-        "./skills/create-mastra"
+        "./skills/mastra"
       ],
       "source": "./",
       "strict": false
