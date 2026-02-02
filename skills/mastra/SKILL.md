@@ -124,20 +124,6 @@ Always use `"provider/model-name"`:
 
 ---
 
-## Common Patterns
-
-| Pattern | Method | Use Case |
-|---------|--------|----------|
-| Sequential steps | `.then()` | Chain operations |
-| Conditional logic | `.branch()` | Route based on conditions |
-| Parallel execution | `.parallel()` | Run steps concurrently |
-| Iteration | `.foreach()` | Process arrays |
-| Human approval | Suspending tools | Human-in-the-loop |
-
-**For detailed examples:** Check embedded or remote docs - never rely on memory.
-
----
-
 ## When You See Errors
 
 **Type errors often mean your knowledge is outdated.**
@@ -176,17 +162,7 @@ Always use `"provider/model-name"`:
    ```bash
    npm run dev  # http://localhost:4111
    ```
-
----
-
-## Key Principles
-
-1. **Never trust internal knowledge** - Always verify first
-2. **Embedded docs are source of truth** - They match installed version exactly
-3. **Check docs before writing code** - Not after errors appear
-4. **Use ES2022 modules** - CommonJS fails
-5. **Test in Studio** - http://localhost:4111
-
+   
 ---
 
 ## Resources
