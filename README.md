@@ -8,6 +8,14 @@ Official agent skills for coding agents working with the [Mastra AI framework](h
 npx skills add mastra-ai/skills
 ```
 
+### Alternative: Well-Known Skills Discovery
+
+Mastra also supports the [Well-Known Skills Discovery standard](https://github.com/cloudflare/agent-skills-discovery-rfc):
+
+```bash
+npx skills add https://mastra.ai/
+```
+
 ## Included Skills
 
 ### ✨ mastra
@@ -35,6 +43,22 @@ Then configure your coding agent to load skills from the cloned directory.
 
 ---
 
+## Well-Known Skills Discovery
+
+This repository is served via the [RFC 8615 Well-Known URI](https://github.com/cloudflare/agent-skills-discovery-rfc) at:
+
+```
+https://mastra.ai/.well-known/skills/
+```
+
+Agents can discover available skills by fetching:
+- **Index**: `https://mastra.ai/.well-known/skills/index.json`
+- **Skills**: `https://mastra.ai/.well-known/skills/mastra/SKILL.md`
+
+This enables automatic skill discovery without manual configuration.
+
+---
+
 ## Contributing
 
 Contributions welcome!
@@ -51,6 +75,7 @@ Contributions welcome!
 - [Mastra Docs](https://mastra.ai/docs)
 - [Mastra GitHub](https://github.com/mastra-ai/mastra)
 - [Agent Skills Spec](https://agentskills.io)
+- [Well-Known Skills RFC](https://github.com/cloudflare/agent-skills-discovery-rfc)
 - [Discord](https://discord.gg/BTYqqHKUrf)
 
 ---
