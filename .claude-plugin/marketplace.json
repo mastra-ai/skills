@@ -9,9 +9,7 @@
     {
       "name": "mastra-skills",
       "description": "Comprehensive Mastra AI framework skill with progressive disclosure. Teaches documentation lookup (embedded docs from node_modules, remote docs from mastra.ai/llms.txt), project setup, troubleshooting, and migrations. Single skill for all Mastra development.",
-      "skills": [
-        "./skills/mastra"
-      ],
+      "skills": ["./skills/mastra"],
       "source": "./",
       "strict": false
     }
