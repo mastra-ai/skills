@@ -2,35 +2,32 @@
 
 Guide for upgrading Mastra versions using official documentation and current API verification.
 
----
-
-## Migration Strategy
+## Migration strategy
 
 For version upgrades, follow this process:
 
-### 1. Check Official Migration Docs
+### 1. Check official migration docs
 
-**Always start with the official migration documentation:**
-
-```
-https://mastra.ai/llms.txt
-```
+**Always start with the official migration documentation:** `https://mastra.ai/llms.txt`
 
 Look for the **Migrations** or **Guides** section, which will have:
+
 - Breaking changes for each version
 - Automated migration tools
 - Step-by-step upgrade instructions
 
 **Example sections to look for:**
+
 - `/guides/migrations/upgrade-to-v1/`
 - `/guides/migrations/upgrade-to-v2/`
 - Breaking changes lists
 
-### 2. Use Embedded Docs for Current APIs
+### 2. Use embedded docs for current APIs
 
 After identifying breaking changes, verify the new APIs:
 
 **Check your installed version:**
+
 ```bash
 cat node_modules/@mastra/core/dist/docs/SOURCE_MAP.json | grep '"ApiName"'
 cat node_modules/@mastra/core/dist/[path-from-source-map]
@@ -38,19 +35,13 @@ cat node_modules/@mastra/core/dist/[path-from-source-map]
 
 See [`embedded-docs.md`](embedded-docs.md) for detailed lookup instructions.
 
-### 3. Use Remote Docs for Latest Info
+### 3. Use remote docs for latest info
 
-If packages aren't updated yet, check what APIs will look like:
-
-```
-https://mastra.ai/reference/[topic]/llms.txt
-```
+If packages aren't updated yet, check what APIs will look like: `https://mastra.ai/reference/[topic]`
 
 See [`remote-docs.md`](remote-docs.md) for detailed lookup instructions.
 
----
-
-## Quick Migration Workflow
+## Quick migration workflow
 
 ```bash
 # 1. Check current version
@@ -77,24 +68,20 @@ npm run dev
 npm test
 ```
 
----
+## Common migration patterns
 
-## Common Migration Patterns
+### Finding what changed
 
-### Finding What Changed
-
-**Check official migration docs:**
-```
-https://mastra.ai/guides/migrations/upgrade-to-v1/llms.txt
-```
+**Check official migration docs:** `https://mastra.ai/guides/migrations/upgrade-to-v1/overview.md`
 
 This will list:
+
 - Breaking changes
 - Deprecated APIs
 - New features
 - Migration tools
 
-### Updating API Usage
+### Updating API usage
 
 **For each breaking change:**
 
@@ -107,17 +94,19 @@ This will list:
 3. **Update your code** based on the type signatures
 4. **Test** the change
 
-### Example: Tool Execute Signature Change
+### Example: Tool execute signature change
 
 **Official docs say:** "Tool execute signature changed"
 
 **Look up current signature:**
+
 ```bash
 cat node_modules/@mastra/core/dist/docs/SOURCE_MAP.json | grep '"createTool"'
 cat node_modules/@mastra/core/dist/tools/tool.d.ts
 ```
 
 **Update based on type definition:**
+
 ```typescript
 // Old (from docs)
 execute: async (input) => { ... }
@@ -126,9 +115,7 @@ execute: async (input) => { ... }
 execute: async (inputData, context) => { ... }
 ```
 
----
-
-## Pre-Migration Checklist
+## Pre-migration checklist
 
 - [ ] Backup code (git commit)
 - [ ] Check official migration docs: `https://mastra.ai/llms.txt`
@@ -136,9 +123,7 @@ execute: async (inputData, context) => { ... }
 - [ ] Read breaking changes list
 - [ ] Tests are passing
 
----
-
-## Post-Migration Checklist
+## Post-migration checklist
 
 - [ ] All dependencies updated together
 - [ ] TypeScript compiles: `npx tsc --noEmit`
@@ -147,29 +132,27 @@ execute: async (inputData, context) => { ... }
 - [ ] No console warnings
 - [ ] APIs verified against embedded docs
 
----
+## Migration resources
 
-## Migration Resources
+| Resource                               | Use For                                       |
+| -------------------------------------- | --------------------------------------------- |
+| `https://mastra.ai/llms.txt`           | Finding migration guides and breaking changes |
+| [`embedded-docs.md`](embedded-docs.md) | Looking up new API signatures after updating  |
+| [`remote-docs.md`](remote-docs.md)     | Checking latest docs before updating          |
+| [`common-errors.md`](common-errors.md) | Fixing migration errors                       |
 
-| Resource | Use For |
-|----------|---------|
-| `https://mastra.ai/llms.txt` | Finding migration guides and breaking changes |
-| [`embedded-docs.md`](embedded-docs.md) | Looking up new API signatures after updating |
-| [`remote-docs.md`](remote-docs.md) | Checking latest docs before updating |
-| [`common-errors.md`](common-errors.md) | Fixing migration errors |
+## Version-specific notes
 
----
-
-## Version-Specific Notes
-
-### General Principles
+### General principles
 
 1. **Always update all @mastra packages together**
+
    ```bash
    npm install @mastra/core@latest @mastra/memory@latest @mastra/rag@latest mastra@latest
    ```
 
 2. **Check for automated migration tools**
+
    ```bash
    npx @mastra/codemod@latest [version]
    ```
@@ -180,9 +163,7 @@ execute: async (inputData, context) => { ... }
 4. **Run database migrations if using storage**
    - Follow storage migration guide in official docs
 
----
-
-## Getting Help
+## Getting help
 
 1. **Check official migration docs**: `https://mastra.ai/llms.txt` → Migrations section
 2. **Look up new APIs**: See [`embedded-docs.md`](embedded-docs.md)
@@ -190,9 +171,7 @@ execute: async (inputData, context) => { ... }
 4. **Ask in Discord**: https://discord.gg/BTYqqHKUrf
 5. **File issues**: https://github.com/mastra-ai/mastra/issues
 
----
-
-## Key Principles
+## Key principles
 
 1. **Official docs are source of truth** - Start with `https://mastra.ai/llms.txt`
 2. **Verify with embedded docs** - Check installed version APIs

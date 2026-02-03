@@ -1,30 +1,24 @@
 # Create Mastra Reference
 
-Complete guide for creating new Mastra AI agent projects. Includes both quickstart CLI method and detailed manual installation.
+Complete guide for creating new Mastra projects. Includes both quickstart CLI method and detailed manual installation.
 
 **Official documentation: [mastra.ai/docs](https://mastra.ai/docs)**
-
----
 
 ## Getting Started
 
 Ask: **"How would you like to create your Mastra project?"**
 
-1. **Quick Setup** - Copy and run: `npm create mastra@latest`
-2. **Guided Setup** - I walk you through each step, you approve commands
-3. **Automatic Setup** ⭐ - I create everything, just give me your API key
+1. **Quick Setup**: Copy and run: `npm create mastra@latest`
+2. **Guided Setup**: I walk you through each step, you approve commands
+3. **Automatic Setup**: I create everything, just give me your API key
 
-> **For AI agents:** The CLI is interactive. Use **Automatic Setup** — create files using the steps in "Automatic Setup / Manual Installation" below.
-
----
+> **For AI agents:** The CLI is interactive. Use **Automatic Setup** to create files using the steps in "Automatic Setup / Manual Installation" below.
 
 ## Prerequisites
 
 - An API key from a supported model provider (OpenAI, Anthropic, Google, etc.)
 
----
-
-## Quick Setup (User runs CLI)
+## Quick Setup (user runs CLI)
 
 Create a new Mastra project with one command:
 
@@ -33,48 +27,48 @@ npm create mastra@latest
 ```
 
 **Other package managers:**
+
 ```bash
 pnpm create mastra@latest
 yarn create mastra@latest
 bun create mastra@latest
 ```
 
----
-
-## CLI Flags
+## CLI flags
 
 **Skip the example agent:**
+
 ```bash
 npm create mastra@latest --no-example
 ```
 
 **Use a specific template:**
+
 ```bash
 npm create mastra@latest --template <template-name>
 ```
 
----
+## Automatic setup / manual installation
 
-## Automatic Setup / Manual Installation
-
-**Use this for Automatic Setup** (AI creates all files) or when you prefer manual control.
+**Use this for automatic setup** (AI creates all files) or when you prefer manual control.
 
 Follow these steps to create a complete Mastra project:
 
-### Step 1: Create Project Directory
+### Step 1: Create project directory
+
 ```bash
 mkdir my-first-agent && cd my-first-agent
 npm init -y
 ```
 
-### Step 2: Install Dependencies
+### Step 2: Install dependencies
 
 ```bash
 npm install -D typescript @types/node mastra@latest
 npm install @mastra/core@latest zod@^4
 ```
 
-### Step 3: Configure Package Scripts
+### Step 3: Configure package scripts
 
 Add to `package.json`:
 
@@ -110,7 +104,7 @@ Create `tsconfig.json`:
 
 **Important:** Mastra requires `"module": "ES2022"` and `"moduleResolution": "bundler"`. CommonJS will cause errors.
 
-### Step 5: Create Environment File
+### Step 5: Create environment file
 
 Create `.env` with your API key:
 
@@ -120,7 +114,7 @@ GOOGLE_GENERATIVE_AI_API_KEY=<your-api-key>
 
 Or use `OPENAI_API_KEY`, `ANTHROPIC_API_KEY`, etc.
 
-### Step 6: Create Weather Tool
+### Step 6: Create weather tool
 
 Create `src/mastra/tools/weather-tool.ts`:
 
@@ -143,7 +137,7 @@ export const weatherTool = createTool({
 });
 ```
 
-### Step 7: Create Weather Agent
+### Step 7: Create weather agent
 
 Create `src/mastra/agents/weather-agent.ts`:
 
@@ -172,11 +166,12 @@ export const weatherAgent = new Agent({
 ```
 
 **Note:** Model format is `"provider/model-name"`. Examples:
+
 - `"google/gemini-2.5-pro"`
 - `"openai/gpt-4o"`
 - `"anthropic/claude-3-5-sonnet-20241022"`
 
-### Step 8: Create Mastra Entry Point
+### Step 8: Create mastra entry point
 
 Create `src/mastra/index.ts`:
 
@@ -189,7 +184,7 @@ export const mastra = new Mastra({
 });
 ```
 
-### Step 9: Launch Development Server
+### Step 9: Launch development server
 
 ```bash
 npm run dev
@@ -197,9 +192,7 @@ npm run dev
 
 Access Studio at `http://localhost:4111` to test your agent.
 
----
-
-## Next Steps
+## Next steps
 
 After creating your project with `create mastra`:
 
@@ -209,18 +202,14 @@ After creating your project with `create mastra`:
 - **Add more tools** to extend agent capabilities
 - **Integrate into your app** - see framework guides at [mastra.ai/docs](https://mastra.ai/docs)
 
----
-
 ## Troubleshooting
 
-| Issue | Solution |
-|-------|----------|
-| API key not found | Make sure your `.env` file has the correct key |
-| Studio won't start | Check that port 4111 is available |
-| CommonJS errors | Ensure `tsconfig.json` uses `"module": "ES2022"` and `"moduleResolution": "bundler"` |
-| Command not found | Ensure you're using Node.js 20+ |
-
----
+| Issue              | Solution                                                                             |
+| ------------------ | ------------------------------------------------------------------------------------ |
+| API key not found  | Make sure your `.env` file has the correct key                                       |
+| Studio won't start | Check that port 4111 is available                                                    |
+| CommonJS errors    | Ensure `tsconfig.json` uses `"module": "ES2022"` and `"moduleResolution": "bundler"` |
+| Command not found  | Ensure you're using Node.js 20+                                                      |
 
 ## Resources
 
@@ -228,5 +217,4 @@ After creating your project with `create mastra`:
 - [Installation](https://mastra.ai/docs/getting-started/installation)
 - [Agents](https://mastra.ai/docs/agents/overview)
 - [Workflows](https://mastra.ai/docs/workflows/overview)
-- [Examples](https://github.com/mastra-ai/mastra/tree/main/examples)
 - [GitHub](https://github.com/mastra-ai/mastra)
