@@ -17,7 +17,8 @@ Look up API signatures from embedded docs in `node_modules/@mastra/*/dist/docs/`
 ```
 node_modules/@mastra/core/dist/docs/
 ├── SKILL.md           # Package overview, exports
-├── SOURCE_MAP.json    # Export→file mappings
+├── assets/
+│   └── SOURCE_MAP.json    # Export→file mappings
 └── [topics]/          # Feature docs (agents/, workflows/, etc.)
 ```
 
@@ -34,7 +35,7 @@ If you see packages like `core`, `memory`, `rag`, etc., proceed with embedded do
 ### 2. Find the export in SOURCE_MAP.json
 
 ```bash
-cat node_modules/@mastra/core/dist/docs/SOURCE_MAP.json | grep '"Agent"'
+cat node_modules/@mastra/core/dist/docs/assets/SOURCE_MAP.json | grep '"Agent"'
 ```
 
 Returns: `{ "Agent": { "types": "dist/agent/agent.d.ts", ... } }`
@@ -72,7 +73,7 @@ Topic docs provide conceptual explanations and usage examples.
 ls node_modules/@mastra/
 
 # Find specific export in SOURCE_MAP
-cat node_modules/@mastra/core/dist/docs/SOURCE_MAP.json | grep '"ExportName"'
+cat node_modules/@mastra/core/dist/docs/assets/SOURCE_MAP.json | grep '"ExportName"'
 
 # Read type definition from path
 cat node_modules/@mastra/core/dist/[path-from-source-map]
@@ -92,7 +93,7 @@ grep -r "functionName" node_modules/@mastra/core/src/
 **1. Find Agent in SOURCE_MAP:**
 
 ```bash
-cat node_modules/@mastra/core/dist/docs/SOURCE_MAP.json | grep '"Agent"'
+cat node_modules/@mastra/core/dist/docs/assets/SOURCE_MAP.json | grep '"Agent"'
 ```
 
 **2. Read the type definition:**
