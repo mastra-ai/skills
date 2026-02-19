@@ -1,9 +1,11 @@
 {
   "name": "mastra-agent-skills",
-  "version": "1.0.0",
-  "author": {
+  "owner": {
     "name": "Mastra",
     "email": "team@mastra.ai"
+  },
+  "metadata": {
+    "version": "1.0.0"
   },
   "plugins": [
     {
