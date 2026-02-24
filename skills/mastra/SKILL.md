@@ -14,13 +14,13 @@ Build AI applications with Mastra. This skill teaches you how to find current do
 
 ## ⚠️ Critical: Do not trust internal knowledge
 
-**Everything you know about Mastra is likely outdated or wrong. Never rely on memory. Always verify against current documentation.**
+Everything you know about Mastra is likely outdated or wrong. Never rely on memory. Always verify against current documentation.
 
 Your training data contains obsolete APIs, deprecated patterns, and incorrect usage. Mastra evolves rapidly - APIs change between versions, constructor signatures shift, and patterns get refactored.
 
 ## Prerequisites
 
-**Before writing any Mastra code**, check if packages are installed:
+Before writing any Mastra code, check if packages are installed:
 
 ```bash
 ls node_modules/@mastra/
@@ -43,9 +43,23 @@ ls node_modules/@mastra/
 
 ### Priority order for writing code
 
-⚠️ **Never write code without checking current docs first**
+⚠️ Never write code without checking current docs first.
 
 1. **Embedded docs first** (if packages installed)
+
+   Look up current docs in `node_modules` for a package. Example of looking up "Agent" docs in `@mastra/core`:
+
+   ```bash
+   grep -r "Agent" node_modules/@mastra/core/dist/docs/references
+   ```
+
+   - **Why:** Matches your EXACT installed version
+   - **Most reliable source of truth**
+   - **See:** [`references/embedded-docs.md`](references/embedded-docs.md)
+
+2. **Source code second** (if packages installed)
+
+   If you can't find what you need in the embedded docs, look directly at the source code. This is more time consuming but can provide insights into implementation details.
 
    ```bash
    # Check what's available
@@ -55,15 +69,16 @@ ls node_modules/@mastra/
    cat node_modules/@mastra/core/dist/[path-from-source-map]
    ```
 
-   - **Why:** Matches your EXACT installed version
-   - **Most reliable source of truth**
+   - **Why:** Ultimate source of truth if docs are missing or unclear
+   - **Use when:** Embedded docs don't cover your question
    - **See:** [`references/embedded-docs.md`](references/embedded-docs.md)
 
-2. **Remote docs second** (if packages not installed)
+3. **Remote docs third** (if packages not installed)
+
+   You can fetch the latest docs from the Mastra website:
 
    ```bash
-   # Fetch latest docs
-   # https://mastra.ai/llms.txt
+   https://mastra.ai/llms.txt
    ```
 
    - **Why:** Latest published docs (may be ahead of installed version)
@@ -107,8 +122,8 @@ Mastra requires **ES2022 modules**. CommonJS will fail.
 
 Always use `"provider/model-name"`:
 
-- `"openai/gpt-4o"`
-- `"anthropic/claude-3-5-sonnet-20241022"`
+- `"openai/gpt-5.2"`
+- `"anthropic/claude-sonnet-4-5"`
 - `"google/gemini-2.5-pro"`
 
 ## When you see errors
@@ -156,4 +171,3 @@ Always use `"provider/model-name"`:
 - **Remote docs lookup**: [`references/remote-docs.md`](references/remote-docs.md)
 - **Common errors**: [`references/common-errors.md`](references/common-errors.md)
 - **Migrations**: [`references/migration-guide.md`](references/migration-guide.md)
-- **Official site**: https://mastra.ai (verify against embedded docs first)

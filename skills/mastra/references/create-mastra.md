@@ -168,8 +168,8 @@ export const weatherAgent = new Agent({
 **Note:** Model format is `"provider/model-name"`. Examples:
 
 - `"google/gemini-2.5-pro"`
-- `"openai/gpt-4o"`
-- `"anthropic/claude-3-5-sonnet-20241022"`
+- `"openai/gpt-5.2"`
+- `"anthropic/claude-sonnet-4-5"`
 
 ### Step 8: Create mastra entry point
 

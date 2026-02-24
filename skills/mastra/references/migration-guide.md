@@ -29,7 +29,7 @@ After identifying breaking changes, verify the new APIs:
 **Check your installed version:**
 
 ```bash
-cat node_modules/@mastra/core/dist/docs/SOURCE_MAP.json | grep '"ApiName"'
+cat node_modules/@mastra/core/dist/docs/assets/SOURCE_MAP.json | grep '"ApiName"'
 cat node_modules/@mastra/core/dist/[path-from-source-map]
 ```
 
@@ -58,7 +58,7 @@ npm install @mastra/core@latest @mastra/memory@latest @mastra/rag@latest mastra@
 npx @mastra/codemod@latest v1  # or whatever version
 
 # 5. Check embedded docs for new APIs
-cat node_modules/@mastra/core/dist/docs/SOURCE_MAP.json
+cat node_modules/@mastra/core/dist/docs/assets/SOURCE_MAP.json
 
 # 6. Fix breaking changes using embedded docs lookup
 # See embedded-docs.md for how to look up each API
@@ -88,7 +88,7 @@ This will list:
 1. **Find the old API** in your code
 2. **Look up the new API** using embedded docs:
    ```bash
-   cat node_modules/@mastra/core/dist/docs/SOURCE_MAP.json | grep '"NewApi"'
+   cat node_modules/@mastra/core/dist/docs/assets/SOURCE_MAP.json | grep '"NewApi"'
    cat node_modules/@mastra/core/dist/[path]
    ```
 3. **Update your code** based on the type signatures
@@ -101,7 +101,7 @@ This will list:
 **Look up current signature:**
 
 ```bash
-cat node_modules/@mastra/core/dist/docs/SOURCE_MAP.json | grep '"createTool"'
+cat node_modules/@mastra/core/dist/docs/assets/SOURCE_MAP.json | grep '"createTool"'
 cat node_modules/@mastra/core/dist/tools/tool.d.ts
 ```
 
