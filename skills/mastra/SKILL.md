@@ -49,7 +49,7 @@ ls node_modules/@mastra/
 
    ```bash
    # Check what's available
-   cat node_modules/@mastra/core/dist/docs/SOURCE_MAP.json | grep '"Agent"'
+   cat node_modules/@mastra/core/dist/docs/assets/SOURCE_MAP.json | grep '"Agent"'
 
    # Read the actual type definition
    cat node_modules/@mastra/core/dist/[path-from-source-map]
