@@ -4,7 +4,7 @@ Complete guide for creating new Mastra projects. Includes both quickstart CLI me
 
 **Official documentation: [mastra.ai/docs](https://mastra.ai/docs)**
 
-## Getting Started
+## Get started
 
 Ask: **"How would you like to create your Mastra project?"**
 
@@ -168,7 +168,7 @@ export const weatherAgent = new Agent({
 **Note:** Model format is `"provider/model-name"`. Examples:
 
 - `"google/gemini-2.5-pro"`
-- `"openai/gpt-5.2"`
+- `"openai/gpt-5.4"`
 - `"anthropic/claude-sonnet-4-5"`
 
 ### Step 8: Create mastra entry point
@@ -184,7 +184,9 @@ export const mastra = new Mastra({
 });
 ```
 
-### Step 9: Launch development server
+### Step 9: Launch Mastra Studio
+
+Launch the development server:
 
 ```bash
 npm run dev

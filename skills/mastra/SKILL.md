@@ -55,7 +55,7 @@ ls node_modules/@mastra/
 
    - **Why:** Matches your EXACT installed version
    - **Most reliable source of truth**
-   - **See:** [`references/embedded-docs.md`](references/embedded-docs.md)
+   - **More information:** [`references/embedded-docs.md`](references/embedded-docs.md)
 
 2. **Source code second** (if packages installed)
 
@@ -71,7 +71,7 @@ ls node_modules/@mastra/
 
    - **Why:** Ultimate source of truth if docs are missing or unclear
    - **Use when:** Embedded docs don't cover your question
-   - **See:** [`references/embedded-docs.md`](references/embedded-docs.md)
+   - **More information:** [`references/embedded-docs.md`](references/embedded-docs.md)
 
 3. **Remote docs third** (if packages not installed)
 
@@ -83,7 +83,7 @@ ls node_modules/@mastra/
 
    - **Why:** Latest published docs (may be ahead of installed version)
    - **Use when:** Packages not installed or exploring new features
-   - **See:** [`references/remote-docs.md`](references/remote-docs.md)
+   - **More information:** [`references/remote-docs.md`](references/remote-docs.md)
 
 ## Core concepts
 
@@ -98,9 +98,21 @@ Use for: Defined processes (pipelines, approvals, ETL)
 ### Key components
 
 - **Tools**: Extend agent capabilities (APIs, databases, external services)
-- **Memory**: Maintain context (message history, working memory, semantic recall)
+- **Memory**: Maintain context (message history, working memory, semantic recall, observational memory)
 - **RAG**: Query external knowledge (vector stores, graph relationships)
 - **Storage**: Persist data (Postgres, LibSQL, MongoDB)
+
+### Mastra Studio
+
+Studio provides an interactive UI for building, testing, and managing agents, workflows, and tools. It helps with debugging and improving your applications iteratively.
+
+Inside a Mastra project, run:
+
+```bash
+npm run dev
+```
+
+Then open `http://localhost:4111` in your browser to access Mastra Studio.
 
 ## Critical requirements
 
@@ -122,7 +134,7 @@ Mastra requires **ES2022 modules**. CommonJS will fail.
 
 Always use `"provider/model-name"`:
 
-- `"openai/gpt-5.2"`
+- `"openai/gpt-5.4"`
 - `"anthropic/claude-sonnet-4-5"`
 - `"google/gemini-2.5-pro"`
 

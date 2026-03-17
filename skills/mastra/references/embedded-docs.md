@@ -40,6 +40,10 @@ Use `grep` to find relevant docs in `references/`:
 grep -r "Agent" node_modules/@mastra/core/dist/docs/references
 ```
 
+### Naming convention
+
+Documents are typically formatted as `<category>-<topic>.md` where category is one of: `"docs", "reference", "guides", "models"`.
+
 ### Optional: Check source code for type definitions / additional details
 
 Look at the `SOURCE_MAP.json` to find the file path for the export:
