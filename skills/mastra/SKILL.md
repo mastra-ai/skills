@@ -132,7 +132,15 @@ Mastra requires **ES2022 modules**. CommonJS will fail.
 
 ### Model format
 
-Always use `"provider/model-name"`:
+Always use `"provider/model-name"` when defining models using Mastra's model router. Fetch the latest supported models from `node_modules`:
+
+```bash
+node_modules/@mastra/core/dist/provider-registry.json
+```
+
+This file contains a mapping of all supported providers and their models.
+
+Example model strings:
 
 - `"openai/gpt-5.4"`
 - `"anthropic/claude-sonnet-4-5"`
