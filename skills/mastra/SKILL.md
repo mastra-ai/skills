@@ -29,9 +29,9 @@ ls node_modules/@mastra/
 - **If packages exist:** Use embedded docs first (most reliable)
 - **If no packages:** Install first or use remote docs
 
-## Documentation lookup guide
+## Available files
 
-### Quick Reference
+### References
 
 | User Question                       | First Check                                                      | How To                                         |
 | ----------------------------------- | ---------------------------------------------------------------- | ---------------------------------------------- |
@@ -41,7 +41,11 @@ ls node_modules/@mastra/
 | "I'm getting an error..."           | [`references/common-errors.md`](references/common-errors.md)     | Common errors and solutions                    |
 | "Upgrade from v0.x to v1.x"         | [`references/migration-guide.md`](references/migration-guide.md) | Version upgrade workflows                      |
 
-### Priority order for writing code
+### Scripts
+
+- `scripts/provider-registry.mjs`: Look up current providers and models available in the model router. Always run this before using a model to verify provider keys and model names.
+
+## Priority order for writing code
 
 ⚠️ Never write code without checking current docs first.
 
@@ -132,13 +136,20 @@ Mastra requires **ES2022 modules**. CommonJS will fail.
 
 ### Model format
 
-Always use `"provider/model-name"` when defining models using Mastra's model router. Fetch the latest supported models from `node_modules`:
+Always use `"provider/model-name"` when defining models using Mastra's model router.
+
+Use the provider registry script to look up available providers and models:
 
 ```bash
-node_modules/@mastra/core/dist/provider-registry.json
+# List all available providers
+node scripts/provider-registry.mjs --list
+
+# List all models for a specific provider (sorted newest first)
+node scripts/provider-registry.mjs --provider openai
+node scripts/provider-registry.mjs --provider anthropic
 ```
 
-This file contains a mapping of all supported providers and their models.
+When the user asks to use a model or provider, **always run the script first** to verify the provider key and model name are valid. Do not guess model names from memory as they change frequently.
 
 Example model strings:
 
