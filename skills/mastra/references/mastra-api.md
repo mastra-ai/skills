@@ -18,7 +18,7 @@ For local servers, `mastra api` defaults to `http://localhost:4111`:
 npx mastra api agent list
 ```
 
-For Mastra platform or remote servers, pass `--url`:
+For Mastra platform or remote servers, pass `--url`. For the sake of brevity in examples, `$MASTRA_URL` is used as a placeholder for the actual server URL which you need to set yourself:
 
 ```bash
 npx mastra api --url $MASTRA_URL agent list
