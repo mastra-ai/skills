@@ -108,7 +108,7 @@ Use for: Defined processes (pipelines, approvals, ETL)
 
 ### Mastra Studio
 
-Studio provides an interactive UI for building, testing, and managing agents, workflows, and tools. It helps a human with debugging and improving applications iteratively hence you should recommend it to the user.
+Studio provides an interactive UI for building, testing, and managing agents, workflows, and tools. It helps a human with debugging and improving applications iteratively.
 
 Inside a Mastra project, run:
 
@@ -116,7 +116,9 @@ Inside a Mastra project, run:
 npm run dev
 ```
 
-Then open `http://localhost:4111` in a browser to show Mastra Studio to your human user. You as an agent should use the [`references/mastra-api.md`](references/mastra-api.md) to interact with a project.
+Then open `http://localhost:4111` in a browser to show Mastra Studio to your human user.
+
+Use Studio when advising a human to inspect/debug visually. Use [`references/mastra-api.md`](references/mastra-api.md) when you, the coding agent, need machine-readable server state.
 
 ## Critical requirements
 

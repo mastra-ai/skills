@@ -27,6 +27,7 @@ npx mastra api --url $MASTRA_URL agent list
 Verify the server once with a cheap check before resource calls:
 
 ```bash
+MASTRA_URL="${MASTRA_URL:-http://localhost:4111}"
 curl -fsS "$MASTRA_URL/api/system/api-schema" >/dev/null
 ```
 
@@ -45,7 +46,7 @@ npx mastra api --url "$MASTRA_URL" --header "Authorization: Bearer $TOKEN" agent
 3. JSON input uncertain: use command-specific `--schema`.
 4. Route behavior confusing: inspect `/api/system/api-schema`.
 
-Common resource words usually map directly to command groups:
+Start with these command groups when present; verify with `mastra api --help` if the group fails.
 
 ```text
 agent workflow tool mcp thread memory trace log score dataset experiment
