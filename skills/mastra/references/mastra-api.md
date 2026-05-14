@@ -198,4 +198,4 @@ curl -fsS "$MASTRA_URL/api/system/api-schema" \
 - Workflow resume only works for suspended workflow runs.
 - Working memory update requires the agent's memory to have working memory enabled.
 - Empty lists may simply mean the server has no matching stored data yet.
-- `trace list` and `trace get` return lightweight payloads by default (no span input, output, attributes, or metadata). Pass `--verbose` to fetch full span records when needed.
+- `trace list` and `trace get` return lightweight payloads by default (no span input, output, attributes, or metadata). Pass `--verbose` to fetch full span records, or use `trace span <traceId> <spanId>` to fetch one specific span in full.
