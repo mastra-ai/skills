@@ -2,7 +2,7 @@
 
 How to use the `mastra api` CLI to interact with Mastra servers. Prefer fast, focused commands and compact JSON projections. Treat the installed CLI and server schema as the source of truth when discovery is needed.
 
-Use this reference when the user asks to inspect or call agents, workflows, tools, MCP servers, memory threads, traces, logs, scores, datasets, experiments, or to debug/test `mastra api` commands.
+Use this reference when the user asks to inspect or call agents, workflows, tools, MCP servers, memory threads, traces, logs, metrics, scores, datasets, experiments, or to debug/test `mastra api` commands.
 
 ## Setup
 
@@ -11,6 +11,7 @@ The CLI can interact with any reachable Mastra server:
 - Local dev server: `http://localhost:4111` from `npm run dev`
 - Mastra platform deployment: Use the deployment URL
 - Remote/self-hosted server: Use the server URL
+- Hosted Mastra Platform Observability: `https://observability.mastra.ai` (auto-targeted by `trace`, `log`, `score`, and `metric` commands)
 
 For local servers, `mastra api` defaults to `http://localhost:4111`:
 
@@ -39,6 +40,30 @@ For authenticated servers, pass repeatable headers:
 npx mastra api --url "$MASTRA_URL" --header "Authorization: Bearer $TOKEN" agent list
 ```
 
+### Target resolution
+
+Runtime commands (`agent`, `workflow`, `tool`, `mcp`, `thread`, `memory`, `dataset`, `experiment`) resolve the target in this order:
+
+1. `--url <url>` for an explicit remote or self-hosted server.
+2. `http://localhost:4111` for a local `mastra dev` server.
+3. `.mastra-project.json` for a Mastra platform project.
+
+Observability commands (`trace`, `log`, `score`, `metric`) target `https://observability.mastra.ai` by default instead of a project deployment URL. The CLI resolves credentials in this order:
+
+1. Explicit `Authorization` and `X-Mastra-Project-Id` headers passed with `--header`.
+2. `MASTRA_PLATFORM_ACCESS_TOKEN` and `MASTRA_PROJECT_ID` from the environment.
+3. Project metadata from `.mastra-project.json` for the project ID.
+4. The Mastra CLI login token as an auth fallback.
+
+For observability calls, no `--url` or `--header` is required if `MASTRA_PLATFORM_ACCESS_TOKEN` and `MASTRA_PROJECT_ID` are set, or if `.mastra-project.json` is present:
+
+```bash
+npx mastra api trace list '{"page":0,"perPage":10}'
+npx mastra api metric names
+```
+
+Pass `--url` and `--header` only when overriding the hosted observability target or credentials.
+
 ## Decision flow
 
 1. Clear read-only request (`list X`, `latest X`, `get X`, `summarize recent X`): infer the resource and use the fast path first.
@@ -49,7 +74,7 @@ npx mastra api --url "$MASTRA_URL" --header "Authorization: Bearer $TOKEN" agent
 Start with these command groups when present; verify with `mastra api --help` if the group fails.
 
 ```text
-agent workflow tool mcp thread memory trace log score dataset experiment
+agent workflow tool mcp thread memory trace log metric score dataset experiment
 ```
 
 ## Fast path for read-only requests
@@ -173,3 +198,4 @@ curl -fsS "$MASTRA_URL/api/system/api-schema" \
 - Workflow resume only works for suspended workflow runs.
 - Working memory update requires the agent's memory to have working memory enabled.
 - Empty lists may simply mean the server has no matching stored data yet.
+- `trace list` and `trace get` return lightweight payloads by default (no span input, output, attributes, or metadata). Pass `--verbose` to fetch full span records when needed.
