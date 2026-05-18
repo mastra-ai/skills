@@ -16,8 +16,18 @@ Use for defined processes such as pipelines, approvals, ETL, multi-step business
 - Memory: Maintain context through message history, working memory, semantic recall, and observational memory.
 - Storage: Persist data with providers such as Postgres, LibSQL, and MongoDB.
 
-## Studio vs Mastra API CLI
+## Mastra Studio
 
 Mastra Studio is the interactive UI for building, testing, and managing agents, workflows, and tools. Use Studio when advising a human to inspect or debug visually.
+
+Inside a Mastra project, run:
+
+```bash
+npm run dev
+```
+
+Then open `http://localhost:4111` in a browser to show Mastra Studio to your human user.
+
+## Mastra API CLI
 
 Use `mastra api` when you, the coding agent, need machine-readable state from a local dev server, Mastra platform deployment, or remote Mastra endpoint. See [`mastra-api.md`](mastra-api.md) for command patterns.

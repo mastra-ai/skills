@@ -37,8 +37,10 @@ ls node_modules/@mastra/
 | ----------------------------------- | ---------------------------------------------------------------- | ---------------------------------------------- |
 | Create/install Mastra project     | [`references/create-mastra.md`](references/create-mastra.md)     | Setup guide with CLI and manual steps          |
 | Choose Agent/Workflow/Tool/Memory/Storage | [`references/core-concepts.md`](references/core-concepts.md) | Core concepts and when to use each primitive |
+| Use Studio / debug visually       | [`references/core-concepts.md`](references/core-concepts.md)     | Studio purpose, launch command, and when to use it |
 | How do I use Agent/Workflow/Tool? | [`references/embedded-docs.md`](references/embedded-docs.md)     | Look up in `node_modules/@mastra/*/dist/docs/` |
 | How do I use X? (no packages)     | [`references/remote-docs.md`](references/remote-docs.md)         | Fetch from `https://mastra.ai/llms.txt`        |
+| Choose or validate a model        | [`references/model-selection.md`](references/model-selection.md) | Model format and provider registry lookup      |
 | I'm getting an error...           | [`references/common-errors.md`](references/common-errors.md)     | Common errors and solutions                    |
 | Upgrade from v0.x to v1.x         | [`references/migration-guide.md`](references/migration-guide.md) | Version upgrade workflows                      |
 | Inspect/call server resources via CLI | [`references/mastra-api.md`](references/mastra-api.md)       | `mastra api` CLI for local, Mastra platform, or remote servers |
@@ -82,7 +84,7 @@ Mastra requires ES2022 modules. CommonJS will fail. See [`references/create-mast
 
 Always use `"provider/model-name"` when defining models using Mastra's model router.
 
-When the user asks to use a model or provider, always run `scripts/provider-registry.mjs` first to verify the provider key and model name are valid. Do not guess model names from memory as they change frequently.
+When the user asks to use a model or provider, always run `scripts/provider-registry.mjs` first to verify the provider key and model name are valid. Do not guess model names from memory as they change frequently. See [`references/model-selection.md`](references/model-selection.md).
 
 ## When you see errors
 
