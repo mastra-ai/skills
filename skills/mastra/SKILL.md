@@ -37,7 +37,6 @@ ls node_modules/@mastra/
 | ----------------------------------- | ---------------------------------------------------------------- | ---------------------------------------------- |
 | Create/install Mastra project     | [`references/create-mastra.md`](references/create-mastra.md)     | Setup guide with CLI and manual steps          |
 | Choose Agent/Workflow/Tool/Memory/Storage | [`references/core-concepts.md`](references/core-concepts.md) | Core concepts and when to use each primitive |
-| Use Studio / debug visually       | [`references/core-concepts.md`](references/core-concepts.md)     | Studio purpose, launch command, and when to use it |
 | How do I use Agent/Workflow/Tool? | [`references/embedded-docs.md`](references/embedded-docs.md)     | Look up in `node_modules/@mastra/*/dist/docs/` |
 | How do I use X? (no packages)     | [`references/remote-docs.md`](references/remote-docs.md)         | Fetch from `https://mastra.ai/llms.txt`        |
 | Choose or validate a model        | [`references/model-selection.md`](references/model-selection.md) | Model format and provider registry lookup      |
@@ -67,12 +66,26 @@ Never write code without checking current docs first.
 
 ## Core concepts
 
-Use [`references/core-concepts.md`](references/core-concepts.md) when choosing between agents, workflows, tools, memory, storage, Studio, and `mastra api`.
+Use [`references/core-concepts.md`](references/core-concepts.md) when choosing between agents, workflows, tools, memory, and storage.
 
 - Agent: Use for open-ended tasks that make decisions and use tools.
 - Workflow: Use for defined multi-step processes.
-- Studio: Use for human-facing visual debugging.
-- `mastra api`: Use for machine-readable server state.
+
+## Mastra Studio
+
+Studio is the interactive UI for building, testing, and managing agents, workflows, and tools. Use Studio when advising a human to inspect or debug visually.
+
+Inside a Mastra project, run:
+
+```bash
+npm run dev
+```
+
+Then open `http://localhost:4111` in a browser to show Mastra Studio to your human user.
+
+## Mastra API CLI
+
+Use `mastra api` to inspect or call resources on local dev servers, Mastra platform deployments, or remote Mastra endpoints. It is useful for agent-readable state, execution, traces, logs, scores, threads, and workflow operations. See [`references/mastra-api.md`](references/mastra-api.md) for usage patterns.
 
 ## Critical requirements
 
@@ -113,7 +126,3 @@ Always verify before writing code:
    - If not: Use remote docs [`references/remote-docs.md`](references/remote-docs.md)
 3. Write code based on current docs
 4. Test with the project scripts or Studio when available
-
-## Mastra API CLI
-
-Use `mastra api` to inspect or call resources on local dev servers, Mastra platform deployments, or remote Mastra endpoints. It is useful for agent-readable state, execution, traces, logs, scores, threads, and workflow operations. See [`references/mastra-api.md`](references/mastra-api.md) for usage patterns.
