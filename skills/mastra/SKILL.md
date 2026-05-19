@@ -29,15 +29,17 @@ ls node_modules/@mastra/
 - If packages exist: Use embedded docs first (most reliable)
 - If no packages: Install first or use remote docs
 
-## Available files
+## Resources
 
 ### References
 
 | User Question                       | First Check                                                      | How To                                         |
 | ----------------------------------- | ---------------------------------------------------------------- | ---------------------------------------------- |
 | Create/install Mastra project     | [`references/create-mastra.md`](references/create-mastra.md)     | Setup guide with CLI and manual steps          |
+| Choose Agent/Workflow/Tool/Memory/Storage | [`references/core-concepts.md`](references/core-concepts.md) | Core concepts and when to use each primitive |
 | How do I use Agent/Workflow/Tool? | [`references/embedded-docs.md`](references/embedded-docs.md)     | Look up in `node_modules/@mastra/*/dist/docs/` |
 | How do I use X? (no packages)     | [`references/remote-docs.md`](references/remote-docs.md)         | Fetch from `https://mastra.ai/llms.txt`        |
+| Choose or validate a model        | [`references/model-selection.md`](references/model-selection.md) | Model format and provider registry lookup      |
 | I'm getting an error...           | [`references/common-errors.md`](references/common-errors.md)     | Common errors and solutions                    |
 | Upgrade from v0.x to v1.x         | [`references/migration-guide.md`](references/migration-guide.md) | Version upgrade workflows                      |
 | Inspect/call server resources via CLI | [`references/mastra-api.md`](references/mastra-api.md)       | `mastra api` CLI for local, Mastra platform, or remote servers |
@@ -52,63 +54,26 @@ Never write code without checking current docs first.
 
 1. Embedded docs first (if packages installed)
 
-   Look up current docs in `node_modules` for a package. Example of looking up "Agent" docs in `@mastra/core`:
-
-   ```bash
-   grep -r "Agent" node_modules/@mastra/core/dist/docs/references
-   ```
-
-   - Why: Matches your EXACT installed version
-   - Most reliable source of truth
-   - More information: [`references/embedded-docs.md`](references/embedded-docs.md)
+   Look up current docs in `node_modules` for a package. This matches the exact installed version and is the most reliable source of truth. See [`references/embedded-docs.md`](references/embedded-docs.md).
 
 2. Source code second (if packages installed)
 
-   If you can't find what you need in the embedded docs, look directly at the source code. This is more time consuming but can provide insights into implementation details.
-
-   ```bash
-   # Check what's available
-   cat node_modules/@mastra/core/dist/docs/assets/SOURCE_MAP.json | grep '"Agent"'
-
-   # Read the actual type definition
-   cat node_modules/@mastra/core/dist/[path-from-source-map]
-   ```
-
-   - Why: Ultimate source of truth if docs are missing or unclear
-   - Use when: Embedded docs don't cover your question
-   - More information: [`references/embedded-docs.md`](references/embedded-docs.md)
+   If embedded docs don't cover the question, inspect the installed source and type definitions. This is the source of truth when docs are missing or unclear. See [`references/embedded-docs.md`](references/embedded-docs.md).
 
 3. Remote docs third (if packages not installed)
 
-   You can fetch the latest docs from the Mastra website:
-
-   ```bash
-   https://mastra.ai/llms.txt
-   ```
-
-   - Why: Latest published docs (may be ahead of installed version)
-   - Use when: Packages not installed or exploring new features
-   - More information: [`references/remote-docs.md`](references/remote-docs.md)
+   Use the latest published docs when packages are not installed or when exploring new features. Remote docs may be ahead of the user's installed version. See [`references/remote-docs.md`](references/remote-docs.md).
 
 ## Core concepts
 
-### Agents vs workflows
+Use [`references/core-concepts.md`](references/core-concepts.md) when choosing between agents, workflows, tools, memory, and storage.
 
-Agent: Autonomous, makes decisions, uses tools
-Use for: Open-ended tasks (support, research, analysis)
+- Agent: Use for open-ended tasks that make decisions and use tools.
+- Workflow: Use for defined multi-step processes.
 
-Workflow: Structured sequence of steps
-Use for: Defined processes (pipelines, approvals, ETL)
+## Mastra Studio
 
-### Key components
-
-- Tools: Extend agent capabilities (APIs, databases, external services)
-- Memory: Maintain context (message history, working memory, semantic recall, observational memory)
-- Storage: Persist data (Postgres, LibSQL, MongoDB)
-
-### Mastra Studio
-
-Studio provides an interactive UI for building, testing, and managing agents, workflows, and tools. It helps a human with debugging and improving applications iteratively.
+Studio is the interactive UI for building, testing, and managing agents, workflows, and tools. Use Studio when advising a human to inspect or debug visually.
 
 Inside a Mastra project, run:
 
@@ -118,46 +83,21 @@ npm run dev
 
 Then open `http://localhost:4111` in a browser to show Mastra Studio to your human user.
 
-Use Studio when advising a human to inspect/debug visually. Use [`references/mastra-api.md`](references/mastra-api.md) when you, the coding agent, need machine-readable server state.
+## Mastra API CLI
+
+Use `mastra api` to inspect or call resources on local dev servers, Mastra platform deployments, or remote Mastra endpoints. It is useful for agent-readable state, execution, traces, logs, scores, threads, and workflow operations. See [`references/mastra-api.md`](references/mastra-api.md) for usage patterns.
 
 ## Critical requirements
 
 ### TypeScript config
 
-Mastra requires ES2022 modules. CommonJS will fail.
-
-```json
-{
-  "compilerOptions": {
-    "target": "ES2022",
-    "module": "ES2022",
-    "moduleResolution": "bundler"
-  }
-}
-```
+Mastra requires ES2022 modules. CommonJS will fail. See [`references/create-mastra.md`](references/create-mastra.md) for setup and [`references/common-errors.md`](references/common-errors.md) for troubleshooting.
 
 ### Model format
 
 Always use `"provider/model-name"` when defining models using Mastra's model router.
 
-Use the provider registry script to look up available providers and models:
-
-```bash
-# List all available providers
-node scripts/provider-registry.mjs --list
-
-# List all models for a specific provider (sorted newest first)
-node scripts/provider-registry.mjs --provider openai
-node scripts/provider-registry.mjs --provider anthropic
-```
-
-When the user asks to use a model or provider, always run the script first to verify the provider key and model name are valid. Do not guess model names from memory as they change frequently.
-
-Example model strings:
-
-- `"openai/gpt-5.5"`
-- `"anthropic/claude-opus-4-7"`
-- `"google/gemini-2.5-pro"`
+When the user asks to use a model or provider, always run `scripts/provider-registry.mjs` first to verify the provider key and model name are valid. Do not guess model names from memory as they change frequently. See [`references/model-selection.md`](references/model-selection.md).
 
 ## When you see errors
 
@@ -180,39 +120,9 @@ What to do:
 
 Always verify before writing code:
 
-1. Check packages installed
-
-   ```bash
-   ls node_modules/@mastra/
-   ```
-
+1. Check whether Mastra packages are installed
 2. Look up current API
    - If installed: Use embedded docs [`references/embedded-docs.md`](references/embedded-docs.md)
    - If not: Use remote docs [`references/remote-docs.md`](references/remote-docs.md)
-
 3. Write code based on current docs
-
-4. Test in Studio
-   ```bash
-   npm run dev
-   ```
-
-## Mastra API CLI
-
-You can use the `mastra api` CLI to interact with any Mastra server like a local dev server (`npm run dev`), a Mastra platform deployment, or any remote URL endpoint. This is useful for:
-
-- Inspecting resources: List agents, workflows, tools, threads, traces, logs, scores
-- Executing actions: Run agents, execute tools, trigger or resume workflows
-- Debugging: Check traces, logs, and scores to diagnose issues
-- Managing data: Create/update/delete threads, working memory, datasets
-
-See [`references/mastra-api.md`](references/mastra-api.md) for full CLI usage patterns.
-
-## Resources
-
-- Setup: [`references/create-mastra.md`](references/create-mastra.md)
-- Embedded docs lookup: [`references/embedded-docs.md`](references/embedded-docs.md): Start here if packages are installed
-- Remote docs lookup: [`references/remote-docs.md`](references/remote-docs.md)
-- Common errors: [`references/common-errors.md`](references/common-errors.md)
-- Migrations: [`references/migration-guide.md`](references/migration-guide.md)
-- API CLI: [`references/mastra-api.md`](references/mastra-api.md): Interact with any Mastra server (local, Mastra platform, or remote) from the terminal
+4. Test with the project scripts or Studio when available
