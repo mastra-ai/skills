@@ -2,7 +2,7 @@
 
 How to query Trace Intelligence (private beta) from the Mastra platform. Trace Intelligence analyzes completed agent traces and groups them into recurring themes across four trace signals: `goal`, `outcome`, `behavior`, and `sentiment`.
 
-Use this reference when the user asks what their agent traffic looks like, which goals/outcomes/behaviors/sentiment recur, how themes changed over time, or how to query Trace Intelligence data programmatically.
+Use this reference when the user asks to investigate agent health, find recurring failures or behavior issues, identify ways to improve an agent, understand what users ask for, inspect recurring goal/outcome/behavior/sentiment themes, or query Trace Intelligence data programmatically.
 
 ## Concepts
 
@@ -89,9 +89,11 @@ mastra api learning theme history my-agent 42 \
   '{"entityType":"agent","signalName":"goal"}'
 ```
 
-## Query workflow
+## Investigation workflow
 
-Follow this order. Later calls need values returned by earlier calls.
+For broad agent-health or improvement questions, start with Trace Intelligence to find recurring patterns, then use trace/log/metric/score APIs for concrete evidence from specific runs. For a specific failed run or error, start with `mastra api trace` or `mastra api log`, then use Trace Intelligence to check whether the issue is recurring.
+
+Follow this order for aggregate Trace Intelligence analysis. Later calls need values returned by earlier calls.
 
 ### 1. Discover entities
 
@@ -119,6 +121,13 @@ Optional `from`/`to` (ISO timestamps with offset) bound the snapshot cutoffs; `c
 
 ### 3. Read themes or the cross-signal flow
 
+Use each trace signal for a different diagnostic angle:
+
+- `goal`: what users are trying to do.
+- `outcome`: what completes, fails, gets blocked, or remains unresolved.
+- `behavior`: how the agent behaves, including tool use, loops, refusals, recovery, or drift.
+- `sentiment`: how user emotion changes across interactions.
+
 Themes for one signal in one snapshot:
 
 ```bash
@@ -137,6 +146,8 @@ curl -fsS "${AUTH[@]}" \
 ```
 
 ### 4. Drill into one theme
+
+Use examples to move from aggregate themes to concrete traces. After identifying a suspicious theme, inspect its examples, then use the returned `traceId` with `mastra api trace`, logs, metrics, or scores when you need execution-level evidence.
 
 Detail, examples (raw trace signal texts), and history:
 

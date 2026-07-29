@@ -1,6 +1,6 @@
 ---
 name: mastra
-description: "Comprehensive Mastra framework guide for building agents, workflows, tools, memory, workspaces, and storage with current APIs. Use for documentation lookup, API verification, TypeScript setup, common errors, migrations, and `mastra api` CLI tasks: inspect or call resources on local, Mastra platform, or remote servers. Also covers Trace Intelligence: query recurring goal, outcome, behavior, and sentiment themes across agent traces."
+description: "Comprehensive Mastra framework guide for building agents, workflows, tools, memory, workspaces, and storage with current APIs. Use for documentation lookup, API verification, TypeScript setup, common errors, migrations, and `mastra api` CLI tasks: inspect or call resources on local, Mastra platform, or remote servers. Also covers Trace Intelligence: investigate agent health, recurring failures, improvement opportunities, and goal/outcome/behavior/sentiment themes across agent traces."
 license: Apache-2.0
 metadata:
   author: Mastra
@@ -43,7 +43,7 @@ ls node_modules/@mastra/
 | I'm getting an error...           | [`references/common-errors.md`](references/common-errors.md)     | Common errors and solutions                    |
 | Upgrade from v0.x to v1.x         | [`references/migration-guide.md`](references/migration-guide.md) | Version upgrade workflows                      |
 | Inspect/call server resources via CLI | [`references/mastra-api.md`](references/mastra-api.md)       | `mastra api` CLI for local, Mastra platform, or remote servers |
-| What patterns/themes are in my agent traffic? | [`references/trace-intelligence.md`](references/trace-intelligence.md) | Query Trace Intelligence themes, snapshots, and flows |
+| Investigate agent health, recurring failures, or improvement opportunities | [`references/trace-intelligence.md`](references/trace-intelligence.md) | Start with aggregate Trace Intelligence themes, then inspect trace/log evidence |
 
 ### Scripts
 
@@ -90,7 +90,7 @@ Use `mastra api` to inspect or call resources on local dev servers, Mastra platf
 
 ## Trace Intelligence
 
-Trace Intelligence (private beta on the Mastra platform) clusters completed agent traces into recurring themes across four trace signals: goal, outcome, behavior, and sentiment. Use it to answer questions like "what do users ask this agent?", "where does it fail?", or "how has sentiment shifted?". Query it with `mastra api learning` CLI commands, or over HTTP via the local dev server proxy or the platform endpoint. See [`references/trace-intelligence.md`](references/trace-intelligence.md) for the query workflow, CLI commands, and route reference.
+Trace Intelligence (private beta on the Mastra platform) clusters completed agent traces into recurring themes across four trace signals: goal, outcome, behavior, and sentiment. Use it first for aggregate agent-health questions: what users ask for, where outcomes fail or get blocked, which behaviors recur, how sentiment shifts, and where the agent can improve. Then use `mastra api trace`, `log`, `metric`, and `score` commands for concrete execution evidence from specific traces. Query Trace Intelligence with `mastra api learning` CLI commands, or over HTTP via the local dev server proxy or the platform endpoint. See [`references/trace-intelligence.md`](references/trace-intelligence.md) for the investigation workflow, CLI commands, and route reference.
 
 ## Critical requirements
 
