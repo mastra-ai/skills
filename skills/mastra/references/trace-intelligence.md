@@ -16,38 +16,35 @@ Use this reference when the user asks what their agent traffic looks like, which
 - The project uses Mastra platform Observability and has completed traces.
 - The project is enrolled in the Trace Intelligence private beta. Non-enrolled projects get `403` from direct project reads.
 
-The CLI commands need no manual credential setup when run from a linked project: `mastra api learning` resolves the access token from the CLI login, and the project ID and organization ID from `.mastra-project.json` (or the `MASTRA_PROJECT_ID` / `MASTRA_ORGANIZATION_ID` env vars) automatically. Manual environment exports are only needed for the local dev server proxy and the direct curl path:
-
-```bash
-# TODO: set these from the Mastra platform project
-export MASTRA_PLATFORM_ACCESS_TOKEN="..."
-export MASTRA_PROJECT_ID="..."
-export MASTRA_ORGANIZATION_ID="..."
-```
-
 Analysis is asynchronous: a project generally needs 100+ completed traces before themes exist. Empty responses usually mean not enough analyzed data yet, not an error.
 
 ## Access paths
 
 All Trace Intelligence routes are read-only `GET` requests under `/api/learning/`.
 
-1. **`mastra api learning` CLI** (preferred): the `mastra` CLI targets the platform directly and resolves credentials the same way as other observability commands (`--header`, then `MASTRA_PLATFORM_ACCESS_TOKEN` + `MASTRA_PROJECT_ID`, then `.mastra-project.json`, then the CLI login token). It also sends `X-Mastra-Organization-Id` automatically from `.mastra-project.json` or `MASTRA_ORGANIZATION_ID`. See [CLI commands](#cli-commands).
+1. **`mastra api learning` CLI** (preferred): use the same credential model as hosted observability commands. No `--url` or `--header` is required if `MASTRA_PLATFORM_ACCESS_TOKEN` and `MASTRA_PROJECT_ID` are set, or if `.mastra-project.json` is present. The CLI also resolves `X-Mastra-Organization-Id` from `MASTRA_ORGANIZATION_ID` or `.mastra-project.json`.
 
 ```bash
 mastra api learning entities '{"entityType":"agent"}'
 ```
 
-2. **Local dev server proxy**: `mastra dev` proxies `GET http://localhost:4111/api/learning/*` to the platform using `MASTRA_PLATFORM_ACCESS_TOKEN` and `MASTRA_PROJECT_ID` from the dev server's environment. Loopback only.
+Pass `--url` and `--header` only when overriding the hosted Trace Intelligence target or credentials.
+
+2. **Local dev server proxy**: `mastra dev` proxies `GET http://localhost:4111/api/learning/*` to the platform using its normal platform credentials. Loopback only.
 
 ```bash
 curl -fsS "http://localhost:4111/api/learning/entities?entityType=agent" | jq
 ```
 
-3. **Direct platform endpoint** (no CLI or dev server needed): call `https://output.signals.mastra.ai` with a bearer token plus project and organization headers.
+3. **Direct platform endpoint** (no CLI or dev server needed): call `https://output.signals.mastra.ai` with explicit auth, project, and organization headers.
 
 ```bash
 BASE="https://output.signals.mastra.ai"
-AUTH=(-H "Authorization: Bearer $MASTRA_PLATFORM_ACCESS_TOKEN" -H "X-Mastra-Project-Id: $MASTRA_PROJECT_ID" -H "X-Mastra-Organization-Id: $MASTRA_ORGANIZATION_ID")
+AUTH=(
+  -H "Authorization: Bearer $MASTRA_PLATFORM_ACCESS_TOKEN"
+  -H "X-Mastra-Project-Id: $MASTRA_PROJECT_ID"
+  -H "X-Mastra-Organization-Id: $MASTRA_ORGANIZATION_ID"
+)
 
 curl -fsS "${AUTH[@]}" "$BASE/api/learning/entities?entityType=agent" | jq
 ```
