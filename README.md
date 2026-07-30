@@ -25,6 +25,7 @@ Single comprehensive skill for all Mastra development. Uses progressive disclosu
 - **Remote Docs Lookup** (`references/remote-docs.md`): Fetch from `https://mastra.ai/llms.txt`
 - **Troubleshooting** (`references/common-errors.md`): Common errors and solutions
 - **Migrations** (`references/migration-guide.md`): Version upgrade workflows
+- **Trace Intelligence** (`references/trace-intelligence.md`): Query recurring themes across agent traces on the Mastra platform
 
 Main skill file teaches core concepts and routes to appropriate reference files based on user questions.
 
