@@ -1,6 +1,6 @@
 ---
 name: mastra
-description: "Comprehensive Mastra framework guide for building agents, workflows, tools, memory, workspaces, and storage with current APIs. Use for documentation lookup, API verification, TypeScript setup, common errors, migrations, and `mastra api` CLI tasks: inspect or call resources on local, Mastra platform, or remote servers. Also covers Trace Intelligence: investigate agent health, recurring failures, improvement opportunities, and goal/outcome/behavior/sentiment themes across agent traces."
+description: "Comprehensive Mastra framework guide for building agents, workflows, tools, memory, workspaces, and storage with current APIs. Use for documentation lookup, API verification, TypeScript setup, common errors, migrations, and `mastra api` CLI tasks: inspect or call resources on local, Mastra platform, Trace Intelligence, or remote servers."
 license: Apache-2.0
 metadata:
   author: Mastra
