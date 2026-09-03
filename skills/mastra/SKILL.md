@@ -131,3 +131,9 @@ Always verify before writing code:
    - If not: Use remote docs [`references/remote-docs.md`](references/remote-docs.md)
 3. Write code based on current docs
 4. Test with the project scripts or Studio when available
+
+<!-- mastra-knowledge-reference:start -->
+## Knowledge
+
+For scoped, durable application knowledge, read [Knowledge](references/knowledge.md).
+<!-- mastra-knowledge-reference:end -->

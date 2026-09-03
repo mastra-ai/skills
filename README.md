@@ -68,3 +68,7 @@ Contributions welcome!
 ## License
 
 Apache-2.0 - See [LICENSE](LICENSE) for details
+
+<!-- mastra-knowledge-reference:start -->
+The Mastra skill includes a generated [Knowledge reference](skills/mastra/references/knowledge.md) for configuration, access, capture, curation, and operations.
+<!-- mastra-knowledge-reference:end -->
