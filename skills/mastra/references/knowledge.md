@@ -3,6 +3,7 @@
 <!-- source-date: 2026-09-03T08:29:47-07:00 -->
 <!-- source-path: packages/core/src/knowledge/skill -->
 <!-- source-sha256: 4019df8dbde7465e5692460ae87249e10ecfeca4e3ee2854556d466ede909701 -->
+<!-- generated-body-sha256: 0817b5b55063a688ed6dacf1c2e8d519875dbd929d69a0c525a8396212acb2de -->
 
 # Mastra Knowledge
 
