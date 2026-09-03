@@ -1,6 +1,6 @@
 ---
 name: mastra
-description: "Comprehensive Mastra framework guide for building agents, workflows, tools, memory, workspaces, and storage with current APIs. Use for documentation lookup, API verification, TypeScript setup, common errors, migrations, and `mastra api` CLI tasks: inspect or call resources on local, Mastra platform, Trace Intelligence, or remote servers."
+description: "Comprehensive Mastra framework guide for building agents, workflows, tools, memory, knowledge, workspaces, and storage with current APIs. Use for documentation lookup, API verification, TypeScript setup, common errors, migrations, and `mastra api` CLI tasks: inspect or call resources on local, Mastra platform, Trace Intelligence, or remote servers."
 license: Apache-2.0
 metadata:
   author: Mastra
@@ -37,6 +37,7 @@ ls node_modules/@mastra/
 | ----------------------------------- | ---------------------------------------------------------------- | ---------------------------------------------- |
 | Create/install Mastra project     | [`references/create-mastra.md`](references/create-mastra.md)     | Setup guide with CLI and manual steps          |
 | Choose Agent/Workflow/Tool/Memory/Storage | [`references/core-concepts.md`](references/core-concepts.md) | Core concepts and when to use each primitive |
+| Configure or use scoped Knowledge | [`references/knowledge.md`](references/knowledge.md)             | Route to version-matched `@mastra/core` docs  |
 | How do I use Agent/Workflow/Tool? | [`references/embedded-docs.md`](references/embedded-docs.md)     | Look up in `node_modules/@mastra/*/dist/docs/` |
 | How do I use X? (no packages)     | [`references/remote-docs.md`](references/remote-docs.md)         | Fetch from `https://mastra.ai/llms.txt`        |
 | Choose or validate a model        | [`references/model-selection.md`](references/model-selection.md) | Model format and provider registry lookup      |
@@ -131,9 +132,3 @@ Always verify before writing code:
    - If not: Use remote docs [`references/remote-docs.md`](references/remote-docs.md)
 3. Write code based on current docs
 4. Test with the project scripts or Studio when available
-
-<!-- mastra-knowledge-reference:start -->
-## Knowledge
-
-For scoped, durable application knowledge, read [Knowledge](references/knowledge.md).
-<!-- mastra-knowledge-reference:end -->
