@@ -29,6 +29,10 @@ Single comprehensive skill for all Mastra development. Uses progressive disclosu
 
 Main skill file teaches core concepts and routes to appropriate reference files based on user questions.
 
+### mastra-factory
+
+Standalone Factory supervisor skill for coding agents using `mastra api factory`. Covers read-only project and queue summaries plus interactive or autonomously delegated operations over work items, metrics, health, decisions, attention, and supervisor state.
+
 ## Manual installation
 
 ```bash
@@ -44,7 +48,8 @@ This repository is served via the [RFC 8615 Well-Known URI](https://github.com/c
 Agents can discover available skills by fetching:
 
 - **Index**: `https://mastra.ai/.well-known/skills/index.json`
-- **Skills**: `https://mastra.ai/.well-known/skills/mastra/SKILL.md`
+- **Mastra skill**: `https://mastra.ai/.well-known/skills/mastra/SKILL.md`
+- **Factory skill**: `https://mastra.ai/.well-known/skills/mastra-factory/SKILL.md`
 
 This enables automatic skill discovery without manual configuration.
 

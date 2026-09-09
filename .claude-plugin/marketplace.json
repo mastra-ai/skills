@@ -10,8 +10,8 @@
   "plugins": [
     {
       "name": "mastra-skills",
-      "description": "Comprehensive Mastra AI framework skill with progressive disclosure. Teaches documentation lookup (embedded docs from node_modules, remote docs from mastra.ai/llms.txt), project setup, troubleshooting, and migrations. Single skill for all Mastra development.",
-      "skills": ["./skills/mastra"],
+      "description": "Mastra framework and Factory supervisor skills with progressive disclosure for development, API inspection, troubleshooting, and operations.",
+      "skills": ["./skills/mastra", "./skills/mastra-factory"],
       "source": "./",
       "strict": false
     }
