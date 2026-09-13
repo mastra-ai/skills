@@ -1,6 +1,6 @@
 # Advanced Trace Query Reference
 
-Use `mastra api trace query` when a normal trace list cannot express the required filters: recursive boolean predicates, related span, score, or feedback conditions, metadata filters, ordering, grouping, or opaque cursor pagination.
+Use `mastra api trace query` when a normal trace list cannot express the required filters: recursive boolean predicates, related span, score, or feedback conditions, metadata filters, ordering, or opaque cursor pagination.
 
 For broad questions about recurring agent behavior or health, start with [`trace-intelligence.md`](trace-intelligence.md). Use advanced trace queries when the user needs exact traces matching explicit conditions, then inspect the returned traces for evidence.
 
@@ -8,22 +8,33 @@ For broad questions about recurring agent behavior or health, start with [`trace
 
 The command sends `POST /api/observability/traces/query`. It uses the same target and credentials as other observability commands and targets `https://observability.mastra.ai` by default.
 
-The inline JSON input is required. Inspect the target server's current schema before constructing a query because the server owns the available fields and operators:
+The inline JSON input is required. Before recommending the command, confirm that the installed CLI exposes it:
+
+```bash
+npx mastra api trace query --help
+```
+
+The output must identify the `trace query` command. If it falls back to `trace` help showing only `list`, `get`, and `span`, the installed CLI predates advanced trace-query support. Explain that it must be upgraded to a release containing [mastra-ai/mastra#23680](https://github.com/mastra-ai/mastra/pull/23680). Do not invent a minimum version before a compatible release is published.
+
+After confirming availability, inspect the target server's current contract:
 
 ```bash
 npx mastra api trace query --schema
 ```
 
-Use only fields and operators exposed by that schema. Do not infer unsupported predicates from storage columns or older documentation.
+Use `--schema` to confirm that the target supports the route and to inspect the current request and response shape and structural constraints. Predicate paths are generic strings in the schema, so it does not provide the context-specific field/operator matrix.
+
+Use [`remote-docs.md`](remote-docs.md) to locate and read the canonical **Advanced trace queries** documentation through `https://mastra.ai/llms.txt`. That reference defines supported fields and operators, relation semantics, limits, pagination, and errors. Do not infer unsupported predicates from storage columns or older documentation. The server remains the ultimate validation authority.
 
 ## Query workflow
 
-1. Run `trace query --schema` against the intended target.
-2. Build the smallest query that answers the question. `timeRange` is required; `from` is inclusive and `to` is exclusive.
-3. Keep `page.limit` small while exploring.
-4. Project lightweight results with `jq`.
-5. If `data.page.next` is non-null, repeat the identical query with that value in `page.after`.
-6. Use `trace get` or `trace span` to inspect evidence for selected trace IDs.
+1. Run `trace query --help` and verify that the installed CLI exposes the command.
+2. Run `trace query --schema` against the intended target to inspect the route contract and structural constraints.
+3. Read the canonical **Advanced trace queries** documentation for valid predicate fields, operators, and semantics.
+4. Build the smallest query that answers the question. `timeRange` is required; `from` is inclusive and `to` is exclusive.
+5. Keep `page.limit` small while exploring and project lightweight results with `jq`.
+6. If `data.page.next` is non-null, repeat the identical query with that value in `page.after`.
+7. Use `trace get` or `trace span` to inspect evidence for selected trace IDs.
 
 Query a time range:
 
@@ -49,8 +60,6 @@ npx mastra api trace query \
   | jq '{traces: .data.traces, next: .data.page.next}'
 ```
 
-When the current schema supports grouping, `{ "group": { "by": ["threadId"] } }` returns distinct non-null thread IDs under `data.groups` rather than traces. Do not send `orderBy` with a grouped query.
-
 ## Pagination
 
 The query response remains nested under `data` so the pagination cursor is preserved:
@@ -71,7 +80,7 @@ npx mastra api trace query \
   '{"timeRange":{"from":"2026-08-01T00:00:00.000Z","to":"2026-08-08T00:00:00.000Z"},"page":{"limit":25,"after":"<page.next>"}}'
 ```
 
-A cursor is bound to the accepted query and ordering. Do not change the time range, predicates, grouping, or ordering between pages. A mismatched cursor returns `409`; a malformed cursor returns `400`.
+A cursor is bound to the accepted query and ordering. Do not change the time range, predicates, or ordering between pages. A mismatched cursor returns `409`; a malformed cursor returns `400`.
 
 ## Predicate semantics
 
@@ -79,7 +88,7 @@ A cursor is bound to the accepted query and ordering. Do not change the time ran
 - Use `some` when one related record must satisfy the complete nested predicate.
 - Use `none` when no related record may satisfy the complete nested predicate. Traces with no related records also match `none`.
 - Related span, score, and feedback clauses correlate records by trace. Conditions in separate related clauses do not imply that they refer to one shared related record.
-- String comparisons are exact and case-sensitive unless the current schema documents otherwise.
+- String comparisons are exact and case-sensitive unless the canonical documentation states otherwise.
 - The root `timeRange` filters the selected root span's start time; it does not independently constrain related-record timestamps.
 - Query results are lightweight and do not embed matching spans, scores, or feedback. Fetch trace or span details after selecting candidates.
 
@@ -91,4 +100,4 @@ A cursor is bound to the accepted query and ordering. Do not change the time ran
 - `trace span <traceId> <spanId>`: fetch one span in full.
 - Trace Intelligence: discover aggregate recurring themes before drilling into individual traces.
 
-Advanced queries only return completed traces. The configured observability store must support the query API. If the server rejects a valid schema-derived query as unsupported, report that limitation rather than falling back to an inaccurate client-side approximation.
+Advanced queries only return completed traces. The configured observability store must support the query API. If the server rejects a query that follows the current structural schema and canonical documentation as unsupported, report that limitation rather than falling back to an inaccurate client-side approximation.

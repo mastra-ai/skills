@@ -89,7 +89,7 @@ Then open `http://localhost:4111` in a browser to show Mastra Studio to your hum
 
 Use `mastra api` to inspect or call resources on local dev servers, Mastra platform deployments, or remote Mastra endpoints. It is useful for agent-readable state, execution, traces, logs, scores, threads, and workflow operations. See [`references/mastra-api.md`](references/mastra-api.md) for usage patterns.
 
-For exact trace selection that needs recursive predicates or conditions over related spans, scores, or feedback, use `mastra api trace query` and read [`references/trace-query.md`](references/trace-query.md). Inspect the target server's schema before constructing a query, preserve opaque pagination cursors, and fetch trace or span details only after selecting candidates.
+For exact trace selection that needs recursive predicates or conditions over related spans, scores, or feedback, read [`references/trace-query.md`](references/trace-query.md). Before using `mastra api trace query`, confirm that the installed CLI exposes the command. Use `--schema` for the target's request/response shape and structural constraints, and use the canonical documentation found through [`references/remote-docs.md`](references/remote-docs.md) for supported fields, operators, and semantics. Preserve opaque pagination cursors and fetch trace or span details only after selecting candidates.
 
 ## Trace Intelligence
 

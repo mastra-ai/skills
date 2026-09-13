@@ -134,10 +134,11 @@ Use the narrowest discovery command that can answer the question. Example for tr
 npx mastra api trace --help
 npx mastra api trace list --help
 npx mastra api trace list --schema
+npx mastra api trace query --help
 npx mastra api trace query --schema
 ```
 
-Use `trace query` instead of `trace list` when selection requires recursive predicates, metadata filters, or conditions over related spans, scores, or feedback. The inline JSON query is required, and its cursor-bearing response stays nested under `data`. Read [`trace-query.md`](trace-query.md) before constructing or paginating an advanced trace query.
+Use `trace query` instead of `trace list` when selection requires recursive predicates, metadata filters, or conditions over related spans, scores, or feedback. First use `trace query --help` to confirm that the installed CLI exposes the command. The inline JSON query is required, and its cursor-bearing response stays nested under `data`. Read [`trace-query.md`](trace-query.md) for availability checks, the division between CLI schema discovery and canonical documentation, query construction, and pagination.
 
 Use top-level help only when the resource is unknown:
 
