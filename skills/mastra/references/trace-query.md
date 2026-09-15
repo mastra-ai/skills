@@ -14,27 +14,22 @@ The inline JSON input is required. Before recommending the command, confirm that
 npx mastra api trace query --help
 ```
 
-The output must identify the `trace query` command. If it falls back to `trace` help showing only `list`, `get`, and `span`, the installed CLI predates advanced trace-query support. Explain that it must be upgraded to a release containing [mastra-ai/mastra#23680](https://github.com/mastra-ai/mastra/pull/23680). Do not invent a minimum version before a compatible release is published.
-
 After confirming availability, inspect the target server's current contract:
 
 ```bash
 npx mastra api trace query --schema
 ```
 
-Use `--schema` to confirm that the target supports the route and to inspect the current request and response shape and structural constraints. Predicate paths are generic strings in the schema, so it does not provide the context-specific field/operator matrix.
-
-Use [`remote-docs.md`](remote-docs.md) to locate and read the canonical **Advanced trace queries** documentation through `https://mastra.ai/llms.txt`. That reference defines supported fields and operators, relation semantics, limits, pagination, and errors. Do not infer unsupported predicates from storage columns or older documentation. The server remains the ultimate validation authority.
+Use `--schema` to confirm that the target supports the route and to inspect the current request and response shape and structural constraints. Predicate paths are generic strings in the schema, so it does not provide the context-specific field/operator matrix. If you need more information, read the [reference docs online](https://mastra.ai/reference/observability/tracing/trace-query). Do not infer unsupported predicates from storage columns or older documentation. The server remains the ultimate validation authority.
 
 ## Query workflow
 
 1. Run `trace query --help` and verify that the installed CLI exposes the command.
-2. Run `trace query --schema` against the intended target to inspect the route contract and structural constraints.
-3. Read the canonical **Advanced trace queries** documentation for valid predicate fields, operators, and semantics.
-4. Build the smallest query that answers the question. `timeRange` is required; `from` is inclusive and `to` is exclusive.
-5. Keep `page.limit` small while exploring and project lightweight results with `jq`.
-6. If `data.page.next` is non-null, repeat the identical query with that value in `page.after`.
-7. Use `trace get` or `trace span` to inspect evidence for selected trace IDs.
+1. Run `trace query --schema` against the intended target to inspect the route contract and structural constraints.
+1. Build the smallest query that answers the question. `timeRange` is required; `from` is inclusive and `to` is exclusive.
+1. Keep `page.limit` small while exploring and project lightweight results with `jq`.
+1. If `data.page.next` is non-null, repeat the identical query with that value in `page.after`.
+1. Use `trace get` or `trace span` to inspect evidence for selected trace IDs.
 
 Query a time range:
 
