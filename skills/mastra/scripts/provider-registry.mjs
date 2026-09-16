@@ -21,18 +21,21 @@ function findRegistryPath() {
   }
 
   // Package managers with isolated linkers expose dependencies inside each workspace.
-  const dirs = [process.cwd()];
-  for (const dir of dirs) {
-    const path = join(dir, rel);
-    if (existsSync(path)) return path;
+  const directoriesToSearch = [process.cwd()];
+  for (let index = 0; index < directoriesToSearch.length; index++) {
+    const dir = directoriesToSearch[index];
+    const candidate = join(dir, rel);
+    if (existsSync(candidate)) return candidate;
 
     try {
       for (const entry of readdirSync(dir, { withFileTypes: true })) {
         if (entry.isDirectory() && entry.name !== "node_modules" && !entry.name.startsWith(".")) {
-          dirs.push(join(dir, entry.name));
+          directoriesToSearch.push(join(dir, entry.name));
         }
       }
-    } catch {}
+    } catch {
+      continue;
+    }
   }
 
   return join(process.cwd(), rel);
