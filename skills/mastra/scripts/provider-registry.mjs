@@ -7,7 +7,7 @@ import { fileURLToPath } from "node:url";
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
 function findRegistryPath() {
-  const rel = join("node_modules", "@mastra", "core", "dist", "provider-registry.json");
+  const rel = join('node_modules', '@mastra', 'core', 'dist', 'provider-registry.json');
   // Walk up from script location to find project root with node_modules
   let dir = __dirname;
   for (let i = 0; i < 10; i++) {
