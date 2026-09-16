@@ -1,13 +1,13 @@
 #!/usr/bin/env node
 
-import { readFileSync } from "node:fs";
+import { existsSync, readFileSync, readdirSync } from "node:fs";
 import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
 function findRegistryPath() {
-  const rel = join('node_modules', '@mastra', 'core', 'dist', 'provider-registry.json');
+  const rel = join("node_modules", "@mastra", "core", "dist", "provider-registry.json");
   // Walk up from script location to find project root with node_modules
   let dir = __dirname;
   for (let i = 0; i < 10; i++) {
@@ -19,7 +19,22 @@ function findRegistryPath() {
       dir = dirname(dir);
     }
   }
-  // Fall back to cwd
+
+  // Package managers with isolated linkers expose dependencies inside each workspace.
+  const dirs = [process.cwd()];
+  for (const dir of dirs) {
+    const path = join(dir, rel);
+    if (existsSync(path)) return path;
+
+    try {
+      for (const entry of readdirSync(dir, { withFileTypes: true })) {
+        if (entry.isDirectory() && entry.name !== "node_modules" && !entry.name.startsWith(".")) {
+          dirs.push(join(dir, entry.name));
+        }
+      }
+    } catch {}
+  }
+
   return join(process.cwd(), rel);
 }
 
