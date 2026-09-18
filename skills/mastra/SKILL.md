@@ -4,7 +4,7 @@ description: "Comprehensive Mastra framework guide for building agents, workflow
 license: Apache-2.0
 metadata:
   author: Mastra
-  version: "2.1.0"
+  version: "2.2.0"
   repository: https://github.com/mastra-ai/skills
 ---
 
@@ -43,6 +43,7 @@ ls node_modules/@mastra/
 | I'm getting an error...           | [`references/common-errors.md`](references/common-errors.md)     | Common errors and solutions                    |
 | Upgrade from v0.x to v1.x         | [`references/migration-guide.md`](references/migration-guide.md) | Version upgrade workflows                      |
 | Inspect/call server resources via CLI | [`references/mastra-api.md`](references/mastra-api.md)       | `mastra api` CLI for local, Mastra platform, or remote servers |
+| Find exact traces with complex predicates | [`references/trace-query.md`](references/trace-query.md) | Query completed traces by trace fields or related spans, scores, and feedback |
 | Investigate agent health, recurring failures, or improvement opportunities | [`references/trace-intelligence.md`](references/trace-intelligence.md) | Start with aggregate Trace Intelligence themes, then inspect trace/log evidence |
 
 ### Scripts
@@ -87,6 +88,8 @@ Then open `http://localhost:4111` in a browser to show Mastra Studio to your hum
 ## Mastra API CLI
 
 Use `mastra api` to inspect or call resources on local dev servers, Mastra platform deployments, or remote Mastra endpoints. It is useful for agent-readable state, execution, traces, logs, scores, threads, and workflow operations. See [`references/mastra-api.md`](references/mastra-api.md) for usage patterns.
+
+For exact trace selection that needs recursive predicates or conditions over related spans, scores, or feedback, read [`references/trace-query.md`](references/trace-query.md). Before using `mastra api trace query`, confirm that the installed CLI exposes the command. Use `--schema` for the target's request/response shape and structural constraints, and use the canonical documentation found through [`references/remote-docs.md`](references/remote-docs.md) for supported fields, operators, and semantics. Preserve opaque pagination cursors and fetch trace or span details only after selecting candidates.
 
 ## Trace Intelligence
 
