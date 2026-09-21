@@ -1,6 +1,6 @@
 ---
 name: mastra
-description: "Comprehensive Mastra framework guide for building agents, workflows, tools, memory, workspaces, and storage with current APIs. Use for documentation lookup, API verification, TypeScript setup, common errors, migrations, and `mastra api` CLI tasks: inspect or call resources on local, Mastra platform, Trace Intelligence, or remote servers."
+description: "Comprehensive Mastra framework guide for building agents, workflows, tools, memory, workspaces, and storage with current APIs. Use for documentation lookup, API verification, TypeScript setup, common errors, migrations, and `mastra api` CLI tasks: inspect or call resources on local, Mastra platform, Trace Intelligence, or remote servers. For Mastra Factory operations, discover and activate the companion mastra-factory skill."
 license: Apache-2.0
 metadata:
   author: Mastra
@@ -90,6 +90,20 @@ Then open `http://localhost:4111` in a browser to show Mastra Studio to your hum
 Use `mastra api` to inspect or call resources on local dev servers, Mastra platform deployments, or remote Mastra endpoints. It is useful for agent-readable state, execution, traces, logs, scores, threads, and workflow operations. See [`references/mastra-api.md`](references/mastra-api.md) for usage patterns.
 
 For exact trace selection that needs recursive predicates or conditions over related spans, scores, or feedback, read [`references/trace-query.md`](references/trace-query.md). Before using `mastra api trace query`, confirm that the installed CLI exposes the command. Use `--schema` for the target's request/response shape and structural constraints, and use the canonical documentation found through [`references/remote-docs.md`](references/remote-docs.md) for supported fields, operators, and semantics. Preserve opaque pagination cursors and fetch trace or span details only after selecting candidates.
+
+## Mastra Factory
+
+For Factory projects, work items, queue health, decisions, session history, memory inspection, or authorized operations, activate the **`mastra-factory`** skill. Factory is an operational control plane, not a reason to scaffold or deploy a new Mastra app.
+
+If the skill is missing, offer to install it from this repository:
+
+```bash
+npx skills add mastra-ai/skills --skill mastra-factory
+```
+
+Choose the user's intended agent and scope interactively. For global installation, target a supported agent explicitly with `--agent <agent> -g`; PromptScript does not support global installs. Verify installation and referenced files for the intended agent even if another agent target fails.
+
+The Factory skill covers CLI checks, `mastra auth whoami` / authorized `mastra auth login`, and connecting via the user's actual instance URL from any directory. A deployed repository or `.mastra-project.json` is not required with `--url`. Never guess a shared Factory host or project IDs. Its connection and session-inspection references cover deployment-specific authentication, project discovery, threads, and observational memory limitations.
 
 ## Trace Intelligence
 

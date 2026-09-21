@@ -33,7 +33,19 @@ Main skill file teaches core concepts and routes to appropriate reference files 
 
 ### mastra-factory
 
-Standalone Factory supervisor skill for coding agents using `mastra api factory`. Covers read-only project and queue summaries plus interactive or autonomously delegated operations over work items, metrics, health, decisions, attention, and supervisor state.
+Standalone Factory supervisor skill for coding agents using `mastra api factory`. Covers first-use CLI/login checks and URL-based connection from any directory, project and queue summaries, work-item session/thread and memory inspection, health interpretation, and user-authorized operations.
+
+- [Connection and installation](skills/mastra-factory/references/connection.md): connect to your own deployment without a repository or project link file; choose the correct agent and installation scope.
+- [Session and memory inspection](skills/mastra-factory/references/session-inspection.md): find your work, inspect progress and OM evidence, and distinguish findings from repair authorization.
+- [Supervisor commands](skills/mastra-factory/references/factory-supervisor.md): contracts, output control, and safe mutations.
+
+Install just the Factory skill with interactive agent/scope selection:
+
+```bash
+npx skills add mastra-ai/skills --skill mastra-factory
+```
+
+For a global install, specify your supported agent explicitly (`--agent <agent> -g`). PromptScript does not support global installation; use project scope for that agent instead, and confirm the skill is linked (a copied-but-"not linked" result means it is not active yet). Multi-agent installs can partially succeed: verify the intended agent with `npx skills list` (add `-g` for global scope) and confirm its skill references are present.
 
 ## Manual installation
 

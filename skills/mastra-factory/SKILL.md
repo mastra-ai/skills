@@ -1,6 +1,6 @@
 ---
 name: mastra-factory
-description: "Operate and supervise Mastra Factory through `mastra api factory`. Use for Factory status or queue summaries, project and work-item inspection, metrics, health, decisions, attention, supervisor sessions, and user-authorized autonomous or interactive Factory operations on hosted, local, remote, or self-hosted servers."
+description: "Operate and supervise Mastra Factory through `mastra api factory`. Use for first-time Factory connection and login, status or queue summaries, project and work-item inspection, thread history and memory, metrics, health, decisions, attention, supervisor sessions, and user-authorized autonomous or interactive Factory operations on hosted, local, remote, or self-hosted servers."
 license: Apache-2.0
 metadata:
   author: Mastra
@@ -11,6 +11,12 @@ metadata:
 # Mastra Factory Supervisor
 
 Use `mastra api factory` as the operational control plane for Factory.
+
+## First use: connect before inspecting
+
+Read [`references/connection.md`](references/connection.md). Check CLI availability, establish the user's actual Factory URL, and for platform-hosted deployments run `mastra auth whoami`. If logged out, offer `mastra auth login` rather than silently starting browser login. Local/self-hosted authentication may differ.
+
+An explicit `mastra api --url "$FACTORY_URL" factory project list` works from an empty directory; no deployed repository or `.mastra-project.json` is required. Never assume a shared host, organization, project name, or ID. Preserve the explicit target on subsequent commands.
 
 ## Default behavior
 
@@ -25,7 +31,9 @@ For status, inspection, diagnosis, queue review, or recommendation requests:
 
 ## Required reference
 
-Read [`references/factory-supervisor.md`](references/factory-supervisor.md) before running Factory commands. It is self-contained and includes target selection, output control, JSON envelopes, command discovery, the read-only workflow, mutation protocol, governance constraints, durable-session limitation, and error handling.
+Read [`references/factory-supervisor.md`](references/factory-supervisor.md) before running Factory commands for output control, contracts, the read-only workflow, mutation protocol, governance constraints, durable-session limitations, and error handling.
+
+For “my work,” actual execution progress, thread messages, memory, or health interpretation, also read [`references/session-inspection.md`](references/session-inspection.md). Distinguish card stages from running agents, historical messages from current memory, and agent claims from verified repository outcomes.
 
 ## Safety boundary
 
