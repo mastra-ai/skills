@@ -51,7 +51,14 @@ An empty project list is not proof there are no projects: confirm the URL, organ
 
 ## Alternative: automatic target resolution
 
-Without `--url`, Factory/runtime commands probe `http://localhost:4111`, then read `.mastra-project.json` in the working directory to resolve a platform deployment. A reachable local server can therefore win over a linked deployment. Prefer an explicit URL for unambiguous remote inspection.
+If the working directory is a repository that has already been deployed with `mastra deploy`, it contains a `.mastra-project.json` link file and plain `mastra api factory ...` works with no `--url` at all:
+
+```bash
+# from inside a deployed project's repo
+mastra api factory project list '{"page":0,"perPage":10}' | jq '.data[] | {id, name}'
+```
+
+Without `--url`, Factory/runtime commands probe `http://localhost:4111` first, then read `.mastra-project.json` in the working directory to resolve the platform deployment. A reachable local server can therefore win over a linked deployment. Prefer an explicit URL for unambiguous remote inspection.
 
 The link file is normally written by deployment commands after project selection; login and read-only API calls do not create it. Do not deploy, copy another repository's config, or hand-author a link file just to connect. `MASTRA_PROJECT_ID` / `MASTRA_ORGANIZATION_ID` are not substitutes for a Factory target; their service-target handling applies to observability/learning, not Factory URL lookup.
 
