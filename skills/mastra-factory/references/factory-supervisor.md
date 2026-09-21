@@ -2,12 +2,12 @@
 
 Use `mastra api factory` as an operational control plane for Factory. Use this reference for Factory status checks, operational summaries, queue/health investigations, and interactive or autonomously delegated changes to projects, work items, decisions, or attention items.
 
-This reference is self-contained. Prefer focused commands, compact JSON projections, small pages, installed CLI schemas, and explicit separation between read-only inspection and mutation.
+For first-use CLI, login, target, and installation setup, read [connection.md](connection.md). For work ownership, session/thread messages, observational memory, and health interpretation, read [session-inspection.md](session-inspection.md). Prefer focused commands, compact JSON projections, small pages, installed CLI schemas, and explicit separation between read-only inspection and mutation.
 
 ## Safety and delegation rules
 
 - Default to read-only inspection when the user has not granted mutation authority. A request only to inspect, summarize, diagnose, or recommend does not by itself authorize a mutation.
-- Never read or expose `.env`, bearer tokens, provider/platform credentials, saved login contents, or credential files. Let the CLI use saved `mastra login` authentication.
+- Never read or expose `.env`, bearer tokens, provider/platform credentials, saved login contents, or credential files. Let the CLI use saved `mastra auth login` authentication.
 - Never invent project, work-item, decision, attention, stage, revision, request, or session identifiers.
 - Accept either action-specific authorization or a standing delegation. A standing delegation may define projects, resource types, allowed actions, objectives, duration, or stop conditions.
 - Within a clear standing delegation, perform in-scope creates, updates, transitions, starts, decision actions, attention state changes, or automation changes without requesting confirmation each time.
@@ -79,16 +79,16 @@ Output rules:
 
 ### Target resolution
 
-For a hosted Factory deployment, run commands from the intended project directory so the CLI can use deploy-owned `.mastra-project.json` and saved `mastra login` authentication. Do not inspect either credential source.
-
-For an explicit local, remote, or self-hosted Factory server, use `--url`:
+Prefer an explicit verified instance URL for hosted, local, remote, or self-hosted Factory. No repository or link file is required. Follow [connection.md](connection.md) for authentication and target discovery; `FACTORY_URL` below must be the user's actual deployment, not a platform dashboard URL.
 
 ```bash
-mastra api factory --url "$MASTRA_URL" project list '{"page":0,"perPage":10}' \
-  | jq '.data[] | {id, name}'
+mastra api --url "$FACTORY_URL" factory project list '{"page":0,"perPage":10}' \
+  | jq '{page, projects: [.data[] | {id, name}]}'
 ```
 
-If automatic discovery selects the wrong organization, a project list may be empty rather than failing. Report the empty result and verify the intended target/organization with the user; do not inspect stored credentials.
+For brevity, the remaining examples omit `--url`. **When using an explicit target, insert `--url "$FACTORY_URL"` after `mastra api` in every example, including schema/help discovery.** Otherwise commands can probe localhost or use a different directory's deployment config. Preserve any required authentication options as well.
+
+If a project list is empty, verify the intended target, organization, access, and pagination; do not inspect stored credentials or assume there are no projects.
 
 ## Command catalog
 
@@ -164,7 +164,7 @@ mastra api factory health thresholds <project-id> \
   | jq '.data.thresholds'
 ```
 
-Use the returned thresholds when characterizing stale or unhealthy work. Do not invent alert cutoffs.
+Use the returned thresholds for queue-age buckets. They are not the supervisor's decision/start/lease timeout thresholds; use the supervisor's returned evidence for those findings. Do not invent alert cutoffs.
 
 ### 4. Inspect decisions and human attention
 
@@ -176,7 +176,7 @@ mastra api factory decision list <project-id> '{"limit":10}' \
 
 mastra api factory attention list <project-id> '{"limit":10,"view":"open"}' \
   | jq '.data | {
-      openCount, unreadCount, badgeCount,
+      openCount, unreadCount, badgeCount, hasMore, nextCursor,
       items: [.items[] | {
         kind, sourceId, occurrence, workItemId, tier, read, archivedAt,
         suggestedRepair, evidence
@@ -190,13 +190,13 @@ Pending decisions are proposals, not authorization. Attention items are findings
 
 ```bash
 mastra api factory supervisor health <project-id> \
-  | jq '.data | {checkedAt, counts, findings: [.findings[] | {kind, key, workItemId, evidence}]}'
+  | jq '.data | {checkedAt, counts, findings: [.findings[] | {kind, id, workItemId, evidence, suggestedRepair}]}'
 
 mastra api factory supervisor session <project-id> \
   | jq '.data | {factoryProjectId, sessionId, threadId}'
 ```
 
-Health findings can include `decision-failed`, `decision-stuck`, `start-stalled`, `seat-orphaned`, `seat-missing`, `proposal-waiting`, `held-waiting`, and `label-drift`. Report only categories returned by the server.
+Health finding kinds are `decision-stuck`, `start-stalled`, `seat-orphaned`, `seat-missing`, `held-waiting`, and `label-drift`; each finding carries a stable `id`, `evidence`, `beganAt`, and a `suggestedRepair`. Report only categories returned by the server; see [session-inspection.md](session-inspection.md) for interpretation.
 
 The supervisor session is for supervisor inspection/coordination. Do not assume it is a valid durable user session for `work-item start`.
 

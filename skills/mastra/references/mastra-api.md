@@ -25,14 +25,16 @@ For Mastra platform or remote servers, pass `--url`. For the sake of brevity in 
 npx mastra api --url $MASTRA_URL agent list
 ```
 
-Verify the server once with a cheap check before resource calls:
+For Factory operations, activate the `mastra-factory` skill first. Use the user's actual Factory instance URL (not the platform API/dashboard URL). Explicit `--url` works from an empty directory. Recognized hosted Factory domains use saved `mastra auth login` credentials; check `mastra auth whoami` and offer login if needed. Custom/self-hosted deployments may use different authentication. Factory discovery uses bundled leaf contracts and root-level `/web/*` routes, not the runtime schema probe below.
+
+For an unauthenticated local runtime server, verify the server once with a cheap check before resource calls:
 
 ```bash
 MASTRA_URL="${MASTRA_URL:-http://localhost:4111}"
 curl -fsS "$MASTRA_URL/api/system/api-schema" >/dev/null
 ```
 
-If `$MASTRA_URL` is not reachable, the user may be using a Mastra platform deployment or remote URL. Ask for the correct server URL and set `--url` accordingly. If authentication is required, ask the user for the necessary token or credentials and set them in the environment for subsequent commands.
+If `$MASTRA_URL` is not reachable, ask for the correct deployment URL and set `--url` accordingly. For authenticated targets, use a supported read-only CLI call instead of treating an unauthenticated schema-probe failure as unreachability. Let the CLI use saved login on recognized platform hosts; for custom servers, have the user configure the deployment's approved authentication mechanism outside chat. Never request secret values in chat or inspect saved credential files.
 
 For authenticated servers, pass repeatable headers:
 
