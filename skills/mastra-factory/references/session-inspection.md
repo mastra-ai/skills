@@ -39,6 +39,22 @@ mastra api --url "$FACTORY_URL" thread messages "$THREAD_ID" '{"page":0,"perPage
 
 Use `thread list` with schema-supported filters when no thread binding is available; don't enumerate unrelated users' memory. Runtime `--schema` discovery can require a reachable, authenticated target even though Factory contracts are bundled. Follow `.page.hasMore`, incrementing `page` from zero; select ordering supported by the schema if looking for the newest messages. Limit displayed text/parts and stop once the question is answered. Report the pages/time range inspected and any gaps.
 
+### Open a session in the Factory UI
+
+The hosted Factory UI serves a session at `/factories/<factory-project-id>/workspaces/<sessionId>/threads/<threadId>` on the same origin as `$FACTORY_URL`. Build the URL from the item's returned `sessions` values and hand it to the user's browser (`open` on macOS, `xdg-open` on Linux):
+
+```bash
+mastra api --url "$FACTORY_URL" factory work-item list "$PROJECT_ID" \
+  | jq -r --arg id "$WORK_ITEM_ID" --arg base "$FACTORY_URL" --arg project "$PROJECT_ID" '
+      (.data.workItems // .data)[] | select(.id == $id)
+      | .sessions | to_entries[]
+      | "\($base)/factories/\($project)/workspaces/\(.value.sessionId)/threads/\(.value.threadId)"' \
+  | sort -u
+# then: open "<url>"   (macOS)  /  xdg-open "<url>"  (Linux)
+```
+
+Unauthenticated fetches of that URL return 401; the user's browser login is what renders it. Do not scrape the page in place of the API.
+
 Read `content.parts` for text, tool calls/results, signals, and OM events. A transcript can contain tool calls without stored results. Separate user intent, attempted actions, observed results, agent claims, and independently verified outcomes. “Tests passed” in assistant text is weaker evidence than a test result. “Implemented” does not prove committed, pushed, or merged: report those states as unknown without repository/PR evidence.
 
 ## Observational memory (OM)
