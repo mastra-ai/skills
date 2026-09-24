@@ -120,30 +120,30 @@ The markdown will include:
 ### Agents
 
 - Overview: `https://mastra.ai/docs/agents/overview`
-- Creating agents: `https://mastra.ai/docs/agents/creating-agents`
+- Creating agents: `https://mastra.ai/docs/agents/overview`
 - Agent tools: `https://mastra.ai/docs/agents/tools`
-- Memory: `https://mastra.ai/docs/agents/memory`
+- Memory: `https://mastra.ai/docs/memory/overview`
 
 ### Workflows
 
 - Overview: `https://mastra.ai/docs/workflows/overview`
-- Creating workflows: `https://mastra.ai/docs/workflows/creating-workflows`
+- Creating workflows: `https://mastra.ai/docs/workflows/overview`
 - Workflow methods: `https://mastra.ai/reference/workflows/workflow-methods/`
 
 ### Tools
 
 - Overview: `https://mastra.ai/docs/tools/overview`
-- Creating tools: `https://mastra.ai/docs/tools/creating-tools`
+- Creating tools: `https://mastra.ai/docs/agents/tools`
 
 ### Memory
 
 - Overview: `https://mastra.ai/docs/memory/overview`
-- Configuration: `https://mastra.ai/docs/memory/configuration`
+- Configuration: `https://mastra.ai/docs/memory/overview`
 
 ### RAG
 
 - Overview: `https://mastra.ai/docs/rag/overview`
-- Vector stores: `https://mastra.ai/docs/rag/vector-stores`
+- Vector stores: `https://mastra.ai/reference/rag/vector-databases`
 
 ## Example: Looking up workflow .then() method
 
