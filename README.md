@@ -28,6 +28,7 @@ Single comprehensive skill for all Mastra development. Uses progressive disclosu
 - **Mastra API CLI** (`references/mastra-api.md`): Inspect and call resources on local, platform, or remote servers
 - **Advanced Trace Queries** (`references/trace-query.md`): Select completed traces with recursive predicates and cursor pagination
 - **Trace Intelligence** (`references/trace-intelligence.md`): Query recurring themes across agent traces on the Mastra platform
+- **Feedback** (`references/feedback.md`): report verified bugs, doc gaps, and user-requested features to the Mastra team
 
 Main skill file teaches core concepts and routes to appropriate reference files based on user questions.
 
