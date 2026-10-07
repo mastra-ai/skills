@@ -6,11 +6,13 @@ Report verified Mastra bugs, documentation gaps, and features the user explicitl
 
 | Report | Don't report |
 | --- | --- |
-| Bugs verified against the current Mastra version: wrong behavior, crashes, or type errors traced into Mastra, including CLI, codemod, and upgrade failures. | Unverified suspicions, guesses about intended behavior, or errors in the user's own code. |
+| Reproducible unexpected Mastra behavior verified against the current version: wrong output, crashes, or type errors, including CLI, codemod, and upgrade failures. A concrete reproduction is useful even when the root cause is unknown. | Unverified suspicions, guesses about intended behavior, or errors in the user's own code. |
 | Missing, wrong, or contradictory documentation or skill instructions that affected the task, including non-obvious workarounds for verified Mastra issues, with evidence of what was missing or incorrect. | Style opinions, general questions, or claims without concrete evidence. |
 | Missing Mastra capabilities that the user explicitly asked for, with the required use case. | Agent-invented feature ideas or features that already exist. |
 
-Expected rate limits, exhausted credits, and configuration mistakes are not bugs unless you have concrete evidence of a Mastra defect. A workaround or recurring failure alone does not establish a Mastra defect.
+Expected rate limits, exhausted credits, configuration mistakes, and validation or unsupported-provider errors are not bugs unless you have concrete evidence of a Mastra defect. Incorrect documentation or misleading diagnostics that caused the mistake may qualify independently. A workaround or recurring failure alone does not establish a Mastra defect.
+
+Distinguish a documented limitation from a defect. For feature requests, state the user's requested outcome, not merely an implementation choice the agent made; do not imply that unsupported behavior is itself a bug.
 
 An explicit user request to report something is itself authorization: report it and state in `note` what was and wasn't verified. Do not present an unverified claim as a confirmed defect.
 
@@ -18,7 +20,9 @@ An explicit user request to report something is itself authorization: report it 
 
 Retain only anonymized facts for feedback, not raw project material. Replace customer, repository, and project names with generic descriptions before collecting a feedback candidate. Do not retain or submit application source code, raw logs, local paths, private URLs, secrets, personal information, or project-specific identifiers as feedback. Keep public Mastra API names, package versions, and concise descriptions of errors when relevant.
 
-Build a JSON body from those anonymized facts. This hypothetical bug example illustrates the shape, not a verified finding; replace it with your actual finding before submitting. Package versions and reproduction details belong in `note`.
+Build a JSON body from those anonymized facts. In `note`, describe the user's intended outcome and the impact: blocked progress, a workaround, an incorrect result, or a minor inconvenience. Separate observations from suspected causes; do not present an inference as a verified explanation or generalize beyond the evidence.
+
+This hypothetical bug example illustrates the shape, not a verified finding; replace it with your actual finding before submitting. Package versions and reproduction details belong in `note`.
 
 ```json
 {
@@ -43,7 +47,7 @@ curl -i -X POST https://mastra.ai/api/feedback \
 
 Submit while the evidence is in hand:
 
-- Send one report per distinct issue.
+- Send one report per distinct issue. Separate independently actionable findings, such as a feature request and an unrelated route failure, rather than bundling them into one report.
 - `201` means created; `200` with `duplicate: true` means already reported. Either is success; do not send it again.
 - A non-2xx response is not a successful submission. Fix an actual request mistake once if identified; otherwise stop. Never reword a report or loop to force a different result, and do not claim delivery without a success response.
 
