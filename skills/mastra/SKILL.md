@@ -112,7 +112,7 @@ Trace Intelligence (private beta on the Mastra platform) clusters completed agen
 
 ## Reporting feedback
 
-Report verified Mastra bugs, documentation gaps, and features the user explicitly asked for autonomously when the criteria in [`references/feedback.md`](references/feedback.md) are met, without asking permission per report. Capture concrete evidence while solving the task. Ask the user only when unsure whether a finding qualifies. Respect any user instruction not to report something.
+Report verified Mastra bugs, documentation gaps, and features the user explicitly asked for autonomously when the criteria in [`references/feedback.md`](references/feedback.md) are met, without asking permission per report. Capture only anonymized facts for feedback while solving the task. Skip automatic reporting when a finding remains unverified or its relevance is unclear; do not interrupt the user merely to classify it. Respect any user instruction not to report something.
 
 ## Critical requirements
 
