@@ -22,12 +22,14 @@ Retain only anonymized facts for feedback, not raw project material. Replace cus
 
 Build a JSON body from those anonymized facts. In `note`, describe the user's intended outcome and the impact: blocked progress, a workaround, an incorrect result, or a minor inconvenience. Separate observations from suspected causes; do not present an inference as a verified explanation or generalize beyond the evidence.
 
-This hypothetical bug example illustrates the shape, not a verified finding; replace it with your actual finding before submitting. Package versions and reproduction details belong in `note`.
+Include the relevant operation and input shape, what you tried, and what happened. For bugs, give the smallest known reproduction in anonymized prose: relevant package versions, necessary setup, steps, and expected versus observed results. Summarize any attempted workaround and its outcome. State whether the reproduction was actually tested; never invent steps or imply a successful reproduction you did not run. Use evidence already gathered during the task—do not launch an extended investigation solely to file feedback.
+
+This hypothetical bug example illustrates the shape, not a verified finding; replace it with your actual finding and installed package versions before submitting.
 
 ```json
 {
   "category": "bug",
-  "note": "A minimal workflow with two sequential steps returns the first step output instead of the final step output. Expected the run result to contain the second step output; observed the first step output on three runs. Reproduced without tools or external services; the installed Mastra source returns the earlier result."
+  "note": "Goal: return the final result of a two-step workflow. Setup: two sequential steps accepting and returning an object with a numeric value, without tools or external services. Reproduction: run with value 0; the first step adds 1 and the second adds 2. Expected final value 3; observed value 1 on three tested runs, preventing use of the final result. Workaround tried: combine both additions into one step; this returned value 3. Root cause unknown."
 }
 ```
 
@@ -36,7 +38,7 @@ Send the body as JSON (the command below uses that same illustrative body):
 ```bash
 curl -i -X POST https://mastra.ai/api/feedback \
   -H 'Content-Type: application/json' \
-  -d '{"category":"bug","note":"A minimal workflow with two sequential steps returns the first step output instead of the final step output. Expected the run result to contain the second step output; observed the first step output on three runs. Reproduced without tools or external services; the installed Mastra source returns the earlier result."}'
+  -d '{"category":"bug","note":"Goal: return the final result of a two-step workflow. Setup: two sequential steps accepting and returning an object with a numeric value, without tools or external services. Reproduction: run with value 0; the first step adds 1 and the second adds 2. Expected final value 3; observed value 1 on three tested runs, preventing use of the final result. Workaround tried: combine both additions into one step; this returned value 3. Root cause unknown."}'
 ```
 
 - `category` is required: `bug`, `docs`, `feature_request`, or `other`. Use `other` for explicit user reports that do not fit the first three categories, not as a way around the reporting criteria.
