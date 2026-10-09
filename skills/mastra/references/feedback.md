@@ -13,13 +13,17 @@ Expected rate limits, exhausted credits, configuration mistakes, and validation 
 
 Distinguish a documented limitation from a defect. Do not submit feature requests, including capabilities the user wants to build. Help draft a feature request when asked, but leave review and submission to a human. Do not relabel unsupported capabilities as bugs, documentation gaps, or `other` to bypass this rule.
 
+For source-only findings, identify the expected contract and trace the relevant path far enough to establish a contradiction. A missing check, assignment, or cleanup in one function is not sufficient if another layer could provide it. If that remains unresolved, skip automatic submission. A live reproduction is not required to establish a deterministic source defect or documentation mismatch.
+
+Distinguish Mastra defects from upstream dependency failures and unresolved compatibility boundaries. Report an upstream failure only when concrete impact on a Mastra integration is established, and identify the upstream ownership rather than presenting it as a Mastra-owned defect. Include exact dependency versions when they affect the finding; omit unrelated dependencies.
+
 An explicit user request to report a bug or documentation defect is itself authorization: report it and state in `note` what was and wasn't verified. Do not present an unverified claim as a confirmed defect.
 
 ## How to report
 
 Retain only anonymized facts for feedback, not raw project material. Replace customer, repository, and project names with generic descriptions before collecting a feedback candidate. Do not retain or submit application source code, raw logs, local paths, private URLs, secrets, personal information, or project-specific identifiers as feedback. Keep public Mastra API names, package versions, and concise descriptions of errors when relevant.
 
-Build a JSON body from those anonymized facts. Start `note` with the concrete symptom or documentation defect, then describe the user's intended outcome and observed impact: blocked progress, a workaround, an incorrect result, or a minor inconvenience. Distinguish behavior observed during the task, a reproduction you actually tested, and explanations inferred from source inspection. Source inspection alone does not prove a runtime symptom. Do not present an inference as a verified explanation or generalize beyond the evidence. Omit speculative consequences, unrelated questions, and requests to build additional capabilities.
+Build a JSON body from those anonymized facts. Start `note` with one short sentence naming the affected component and concrete failure or documentation defect; this opening becomes the issue title. Put versions, setup, and verification details afterward, not in a leading "Goal" or package list. Then describe the user's intended outcome and observed impact: blocked progress, a workaround, an incorrect result, or a minor inconvenience. Distinguish behavior observed during the task, a reproduction you actually tested, and explanations inferred from source inspection. Source inspection alone does not prove a runtime symptom. Do not present an inference as a verified explanation or generalize beyond the evidence: duplicate acknowledgement does not prove duplicate execution, stale suspension acceptance does not prove cross-resource disclosure, and passing typecheck does not prove runtime correctness. Omit speculative consequences, unrelated questions, and requests to build additional capabilities.
 
 Include the relevant operation and input shape, what you tried, and what happened. For bugs, give the smallest known reproduction in anonymized prose: relevant package versions, necessary setup, steps, and expected versus observed results. Summarize any attempted workaround and its outcome. State whether the reproduction was actually tested; never invent steps or imply a successful reproduction you did not run. Use evidence already gathered during the task—do not launch an extended investigation solely to file feedback.
 
@@ -48,7 +52,7 @@ curl -i -X POST https://mastra.ai/api/feedback \
 
 Submit while the evidence is in hand:
 
-- Send one report per distinct issue. Check the current task or conversation for an earlier submission before sending. More symptoms, another workaround, or additional evidence for the same issue do not justify a fresh report. Use any prior report ID available in context; do not invent one or claim a global duplicate check.
+- Send one report per distinct issue. Check the current task or conversation for an earlier submission about the same underlying failure, not just matching wording or symptoms. New evidence, affected versions, a better explanation, or another workaround belong with the existing report, not a fresh submission. Retain those facts with any prior report ID available in context for follow-up; do not invent an ID, claim a global duplicate check, or POST again as an update.
 - Keep each report focused on one independently actionable bug or documentation defect. Do not submit separate bug and docs reports for the same underlying finding unless they require independent fixes.
 - `201` means created; `200` with `duplicate: true` means already reported. Either is success; do not send it again.
 - A non-2xx response is not a successful submission. Fix an actual request mistake once if identified; otherwise stop. Never reword a report or loop to force a different result, and do not claim delivery without a success response.
