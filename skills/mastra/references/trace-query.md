@@ -6,7 +6,7 @@ For broad questions about recurring agent behavior or health, start with [`trace
 
 ## Command contract
 
-The command sends `POST /api/observability/traces/query`. It uses the same target and credentials as other observability commands and targets `https://observability.mastra.ai` by default.
+The command sends `POST /api/observability/traces/query`. It uses the same target and credentials as other observability commands, including the EU host for EU projects (see [`mastra-api.md`](mastra-api.md#target-resolution)).
 
 The inline JSON input is required. Before recommending the command, confirm that the installed CLI exposes it:
 
@@ -76,6 +76,8 @@ npx mastra api trace query \
 ```
 
 A cursor is bound to the accepted query and ordering. Do not change the time range, predicates, or ordering between pages. A mismatched cursor returns `409`; a malformed cursor returns `400`.
+
+A `422` with code `query_too_expensive` means the query hit a resource limit; retrying the same request fails again. Narrow `timeRange` (start with the last 24 hours) or add filters.
 
 ## Predicate semantics
 

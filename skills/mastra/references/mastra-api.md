@@ -50,7 +50,7 @@ Runtime commands (`agent`, `workflow`, `tool`, `mcp`, `thread`, `memory`, `datas
 2. `http://localhost:4111` for a local `mastra dev` server.
 3. `.mastra-project.json` for a Mastra platform project.
 
-Observability commands (`trace`, `log`, `score`, `metric`) target `https://observability.mastra.ai` by default instead of a project deployment URL. The CLI resolves credentials in this order:
+Observability commands (`trace`, `log`, `score`, `metric`) target `https://observability.mastra.ai` by default instead of a project deployment URL. EU projects use `https://observability.eu.mastra.ai`: the CLI picks it automatically from `mastra@1.34.2`. On older versions, EU requests time out with `REQUEST_TIMEOUT`; pass `--url https://observability.eu.mastra.ai`. The CLI resolves credentials in this order:
 
 1. Explicit `Authorization` and `X-Mastra-Project-Id` headers passed with `--header`.
 2. `MASTRA_PLATFORM_ACCESS_TOKEN` and `MASTRA_PROJECT_ID` from the environment.
