@@ -2,8 +2,6 @@
 
 Use `mastra api trace query` when a normal trace list cannot express the required filters: recursive boolean predicates, related span, score, or feedback conditions, metadata filters, ordering, or opaque cursor pagination.
 
-For broad questions about recurring agent behavior or health, start with [`trace-intelligence.md`](trace-intelligence.md). Use advanced trace queries when the user needs exact traces matching explicit conditions, then inspect the returned traces for evidence.
-
 ## Command contract
 
 The command sends `POST /api/observability/traces/query`. It uses the same target and credentials as other observability commands, including the EU host for EU projects (see [`mastra-api.md`](mastra-api.md#target-resolution)).
@@ -95,6 +93,5 @@ A `422` with code `query_too_expensive` means the query hit a resource limit; re
 - `trace query`: select completed traces using complex, explicit predicates.
 - `trace get <traceId>`: inspect one selected trace.
 - `trace span <traceId> <spanId>`: fetch one span in full.
-- Trace Intelligence: discover aggregate recurring themes before drilling into individual traces.
 
 Advanced queries only return completed traces. The configured observability store must support the query API. If the server rejects a query that follows the current structural schema and canonical documentation as unsupported, report that limitation rather than falling back to an inaccurate client-side approximation.
