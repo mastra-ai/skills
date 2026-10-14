@@ -11,7 +11,7 @@ The CLI can interact with any reachable Mastra server:
 - Local dev server: `http://localhost:4111` from `npm run dev`
 - Mastra platform deployment: Use the deployment URL
 - Remote/self-hosted server: Use the server URL
-- Hosted Mastra Platform Observability: `https://observability.mastra.ai` (US) or `https://observability.eu.mastra.ai` (EU), auto-targeted by `trace`, `log`, `score`, and `metric` commands (see [Target resolution](#target-resolution))
+- Hosted Mastra Platform Observability: `https://observability.mastra.ai` (auto-targeted by `trace`, `log`, `score`, and `metric` commands)
 
 For local servers, `mastra api` defaults to `http://localhost:4111`:
 
@@ -50,14 +50,7 @@ Runtime commands (`agent`, `workflow`, `tool`, `mcp`, `thread`, `memory`, `datas
 2. `http://localhost:4111` for a local `mastra dev` server.
 3. `.mastra-project.json` for a Mastra platform project.
 
-Observability commands (`trace`, `log`, `score`, `metric`) target the hosted observability service instead of a project deployment URL. The host depends on the project's region:
-
-- US projects: `https://observability.mastra.ai`.
-- EU projects: `https://observability.eu.mastra.ai`.
-
-CLI versions from `mastra@1.34.2` look up the project's region and pick the host automatically. Older CLI versions always use the US host, so requests for an EU project time out with `REQUEST_TIMEOUT`. To override the host on any version, set `MASTRA_PLATFORM_OBSERVABILITY_ENDPOINT` or pass `--url https://observability.eu.mastra.ai`. If the region lookup fails, the CLI prints a warning to stderr and falls back to the US host.
-
-The CLI resolves credentials in this order:
+Observability commands (`trace`, `log`, `score`, `metric`) target `https://observability.mastra.ai` by default instead of a project deployment URL. EU projects use `https://observability.eu.mastra.ai`: the CLI picks it automatically from `mastra@1.34.2`. On older versions, EU requests time out with `REQUEST_TIMEOUT`; pass `--url https://observability.eu.mastra.ai`. The CLI resolves credentials in this order:
 
 1. Explicit `Authorization` and `X-Mastra-Project-Id` headers passed with `--header`.
 2. `MASTRA_PLATFORM_ACCESS_TOKEN` and `MASTRA_PROJECT_ID` from the environment.
@@ -71,7 +64,7 @@ npx mastra api trace list '{"page":0,"perPage":10}'
 npx mastra api metric names
 ```
 
-Pass `--url` and `--header` only when overriding the hosted observability target or credentials. With a CLI login token rather than an API key, the region lookup also needs the organization. The CLI takes it from `MASTRA_ORGANIZATION_ID`, `.mastra-project.json`, or the current CLI organization.
+Pass `--url` and `--header` only when overriding the hosted observability target or credentials.
 
 ## Decision flow
 

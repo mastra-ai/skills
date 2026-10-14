@@ -6,7 +6,7 @@ For broad questions about recurring agent behavior or health, start with [`trace
 
 ## Command contract
 
-The command sends `POST /api/observability/traces/query`. It uses the same target and credentials as other observability commands, including the region-based host (`https://observability.mastra.ai` for US projects, `https://observability.eu.mastra.ai` for EU projects). See [`mastra-api.md`](mastra-api.md#target-resolution). If the command times out with `REQUEST_TIMEOUT` for an EU project, the installed CLI is probably sending it to the US host. Pass `--url https://observability.eu.mastra.ai` or set `MASTRA_PLATFORM_OBSERVABILITY_ENDPOINT`.
+The command sends `POST /api/observability/traces/query`. It uses the same target and credentials as other observability commands, including the EU host for EU projects (see [`mastra-api.md`](mastra-api.md#target-resolution)).
 
 The inline JSON input is required. Before recommending the command, confirm that the installed CLI exposes it:
 
@@ -77,18 +77,7 @@ npx mastra api trace query \
 
 A cursor is bound to the accepted query and ordering. Do not change the time range, predicates, or ordering between pages. A mismatched cursor returns `409`; a malformed cursor returns `400`.
 
-`page.limit` defaults to 100, with a maximum of 1000.
-
-## Errors and expensive queries (Mastra Platform)
-
-| Status                       | Meaning                                                       | What to do                                                                           |
-| ---------------------------- | ------------------------------------------------------------- | ------------------------------------------------------------------------------------ |
-| `422` with validation issues | The request doesn't match the schema                          | Fix the request using `--schema` and the reference docs                              |
-| `422` `query_too_expensive`  | The query hit its own memory, read-size, or result-size limit | Don't retry the same request. Narrow `timeRange`, add filters, or lower `page.limit` |
-| `503` with `Retry-After`     | The observability service is temporarily short on capacity    | Wait for the `Retry-After` interval, then retry once                                 |
-| `504`                        | The query timed out                                           | Narrow `timeRange` or add filters before retrying                                    |
-
-Start with a short time range (for example, the last 24 hours) and widen it only when needed. Long ranges on high-traffic projects are the usual cause of `422` and `504`.
+A `422` with code `query_too_expensive` means the query hit a resource limit; retrying the same request fails again. Narrow `timeRange` (start with the last 24 hours) or add filters.
 
 ## Predicate semantics
 
@@ -99,8 +88,6 @@ Start with a short time range (for example, the last 24 hours) and widen it only
 - String comparisons are exact and case-sensitive unless the canonical documentation states otherwise.
 - The root `timeRange` filters the selected root span's start time; it does not independently constrain related-record timestamps.
 - Query results are lightweight and do not embed matching spans, scores, or feedback. Fetch trace or span details after selecting candidates.
-- Input previews in results may be truncated. Use `trace get` or `trace span` for full input and output.
-- `orderBy` accepts one entry with `field` `startedAt` or `endedAt` and `direction` `asc` or `desc`.
 
 ## Choosing the trace command
 
