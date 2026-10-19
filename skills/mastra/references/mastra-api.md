@@ -138,9 +138,13 @@ npx mastra api trace list --help
 npx mastra api trace list --schema
 npx mastra api trace query --help
 npx mastra api trace query --schema
+npx mastra api trace aggregate --help
+npx mastra api trace aggregate --schema
 ```
 
 Use `trace query` instead of `trace list` when selection requires recursive predicates, metadata filters, or conditions over related spans, scores, or feedback. First use `trace query --help` to confirm that the installed CLI exposes the command. The inline JSON query is required, and its cursor-bearing response stays nested under `data`. Read [`trace-query.md`](trace-query.md) for availability checks, the division between CLI schema discovery and canonical documentation, query construction, and pagination.
+
+Use `trace aggregate` when the answer is a count or measure (error rate, latency percentiles, tokens, cost) grouped by up to two dimensions or time buckets rather than a list of traces. It takes the same `timeRange` and `where` as `trace query`. See [`trace-query.md`](trace-query.md#aggregate-traces).
 
 Use top-level help only when the resource is unknown:
 
@@ -206,3 +210,4 @@ curl -fsS "$MASTRA_URL/api/system/api-schema" \
 - Empty lists may simply mean the server has no matching stored data yet.
 - `trace list` and `trace get` return lightweight payloads by default (no span input, output, attributes, or metadata). Pass `--verbose` to fetch full span records, or use `trace span <traceId> <spanId>` to fetch one specific span in full.
 - `trace query` requires inline JSON, queries completed traces, and preserves its opaque cursor at `data.page.next`. Pass that value unchanged as `page.after` with the same query shape.
+- `trace aggregate` requires inline JSON and isn't paginated; when `truncated` is `true`, narrow the selection.
