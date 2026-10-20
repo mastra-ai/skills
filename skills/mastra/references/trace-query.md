@@ -18,7 +18,7 @@ After confirming availability, inspect the target server's current contract:
 npx mastra api trace query --schema
 ```
 
-Use `--schema` to confirm that the target supports the route and to inspect the current request and response shape and structural constraints. Predicate paths are generic strings in the schema, so it does not provide the context-specific field/operator matrix. If you need more information, read the [reference docs online](https://mastra.ai/reference/observability/tracing/trace-query). Do not infer unsupported predicates from storage columns or older documentation. The server remains the ultimate validation authority.
+Use `--schema` to confirm that the target supports the route and to inspect the current request and response shape and structural constraints. Predicate paths are generic strings in the schema, so it does not provide the context-specific field/operator matrix. If you need more information, read the [reference docs online](https://mastra.ai/reference/observability/tracing/advanced-queries). Do not infer unsupported predicates from storage columns or older documentation. The server remains the ultimate validation authority.
 
 ## Query workflow
 
@@ -87,10 +87,33 @@ A `422` with code `query_too_expensive` means the query hit a resource limit; re
 - The root `timeRange` filters the selected root span's start time; it does not independently constrain related-record timestamps.
 - Query results are lightweight and do not embed matching spans, scores, or feedback. Fetch trace or span details after selecting candidates.
 
+## Aggregate traces
+
+Use `mastra api trace aggregate` (`POST /api/observability/traces/aggregate`) when the question asks for counts or measures rather than individual traces: error rate per agent, p95 latency per workflow, daily token usage or cost. It accepts the same `timeRange` and `where` selection as `trace query`, so the same predicate counts exactly the traces a query would list.
+
+Confirm that the installed CLI exposes the command and that the target supports aggregation:
+
+```bash
+npx mastra api trace aggregate --help
+npx mastra api trace aggregate --schema
+```
+
+From the client SDK, check `capabilities.traceAggregate` from `getObservabilityCapabilities()` before calling `aggregateTraces()`. A missing value means the server doesn't support aggregation; stores without it return `501 TRACE_AGGREGATE_UNSUPPORTED`.
+
+Request shape: `timeRange` (required, up to 365 days), optional `where`, `measures` (required), `groupBy` (up to two dimensions such as `entityName`, `environment`, `userId`, or `metadata.<key>`), optional `interval` (`1m`, `5m`, `15m`, `1h`, `1d`), `having` over measures, `orderBy` (`{ field, direction }`, default `count desc`), and `limit` (groups, default 100, max 1000). Measures include `count`, `countDistinct.<field>`, `errorCount`, `errorRate`, `duration.{avg,min,max,p50,p90,p95,p99}`, `tokens.{input,output,total,reasoning,cached}.{sum,avg}`, and `cost.{sum,avg}`.
+
+```bash
+npx mastra api trace aggregate \
+  '{"timeRange":{"from":"2026-08-01T00:00:00.000Z","to":"2026-08-08T00:00:00.000Z"},"where":{"op":"eq","left":{"path":"entityType"},"right":{"literal":"agent"}},"groupBy":["entityName"],"measures":["count","errorRate","duration.p95","cost.sum"],"orderBy":{"field":"errorRate","direction":"desc"},"limit":10}'
+```
+
+Each row has `dimensions`, `measures`, a `bucket` when `interval` is set, and a `cost` object (`coverage`, `unit`) when a cost measure is requested. Report low `cost.coverage` as understated spend; `cost.sum` is `null` when `cost.unit` is `'mixed'`. Aggregation isn't paginated: when `truncated` is `true`, narrow the selection instead of paging. Empty time buckets are omitted, not zero-filled. To see the traces behind a group, rerun `trace query` with the same selection plus the group's dimension values in `where`.
+
 ## Choosing the trace command
 
 - `trace list`: browse recent traces with simple list filters.
 - `trace query`: select completed traces using complex, explicit predicates.
+- `trace aggregate`: count completed traces and compute grouped measures over the same selection.
 - `trace get <traceId>`: inspect one selected trace.
 - `trace span <traceId> <spanId>`: fetch one span in full.
 
