@@ -140,11 +140,17 @@ npx mastra api trace query --help
 npx mastra api trace query --schema
 npx mastra api trace aggregate --help
 npx mastra api trace aggregate --schema
+npx mastra api span query --help
+npx mastra api span query --schema
+npx mastra api span aggregate --help
+npx mastra api span aggregate --schema
 ```
 
 Use `trace query` instead of `trace list` when selection requires recursive predicates, metadata filters, or conditions over related spans, scores, or feedback. First use `trace query --help` to confirm that the installed CLI exposes the command. The inline JSON query is required, and its cursor-bearing response stays nested under `data`. Read [`trace-query.md`](trace-query.md) for availability checks, the division between CLI schema discovery and canonical documentation, query construction, and pagination.
 
 Use `trace aggregate` when the answer is a count or measure (error rate, latency percentiles, tokens, cost) grouped by up to two dimensions or time buckets rather than a list of traces. It takes the same `timeRange` and `where` as `trace query`. See [`trace-query.md`](trace-query.md#aggregate-traces).
+
+Use `span query` to list individual spans (including nested agent runs and tool calls) with flat span-field predicates, and `span aggregate` to compute the same measures grouped by span fields. See [`trace-query.md`](trace-query.md#query-spans) and [`trace-query.md`](trace-query.md#aggregate-spans).
 
 Use top-level help only when the resource is unknown:
 
@@ -211,3 +217,4 @@ curl -fsS "$MASTRA_URL/api/system/api-schema" \
 - `trace list` and `trace get` return lightweight payloads by default (no span input, output, attributes, or metadata). Pass `--verbose` to fetch full span records, or use `trace span <traceId> <spanId>` to fetch one specific span in full.
 - `trace query` requires inline JSON, queries completed traces, and preserves its opaque cursor at `data.page.next`. Pass that value unchanged as `page.after` with the same query shape.
 - `trace aggregate` requires inline JSON and isn't paginated; when `truncated` is `true`, narrow the selection.
+- `span query` requires inline JSON and pages like `trace query`: pass `data.page.next` unchanged as `page.after`. `span aggregate` isn't paginated, like `trace aggregate`.
