@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import { readFileSync } from "node:fs";
+import { existsSync, readFileSync, readdirSync } from "node:fs";
 import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -19,7 +19,25 @@ function findRegistryPath() {
       dir = dirname(dir);
     }
   }
-  // Fall back to cwd
+
+  // Package managers with isolated linkers expose dependencies inside each workspace.
+  const directoriesToSearch = [process.cwd()];
+  for (let index = 0; index < directoriesToSearch.length; index++) {
+    const dir = directoriesToSearch[index];
+    const candidate = join(dir, rel);
+    if (existsSync(candidate)) return candidate;
+
+    try {
+      for (const entry of readdirSync(dir, { withFileTypes: true })) {
+        if (entry.isDirectory() && entry.name !== "node_modules" && !entry.name.startsWith(".")) {
+          directoriesToSearch.push(join(dir, entry.name));
+        }
+      }
+    } catch {
+      continue;
+    }
+  }
+
   return join(process.cwd(), rel);
 }
 
