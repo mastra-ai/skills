@@ -45,6 +45,8 @@ ls node_modules/@mastra/
 | Inspect/call server resources via CLI | [`references/mastra-api.md`](references/mastra-api.md)       | `mastra api` CLI for local, Mastra platform, or remote servers |
 | Find exact traces with complex predicates | [`references/trace-query.md`](references/trace-query.md) | Query completed traces by trace fields or related spans, scores, and feedback |
 | Count traces or compute grouped measures (error rate, latency, tokens, cost) | [`references/trace-query.md`](references/trace-query.md#aggregate-traces) | Aggregate completed traces with `mastra api trace aggregate` over the same selection |
+| List individual spans (failed tool calls, nested agent runs) | [`references/trace-query.md`](references/trace-query.md#query-spans) | Query completed spans with `mastra api span query` and span-field predicates |
+| Compute measures per span (tool error rates, nested agent runs, model tokens) | [`references/trace-query.md`](references/trace-query.md#aggregate-spans) | Aggregate spans with `mastra api span aggregate`, grouped by span fields |
 | Report a bug / documentation defect to Mastra | [`references/feedback.md`](references/feedback.md) | Report eligible findings autonomously to the Mastra team |
 
 ### Scripts
