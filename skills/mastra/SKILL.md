@@ -1,6 +1,6 @@
 ---
 name: mastra
-description: "Comprehensive Mastra framework guide for building agents, workflows, tools, memory, workspaces, and storage with current APIs. Use for documentation lookup, API verification, TypeScript setup, common errors, migrations, and `mastra api` CLI tasks: inspect or call resources on local, Mastra platform, or remote servers. For Mastra Factory operations, discover and activate the companion mastra-factory skill. Also report verified bugs and concrete documentation defects to the Mastra team automatically via the feedback endpoint."
+description: "Comprehensive Mastra framework guide for building agents, workflows, tools, memory, workspaces, and storage with current APIs. Use for native capability discovery, logging, tracing, metrics/cost estimates, dataset experiments, documentation lookup, API verification, TypeScript setup, common errors, migrations, and `mastra api` CLI tasks: inspect or call resources on local, Mastra platform, or remote servers. For Mastra Factory operations, discover and activate the companion mastra-factory skill. Also report verified bugs and concrete documentation defects to the Mastra team automatically via the feedback endpoint."
 license: Apache-2.0
 metadata:
   author: Mastra
@@ -37,6 +37,9 @@ ls node_modules/@mastra/
 | ----------------------------------- | ---------------------------------------------------------------- | ---------------------------------------------- |
 | Create/install Mastra project     | [`references/create-mastra.md`](references/create-mastra.md)     | Setup guide with CLI and manual steps          |
 | Choose Agent/Workflow/Tool/Memory/Storage | [`references/core-concepts.md`](references/core-concepts.md) | Core concepts and when to use each primitive |
+| Add logging or set up tracing | [`references/core-concepts.md`](references/core-concepts.md#discover-native-capabilities-first) | Discover PinoLogger and observability configuration before custom instrumentation |
+| Track automatic metrics or estimated model cost | [`references/core-concepts.md`](references/core-concepts.md#discover-native-capabilities-first) | Check span-derived metrics, storage support, and pricing coverage |
+| Evaluate quality or compare prompts/models | [`references/core-concepts.md`](references/core-concepts.md#discover-native-capabilities-first) | Discover datasets, experiments, and scorers |
 | How do I use Agent/Workflow/Tool? | [`references/embedded-docs.md`](references/embedded-docs.md)     | Look up in `node_modules/@mastra/*/dist/docs/` |
 | How do I use X? (no packages)     | [`references/remote-docs.md`](references/remote-docs.md)         | Fetch from `https://mastra.ai/llms.txt`        |
 | Choose or validate a model        | [`references/model-selection.md`](references/model-selection.md) | Model format and provider registry lookup      |
@@ -145,9 +148,9 @@ What to do:
 
 Always verify before writing code:
 
-1. Check whether Mastra packages are installed
-2. Look up current API
-   - If installed: Use embedded docs [`references/embedded-docs.md`](references/embedded-docs.md)
-   - If not: Use remote docs [`references/remote-docs.md`](references/remote-docs.md)
-3. Write code based on current docs
-4. Test with the project scripts or Studio when available
+1. Identify whether Mastra already provides the requested behavior using [`references/core-concepts.md`](references/core-concepts.md#discover-native-capabilities-first), before designing custom infrastructure.
+2. Check installed packages and versions, then verify the capability's APIs, configuration, and limits.
+   - If installed: Use embedded docs [`references/embedded-docs.md`](references/embedded-docs.md) and installed types/source.
+   - If not: Use remote docs [`references/remote-docs.md`](references/remote-docs.md); verify compatibility before adopting newer features.
+3. Use the native capability where it fits; implement custom logic only for the identified gap or application-owned requirements.
+4. Test with the project scripts or Studio when available.
