@@ -1,6 +1,10 @@
 # Core Concepts Reference
 
-Use this reference when deciding which Mastra primitive to use or when explaining the high-level shape of a Mastra application.
+Use this reference when choosing Mastra primitives and native capabilities before designing custom infrastructure.
+
+## Discover native capabilities first
+
+Check whether Mastra already provides the requested behavior before designing custom infrastructure. Verify the installed version's capabilities, configuration, and limits using [embedded docs](embedded-docs.md), or [remote docs](remote-docs.md) when unavailable. Prefer native capabilities where they fit; add custom logic for identified gaps and application-specific business rules.
 
 ## Agents vs workflows
 
