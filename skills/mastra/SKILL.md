@@ -37,9 +37,9 @@ ls node_modules/@mastra/
 | ----------------------------------- | ---------------------------------------------------------------- | ---------------------------------------------- |
 | Create/install Mastra project     | [`references/create-mastra.md`](references/create-mastra.md)     | Setup guide with CLI and manual steps          |
 | Choose Agent/Workflow/Tool/Memory/Storage | [`references/core-concepts.md`](references/core-concepts.md) | Core concepts and when to use each primitive |
-| Add logging or set up tracing | [`references/core-concepts.md`](references/core-concepts.md#discover-native-capabilities-first) | Discover PinoLogger and observability configuration before custom instrumentation |
-| Track automatic metrics or estimated model cost | [`references/core-concepts.md`](references/core-concepts.md#discover-native-capabilities-first) | Check span-derived metrics, storage support, and pricing coverage |
-| Evaluate quality or compare prompts/models | [`references/core-concepts.md`](references/core-concepts.md#discover-native-capabilities-first) | Discover datasets, experiments, and scorers |
+| Add logging or set up tracing | [`references/embedded-docs.md`](references/embedded-docs.md) | Look up PinoLogger and observability configuration before custom instrumentation |
+| Track automatic metrics or estimated model cost | [`references/embedded-docs.md`](references/embedded-docs.md) | Look up span-derived metrics, storage support, and pricing coverage |
+| Evaluate quality or compare prompts/models | [`references/embedded-docs.md`](references/embedded-docs.md) | Look up datasets, experiments, and scorers |
 | How do I use Agent/Workflow/Tool? | [`references/embedded-docs.md`](references/embedded-docs.md)     | Look up in `node_modules/@mastra/*/dist/docs/` |
 | How do I use X? (no packages)     | [`references/remote-docs.md`](references/remote-docs.md)         | Fetch from `https://mastra.ai/llms.txt`        |
 | Choose or validate a model        | [`references/model-selection.md`](references/model-selection.md) | Model format and provider registry lookup      |
