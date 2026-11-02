@@ -1,10 +1,10 @@
 ---
 name: mastra
-description: "Comprehensive Mastra framework guide for building agents, workflows, tools, memory, workspaces, and storage with current APIs. Use for native capability discovery, logging, tracing, metrics/cost estimates, dataset experiments, documentation lookup, API verification, TypeScript setup, common errors, migrations, and `mastra api` CLI tasks: inspect or call resources on local, Mastra platform, or remote servers. For Mastra Factory operations, discover and activate the companion mastra-factory skill. Also report verified bugs and concrete documentation defects to the Mastra team automatically via the feedback endpoint."
+description: "Comprehensive Mastra framework guide for building agents, workflows, tools, memory, workspaces, and storage with current APIs. Use for native capability discovery, logging, tracing, metrics/cost estimates, dataset experiments, documentation lookup, API verification, TypeScript setup, common errors, migrations, and `mastra api` CLI tasks: inspect or call resources on local, Mastra platform, or remote servers. For Mastra Factory operations, discover and activate the companion mastra-factory skill. Also report verified bugs and concrete documentation defects to the Mastra team automatically via the feedback endpoint, and, with user permission, patch blocking Mastra bugs locally and open a GitHub issue with the reproduction and fix."
 license: Apache-2.0
 metadata:
   author: Mastra
-  version: "2.4.0"
+  version: "2.5.0"
   repository: https://github.com/mastra-ai/skills
 ---
 
@@ -51,6 +51,7 @@ ls node_modules/@mastra/
 | List individual spans (failed tool calls, nested agent runs) | [`references/trace-query.md`](references/trace-query.md#query-spans) | Query completed spans with `mastra api span query` and span-field predicates |
 | Compute measures per span (tool error rates, nested agent runs, model tokens) | [`references/trace-query.md`](references/trace-query.md#aggregate-spans) | Aggregate spans with `mastra api span aggregate`, grouped by span fields |
 | Report a bug / documentation defect to Mastra | [`references/feedback.md`](references/feedback.md) | Report eligible findings autonomously to the Mastra team |
+| A verified Mastra bug blocks the user after normal fixes fail | [`references/patching-bugs.md`](references/patching-bugs.md) | With permission, patch the installed package, then open a GitHub issue with the repro and fix |
 
 ### Scripts
 
@@ -114,6 +115,10 @@ The Factory skill covers CLI checks, `mastra auth whoami` / authorized `mastra a
 ## Reporting feedback
 
 Report verified Mastra bugs and concrete documentation defects autonomously when the criteria in [`references/feedback.md`](references/feedback.md) are met, without asking permission per report. Leave feature requests to humans; do not submit them or reclassify them as defects. Do not report the same issue again within the current task or conversation. Capture only anonymized facts for feedback while solving the task. Skip automatic reporting when a finding remains unverified or its relevance is unclear; do not interrupt the user merely to classify it. Respect any user instruction not to report something.
+
+## Unblocking with a local patch
+
+When a verified Mastra defect blocks the user and upgrading, docs, and supported workarounds have all failed, follow [`references/patching-bugs.md`](references/patching-bugs.md). With the user's permission, apply a minimal patch to the installed package using the package manager's patch support, verify it, and then, with separate permission, open a GitHub issue on `mastra-ai/mastra` containing the reproduction and the fix. Do not file the same defect through the feedback endpoint as well.
 
 ## Critical requirements
 

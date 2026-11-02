@@ -66,4 +66,6 @@ Submit while the evidence is in hand:
 - `201` means created; `200` with `duplicate: true` means already reported. Either is success; do not send it again.
 - A non-2xx response is not a successful submission. Fix an actual request mistake once if identified; otherwise stop. Never reword a report or loop to force a different result, and do not claim delivery without a success response.
 
+If a verified defect blocks the user and a local patch could unblock them, follow [`patching-bugs.md`](patching-bugs.md) instead. Building a patch to unblock the user is part of the task, not an extended investigation for feedback. When that workflow opens or comments on a GitHub issue, do not also submit the same defect here.
+
 This endpoint reports to the Mastra team; it is unrelated to Mastra's read-only observability Feedback API for querying trace feedback.

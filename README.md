@@ -28,6 +28,7 @@ Single comprehensive skill for all Mastra development. Uses progressive disclosu
 - **Mastra API CLI** (`references/mastra-api.md`): Inspect and call resources on local, platform, or remote servers
 - **Advanced Trace Queries** (`references/trace-query.md`): Select completed traces with recursive predicates and cursor pagination
 - **Feedback** (`references/feedback.md`): report verified bugs and concrete documentation defects to the Mastra team
+- **Patching bugs** (`references/patching-bugs.md`): with permission, patch a blocking Mastra defect locally and open a GitHub issue with the reproduction and fix
 
 Main skill file teaches core concepts and routes to appropriate reference files based on user questions.
 
