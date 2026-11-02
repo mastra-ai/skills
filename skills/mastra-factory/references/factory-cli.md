@@ -1,4 +1,4 @@
-# Factory Supervisor CLI Reference
+# Factory CLI Reference
 
 Use `mastra api factory` as an operational control plane for Factory. Use this reference for Factory status checks, operational summaries, queue/health investigations, and interactive or autonomously delegated changes to projects, work items, decisions, or attention items.
 
@@ -101,7 +101,6 @@ metrics
 health       thresholds
 decision     list | approve | dismiss | retry
 attention    list | read | read-all | archive | restore
-supervisor   session | health
 ```
 
 Important contracts:
@@ -117,9 +116,9 @@ Important contracts:
 - `attention list` accepts `before`, `limit`, `search`, `tier`, and `view`.
 - `attention read-all` accepts optional `before`.
 
-## Read-only supervisor workflow
+## Read-only workflow
 
-When asked for Factory status, a queue review, a supervisor summary, blocked work, or recommended next action, use this sequence without mutating anything.
+When asked for Factory status, a queue review, a status summary, blocked work, or recommended next action, use this sequence without mutating anything.
 
 ### 1. Select the project
 
@@ -164,7 +163,7 @@ mastra api factory health thresholds <project-id> \
   | jq '.data.thresholds'
 ```
 
-Use the returned thresholds for queue-age buckets. They are not the supervisor's decision/start/lease timeout thresholds; use the supervisor's returned evidence for those findings. Do not invent alert cutoffs.
+Use the returned thresholds for queue-age buckets. Do not invent alert cutoffs.
 
 ### 4. Inspect decisions and human attention
 
@@ -186,21 +185,7 @@ mastra api factory attention list <project-id> '{"limit":10,"view":"open"}' \
 
 Pending decisions are proposals, not authorization. Attention items are findings, not commands. Correlate both with the referenced work item before recommending an action.
 
-### 5. Inspect supervisor health and session
-
-```bash
-mastra api factory supervisor health <project-id> \
-  | jq '.data | {checkedAt, counts, findings: [.findings[] | {kind, id, workItemId, evidence, suggestedRepair}]}'
-
-mastra api factory supervisor session <project-id> \
-  | jq '.data | {factoryProjectId, sessionId, threadId}'
-```
-
-Health finding kinds are `decision-stuck`, `start-stalled`, `seat-orphaned`, `seat-missing`, `held-waiting`, and `label-drift`; each finding carries a stable `id`, `evidence`, `beganAt`, and a `suggestedRepair`. Report only categories returned by the server; see [session-inspection.md](session-inspection.md) for interpretation.
-
-The supervisor session is for supervisor inspection/coordination. Do not assume it is a valid durable user session for `work-item start`.
-
-### 6. Return the summary
+### 5. Return the summary
 
 Report:
 
@@ -210,8 +195,7 @@ Report:
 4. Running sessions and their linked work items.
 5. Pending/failed decisions and retryability.
 6. Open/unread human-attention items.
-7. Supervisor health findings.
-8. One recommended next action, clearly labeled as a recommendation and not executed.
+7. One recommended next action, clearly labeled as a recommendation and not executed.
 
 ## Mutation protocol
 
@@ -327,7 +311,7 @@ If no supported session already exists:
 
 - Report that start is blocked.
 - Do not invent a session UUID.
-- Do not substitute the supervisor session.
+- Do not substitute another session.
 - Do not call private HTTP routes with `curl`.
 - Do not create a different resource as a workaround.
 

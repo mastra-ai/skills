@@ -1,6 +1,6 @@
 ---
 name: mastra-factory
-description: "Operate and supervise Mastra Factory through `mastra api factory`. Use for first-time Factory connection and login, status or queue summaries, project and work-item inspection, thread history and memory, metrics, health, decisions, attention, supervisor sessions, and user-authorized autonomous or interactive Factory operations on hosted, local, remote, or self-hosted servers."
+description: "Operate and supervise Mastra Factory through `mastra api factory`. Use for first-time Factory connection and login, status or queue summaries, project and work-item inspection, thread history and memory, metrics, health, decisions, attention, and user-authorized autonomous or interactive Factory operations on hosted, local, remote, or self-hosted servers."
 license: Apache-2.0
 metadata:
   author: Mastra
@@ -8,7 +8,7 @@ metadata:
   repository: https://github.com/mastra-ai/skills
 ---
 
-# Mastra Factory Supervisor
+# Mastra Factory
 
 Use `mastra api factory` as the operational control plane for Factory.
 
@@ -24,14 +24,14 @@ For status, inspection, diagnosis, queue review, or recommendation requests:
 
 1. Stay read-only.
 2. Select the sole or explicitly named project; report choices when ambiguous.
-3. Inspect project state, work items, metrics, thresholds, decisions, attention, and supervisor health/session.
-4. Correlate stages, revisions, sessions, decisions, and health findings.
+3. Inspect project state, work items, metrics, thresholds, decisions, and attention.
+4. Correlate stages, revisions, sessions, decisions, and attention items.
 5. Report active/queued work, blocked or unhealthy items, running sessions, pending decisions, human attention, and one recommended next action.
 6. Execute a recommendation only when the current request or a previously granted operating scope authorizes it.
 
 ## Required reference
 
-Read [`references/factory-supervisor.md`](references/factory-supervisor.md) before running Factory commands for output control, contracts, the read-only workflow, mutation protocol, governance constraints, durable-session limitations, and error handling.
+Read [`references/factory-cli.md`](references/factory-cli.md) before running Factory commands for output control, contracts, the read-only workflow, mutation protocol, governance constraints, durable-session limitations, and error handling.
 
 For “my work,” actual execution progress, thread messages, memory, or health interpretation, also read [`references/session-inspection.md`](references/session-inspection.md). Distinguish card stages from running agents, historical messages from current memory, and agent claims from verified repository outcomes.
 
@@ -44,4 +44,4 @@ For “my work,” actual execution progress, thread messages, memory, or health
 - Fetch current state before a write, make the smallest in-scope change, then refetch and report IDs, revisions, and final state.
 - Use transitions—not metadata updates—for stage changes, with the current revision and a fresh UUID request ID.
 - Never use private HTTP routes to bypass unsupported CLI operations.
-- If `work-item start` lacks a supported durable user session, report the block; never substitute the supervisor session or invent a session UUID.
+- If `work-item start` lacks a supported durable user session, report the block; never substitute another session or invent a session UUID.
