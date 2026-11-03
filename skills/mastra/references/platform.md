@@ -17,6 +17,8 @@ Everything else is agent work: scaffolding, REST discovery and provisioning, `ma
 
 Do not run `mastra auth tokens create` yourself: it prints the secret to stdout. Never ask for secret values in chat, never print or log them, and never commit them.
 
+If you need anything you were not given — a credential, a model-provider key, which org or project to use — stop and ask the user. Do not take secrets from your own shell environment, other projects, or files the user did not point you to.
+
 ## Credentials
 
 Two credential models exist. Do not mix them.
@@ -112,7 +114,7 @@ In headless mode the project must already exist and `MASTRA_PROJECT_ID` must be 
 
 Other useful flags: `--env <name>`, `--region <region>` (new environments only, e.g. `us`, `eu`), `--env-file <file>`, `--workers dedicated|in-process`, `--skip-build`. Avoid `--skip-preflight`; it skips the checks that prevent broken deploys.
 
-**App environment variables.** Variables stored on the Platform environment are used at deploy time. `--env-file <file>` layers a local file on top (overriding stored keys); with several `.env*` files present, headless mode requires an explicit `--env-file`. Put model-provider keys the app needs (for example `OPENAI_API_KEY`) there or store them on the environment; a missing key fails at runtime, not at deploy.
+**App environment variables.** Variables stored on the Platform environment are used at deploy time. `--env-file <file>` layers a local file on top (overriding stored keys); with several `.env*` files present, headless mode requires an explicit `--env-file`. A missing model-provider key fails at runtime, not at deploy. Before deploying, check which keys the app needs (for example `OPENAI_API_KEY`); if they are not already stored on the environment, ask the user to put them in a gitignored env file in the project (for example `.env.production`) and deploy with `--env-file <file>` (path relative to the project). Deploy saves those variables on the environment, so later deploys reuse them.
 
 **Storage.** Preflight blocks file-backed storage (`file:./mastra.db`) because the Platform filesystem is ephemeral. Guard the path with an environment variable:
 
@@ -157,4 +159,4 @@ Only delete resources you created in this session, and only with the user's cons
 | 409 on workspace enable | The project has no environment; deploy or create one first. |
 | Generic 500 from `PlatformFilesystem` / `PlatformSandbox` | Upstream storage or sandbox error, not auth. Capture the request ID and report it; do not retry in a loop. |
 | Preflight blocks a local storage path | Guard the path with an env var and attach a managed database (see Storage). |
-| Deploy succeeds but agent calls fail | Model-provider key missing from the environment; add it and redeploy or run `mastra env restart <environment>`. |
+| Deploy succeeds but agent calls fail | Model-provider key missing from the environment. Ask the user to add it to a gitignored env file, then redeploy with `--env-file <file>`. |
