@@ -13,7 +13,7 @@ The browser is only for the human: signing up, creating an organization, and `ma
 Everything else is agent work: scaffolding, REST discovery and provisioning, `mastra deploy`, and verification. When credentials are missing, stop and ask the user to do one of:
 
 - Run `mastra auth login` in their own terminal (browser sign-in). The CLI saves the session, and later CLI commands reuse it without a TTY.
-- Create an API token themselves (`mastra auth tokens create <name>` in their own terminal, or the dashboard) and put it in the environment or an ignored env file.
+- Create an API token themselves (`mastra auth tokens create <name>` in their own terminal, or the dashboard) and put it, with `MASTRA_ORG_ID`, in the environment or an ignored env file.
 
 Do not run `mastra auth tokens create` yourself: it prints the secret to stdout. Never ask for secret values in chat, never print or log them, and never commit them.
 
@@ -48,7 +48,7 @@ curl -fsS https://platform.mastra.ai/v1/auth/orgs \
 
 | Route | Purpose |
 | - | - |
-| `GET /v1/auth/orgs` | `{ organizations: [{ id, slug, name, role, isCurrent }] }`. Pick `MASTRA_ORG_ID` here (or `mastra auth whoami`). |
+| `GET /v1/auth/orgs` | `{ organizations: [{ id, slug, name, role, isCurrent }] }`. Pick `MASTRA_ORG_ID` here (or `mastra auth whoami`). Org API keys (`sk_...`) get an empty list; ask the user for the org ID. |
 | `GET /v1/projects` | List projects in the org. |
 | `POST /v1/studio/projects` | Create a project. Body `{"name": "..."}` (1–64 chars); response `{ project: { id, slug, workspacesEnabled, ... } }`. Viewer/read-only roles get 403. |
 | `GET /v1/projects/{id}` | Project details, including `workspacesEnabled`. |
