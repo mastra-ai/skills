@@ -99,9 +99,11 @@ mastra api --url "$FACTORY_URL" thread messages "$THREAD_ID" '{"page":0,"perPage
 
 ## Interpret attention items before suggesting repairs
 
-Attention items are findings, not commands. Report only items actually returned by the deployment, and correlate each with its work item, decisions, and session before suggesting a repair. Proposals awaiting approval are not the same as a failed dispatch.
+Attention items are notifications, not commands. Report only items actually returned by the deployment, and correlate each with its work item, decisions, and session before suggesting a repair. A proposed run awaiting approval (`automation-proposed`) is not the same as a failed dispatch (`automation-failed`), and a parked run (`agent-waiting`) needs input rather than a restart.
 
-A suggested repair is not authorization. Apply the CLI reference's mutation protocol and durable-session requirements; a completed task may need reconciliation rather than rerunning expensive work.
+A **seat** is an active run binding that assigns an agent role to a work item on a specific thread and session; it is not a paid-user license. Stage-to-role mapping depends on the board and deployment, so use returned bindings rather than deriving the role from a stage label.
+
+A failed or proposed decision, or any attention item, is not authorization to repair. Apply the CLI reference's mutation protocol and durable-session requirements; a completed task may need reconciliation rather than rerunning expensive work.
 
 ## Pagination and compatibility failures
 
