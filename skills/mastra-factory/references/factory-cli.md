@@ -107,7 +107,7 @@ decision     list | approve | dismiss | retry
 attention    list | read | read-all | archive | restore
 ```
 
-The catalog matches `mastra` 1.37. Other CLI versions may add or omit commands; check `mastra api factory --help` rather than assuming a command exists.
+CLI versions may add or omit commands; check `mastra api factory --help` rather than assuming a command exists.
 
 Important contracts:
 

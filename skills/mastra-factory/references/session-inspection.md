@@ -80,7 +80,7 @@ mastra api --url "$FACTORY_URL" memory status \
 
 Status can expose `enabled`, `hasRecord`, `lastObservedAt`, `observationTokenCount`, and observing/reflecting flags. It is not the observation text. A missing status block is not proof of an empty memory: verify the agent and resource first. A record with zero observation tokens is not evidence that observation succeeded.
 
-In the verified CLI surface (Mastra 1.30.0), `memory` exposes `search`, `current`, and `status`, not a dedicated OM-content command. The server's authenticated `GET /memory/observational-memory` returns `{record, history}` (under the runtime API prefix), but route metadata alone does not make it a CLI command. Do not extract saved tokens or invent a passthrough command to call it. If authoritative current OM is needed, use a supported authenticated UI/client or report the CLI limitation. Do not call the buffer-status POST as a substitute for a read.
+In the CLI surface verified for this skill, `memory` exposes `search`, `current`, and `status`, not a dedicated OM-content command. The server's authenticated `GET /memory/observational-memory` returns `{record, history}` (under the runtime API prefix), but route metadata alone does not make it a CLI command. Do not extract saved tokens or invent a passthrough command to call it. If authoritative current OM is needed, use a supported authenticated UI/client or report the CLI limitation. Do not call the buffer-status POST as a substitute for a read.
 
 Historical observation text can also be present in stored message parts. This is a version-dependent diagnostic fallback, not a reconstruction of the authoritative current record:
 
