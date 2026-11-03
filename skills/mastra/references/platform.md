@@ -1,4 +1,4 @@
-# Mastra Platform: provision and deploy
+# Mastra Platform
 
 ## When to use
 
