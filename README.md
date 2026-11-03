@@ -26,6 +26,7 @@ Single comprehensive skill for all Mastra development. Uses progressive disclosu
 - **Troubleshooting** (`references/common-errors.md`): Common errors and solutions
 - **Migrations** (`references/migration-guide.md`): Version upgrade workflows
 - **Mastra API CLI** (`references/mastra-api.md`): Inspect and call resources on local, platform, or remote servers
+- **Mastra Platform** (`references/platform.md`): Build and deploy apps to Mastra Platform with Platform APIs, `mastra deploy`, and Platform workspaces
 - **Advanced Trace Queries** (`references/trace-query.md`): Select completed traces with recursive predicates and cursor pagination
 - **Feedback** (`references/feedback.md`): report verified bugs and concrete documentation defects to the Mastra team
 

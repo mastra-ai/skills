@@ -1,10 +1,10 @@
 ---
 name: mastra
-description: "Comprehensive Mastra framework guide for building agents, workflows, tools, memory, workspaces, and storage with current APIs. Use for native capability discovery, logging, tracing, metrics/cost estimates, dataset experiments, documentation lookup, API verification, TypeScript setup, common errors, migrations, and `mastra api` CLI tasks: inspect or call resources on local, Mastra platform, or remote servers. For Mastra Factory operations, discover and activate the companion mastra-factory skill. Also report verified bugs and concrete documentation defects to the Mastra team automatically via the feedback endpoint."
+description: "Comprehensive Mastra framework guide for building agents, workflows, tools, memory, workspaces, and storage with current APIs. Use for native capability discovery, logging, tracing, metrics/cost estimates, dataset experiments, documentation lookup, API verification, TypeScript setup, common errors, migrations, building and deploying apps to Mastra Platform (deploy it to mastra) via Platform APIs and `mastra deploy`, and `mastra api` CLI tasks: inspect or call resources on local, Mastra platform, or remote servers. For Mastra Factory operations, discover and activate the companion mastra-factory skill. Also report verified bugs and concrete documentation defects to the Mastra team automatically via the feedback endpoint."
 license: Apache-2.0
 metadata:
   author: Mastra
-  version: "2.4.1"
+  version: "2.5.0"
   repository: https://github.com/mastra-ai/skills
 ---
 
@@ -46,6 +46,7 @@ ls node_modules/@mastra/
 | I'm getting an error...           | [`references/common-errors.md`](references/common-errors.md)     | Common errors and solutions                    |
 | Upgrade from v0.x to v1.x         | [`references/migration-guide.md`](references/migration-guide.md) | Version upgrade workflows                      |
 | Inspect/call server resources via CLI | [`references/mastra-api.md`](references/mastra-api.md)       | `mastra api` CLI for local, Mastra platform, or remote servers |
+| Deploy to Mastra Platform, provision projects, or use Platform sandbox/filesystem | [`references/platform.md`](references/platform.md) | Platform REST APIs, credentials, and `mastra deploy` without browser automation |
 | Find exact traces with complex predicates | [`references/trace-query.md`](references/trace-query.md) | Query completed traces by trace fields or related spans |
 | Count traces or compute grouped measures (error rate, latency, tokens, cost) | [`references/trace-query.md`](references/trace-query.md#aggregate-traces) | Aggregate completed traces with `mastra api trace aggregate` over the same selection |
 | List individual spans (failed tool calls, nested agent runs) | [`references/trace-query.md`](references/trace-query.md#query-spans) | Query completed spans with `mastra api span query` and span-field predicates |
@@ -96,6 +97,10 @@ Then open `http://localhost:4111` in a browser to show Mastra Studio to your hum
 Use `mastra api` to inspect or call resources on local dev servers, Mastra platform deployments, or remote Mastra endpoints. It is useful for agent-readable state, execution, traces, logs, scores, threads, and workflow operations. See [`references/mastra-api.md`](references/mastra-api.md) for usage patterns.
 
 For exact trace selection that needs recursive predicates or conditions over related spans, read [`references/trace-query.md`](references/trace-query.md). Before using `mastra api trace query`, confirm that the installed CLI exposes the command. Use `--schema` for the target's request/response shape and structural constraints, and use the canonical documentation found through [`references/remote-docs.md`](references/remote-docs.md) for supported fields, operators, and semantics. Preserve opaque pagination cursors and fetch trace or span details only after selecting candidates.
+
+## Deploy to Mastra Platform
+
+When the user asks to deploy to Mastra, whether to build a new app and deploy it or to deploy an existing Mastra project, read [`references/platform.md`](references/platform.md) before running any deploy or Platform API command. It covers which steps need the human (sign-up and sign-in only), credentials, REST discovery and project creation, `PlatformFilesystem` and `PlatformSandbox`, `mastra deploy`, and verification. Build or locate the app first with the references above, then follow `platform.md` to deploy.
 
 ## Mastra Factory
 

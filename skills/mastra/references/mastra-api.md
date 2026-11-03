@@ -4,6 +4,8 @@ How to use the `mastra api` CLI to interact with Mastra servers. Prefer fast, fo
 
 Use this reference when the user asks to inspect or call agents, workflows, tools, MCP servers, memory threads, traces, logs, metrics, scores, datasets, experiments, or to debug/test `mastra api` commands.
 
+This reference does not cover the Mastra Platform control plane (projects, environments, deploys, tokens, workspace provisioning); for those, see [`platform.md`](platform.md).
+
 ## Setup
 
 The CLI can interact with any reachable Mastra server:
