@@ -45,6 +45,8 @@ ls node_modules/@mastra/
 | Choose or validate a model        | [`references/model-selection.md`](references/model-selection.md) | Model format and provider registry lookup      |
 | I'm getting an error...           | [`references/common-errors.md`](references/common-errors.md)     | Common errors and solutions                    |
 | Upgrade from v0.x to v1.x         | [`references/migration-guide.md`](references/migration-guide.md) | Version upgrade workflows                      |
+| Upgrade from v0.x to v1.x         | [`references/v1-migration.md`](references/v1-migration.md)     | v0 to v1 API mapping and required `id` table    |
+| Call Mastra from a separate frontend/client | [`references/client-js.md`](references/client-js.md) | `@mastra/client-js` agents, workflows, and memory surface |
 | Inspect/call server resources via CLI | [`references/mastra-api.md`](references/mastra-api.md)       | `mastra api` CLI for local, Mastra platform, or remote servers |
 | Find exact traces with complex predicates | [`references/trace-query.md`](references/trace-query.md) | Query completed traces by trace fields or related spans |
 | Count traces or compute grouped measures (error rate, latency, tokens, cost) | [`references/trace-query.md`](references/trace-query.md#aggregate-traces) | Aggregate completed traces with `mastra api trace aggregate` over the same selection |

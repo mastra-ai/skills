@@ -18,7 +18,7 @@ Look up API signatures from embedded docs in `node_modules/@mastra/*/dist/docs/`
 node_modules/@mastra/core/dist/docs/
 ├── SKILL.md # Package overview, exports
 ├── assets/
-│   └── SOURCE_MAP.json # Export -> file mappings
+│   └── SOURCE_MAP.json # Module -> file mappings
 └── references/ # Individual topic docs
 ```
 
@@ -46,19 +46,26 @@ Documents are typically formatted as `<category>-<topic>.md` where category is o
 
 ### Optional: Check source code for type definitions / additional details
 
-Look at the `SOURCE_MAP.json` to find the file path for the export:
+`SOURCE_MAP.json` maps modules to files. Its top level has four keys: `version`, `package`, `exports`, and `modules`.
+
+- `modules` holds the real module names (`agent`, `tools`, `workflows`, `memory`, `stream`, `llm`, `mastra`, `mcp`, `evals`, `processors`, `storage`, `vector`, `voice`). Use it to find which file implements a module.
+- `exports` holds five single-letter keys (`t`, `r`, `i`, `n`, `a`). The keys are mangled build artifacts, not export names, so the map cannot be searched by export name.
+
+List the modules and their entry files:
 
 ```bash
-cat node_modules/@mastra/core/dist/docs/assets/SOURCE_MAP.json | grep '"Agent"'
+python3 -c "import json;d=json.load(open('node_modules/@mastra/core/dist/docs/assets/SOURCE_MAP.json'));[print(k,v['index']) for k,v in d['modules'].items()]"
 ```
 
-Returns: `{ "Agent": { "types": "dist/agent/agent.d.ts", ... } }`
-
-Read the type definition for exact constructor parameters, types, and JSDoc:
+For a specific export's signature, go straight to the type definition. Read the `.d.ts` file for the module the export belongs to:
 
 ```bash
 cat node_modules/@mastra/core/dist/agent/agent.d.ts
 ```
+
+Read the type definition for exact constructor parameters, types, and JSDoc.
+
+[`migration-guide.md`](migration-guide.md) uses `SOURCE_MAP.json` for the same lookup. Apply the same correction there.
 
 ## Common packages
 
@@ -79,11 +86,11 @@ ls node_modules/@mastra/
 # List available topic documentation
 ls node_modules/@mastra/core/dist/docs/references/
 
-# Find specific export in SOURCE_MAP
-cat node_modules/@mastra/core/dist/docs/assets/SOURCE_MAP.json | grep '"ExportName"'
+# List modules and their entry files from SOURCE_MAP
+python3 -c "import json;d=json.load(open('node_modules/@mastra/core/dist/docs/assets/SOURCE_MAP.json'));[print(k,v['index']) for k,v in d['modules'].items()]"
 
-# Read type definition from path
-cat node_modules/@mastra/core/dist/[path-from-source-map]
+# Read type definition for a module
+cat node_modules/@mastra/core/dist/[module-path]/[file].d.ts
 
 # View package overview
 cat node_modules/@mastra/core/dist/docs/SKILL.md
