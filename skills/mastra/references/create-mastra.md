@@ -228,3 +228,5 @@ After creating your project with `create mastra`:
 - [Agents](https://mastra.ai/docs/agents/overview)
 - [Workflows](https://mastra.ai/docs/workflows/overview)
 - [GitHub](https://github.com/mastra-ai/mastra)
+
+To deploy the project to Mastra Platform, see [`platform.md`](platform.md).
