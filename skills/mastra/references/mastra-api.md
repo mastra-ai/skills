@@ -11,7 +11,7 @@ The CLI can interact with any reachable Mastra server:
 - Local dev server: `http://localhost:4111` from `npm run dev`
 - Mastra platform deployment: Use the deployment URL
 - Remote/self-hosted server: Use the server URL
-- Hosted Mastra Platform Observability: `https://observability.mastra.ai` (auto-targeted by `trace`, `log`, `score`, and `metric` commands)
+- Hosted Mastra Platform Observability: `https://observability.mastra.ai` (auto-targeted by `trace`, `span`, `log`, `score`, and `metric` commands)
 
 For local servers, `mastra api` defaults to `http://localhost:4111`:
 
@@ -50,7 +50,7 @@ Runtime commands (`agent`, `workflow`, `tool`, `mcp`, `thread`, `memory`, `datas
 2. `http://localhost:4111` for a local `mastra dev` server.
 3. `.mastra-project.json` for a Mastra platform project.
 
-Observability commands (`trace`, `log`, `score`, `metric`) target `https://observability.mastra.ai` by default instead of a project deployment URL. EU projects use `https://observability.eu.mastra.ai`: the CLI picks it automatically from `mastra@1.34.2`. On older versions, EU requests time out with `REQUEST_TIMEOUT`; pass `--url https://observability.eu.mastra.ai`. The CLI resolves credentials in this order:
+Observability commands (`trace`, `span`, `log`, `score`, `metric`) target `https://observability.mastra.ai` by default instead of a project deployment URL. EU projects use `https://observability.eu.mastra.ai`: the CLI picks it automatically from `mastra@1.34.2`. On older versions, EU requests time out with `REQUEST_TIMEOUT`; pass `--url https://observability.eu.mastra.ai`. The CLI resolves credentials in this order:
 
 1. Explicit `Authorization` and `X-Mastra-Project-Id` headers passed with `--header`.
 2. `MASTRA_PLATFORM_ACCESS_TOKEN` and `MASTRA_PROJECT_ID` from the environment.
@@ -76,7 +76,7 @@ Pass `--url` and `--header` only when overriding the hosted observability target
 Start with these command groups when present; verify with `mastra api --help` if the group fails.
 
 ```text
-agent workflow tool mcp thread memory trace log metric score dataset experiment
+agent workflow tool mcp thread memory trace span log metric score dataset experiment
 ```
 
 ## Fast path for read-only requests
@@ -146,7 +146,7 @@ npx mastra api span aggregate --help
 npx mastra api span aggregate --schema
 ```
 
-Use `trace query` instead of `trace list` when selection requires recursive predicates, metadata filters, or conditions over related spans, scores, or feedback. First use `trace query --help` to confirm that the installed CLI exposes the command. The inline JSON query is required, and its cursor-bearing response stays nested under `data`. Read [`trace-query.md`](trace-query.md) for availability checks, the division between CLI schema discovery and canonical documentation, query construction, and pagination.
+Use `trace query` instead of `trace list` when selection requires recursive predicates, metadata filters, or conditions over related spans. First use `trace query --help` to confirm that the installed CLI exposes the command. The inline JSON query is required, and its cursor-bearing response stays nested under `data`. Read [`trace-query.md`](trace-query.md) for availability checks, the division between CLI schema discovery and canonical documentation, query construction, and pagination.
 
 Use `trace aggregate` when the answer is a count or measure (error rate, latency percentiles, tokens, cost) grouped by up to two dimensions or time buckets rather than a list of traces. It takes the same `timeRange` and `where` as `trace query`. See [`trace-query.md`](trace-query.md#aggregate-traces).
 
@@ -215,6 +215,6 @@ curl -fsS "$MASTRA_URL/api/system/api-schema" \
 - Working memory update requires the agent's memory to have working memory enabled.
 - Empty lists may simply mean the server has no matching stored data yet.
 - `trace list` and `trace get` return lightweight payloads by default (no span input, output, attributes, or metadata). Pass `--verbose` to fetch full span records, or use `trace span <traceId> <spanId>` to fetch one specific span in full.
-- `trace query` requires inline JSON, queries completed traces, and preserves its opaque cursor at `data.page.next`. Pass that value unchanged as `page.after` with the same query shape.
+- `trace query` requires inline JSON, queries completed traces, and defaults to keyset pagination: pass `data.page.next` unchanged as `page.after` with the same query shape. Numbered pages and delta polling use different response metadata; see [`trace-query.md`](trace-query.md#pagination).
 - `trace aggregate` requires inline JSON and isn't paginated; when `truncated` is `true`, narrow the selection.
 - `span query` requires inline JSON and pages like `trace query`: pass `data.page.next` unchanged as `page.after`. `span aggregate` isn't paginated, like `trace aggregate`.
