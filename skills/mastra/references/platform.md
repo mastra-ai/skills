@@ -56,7 +56,7 @@ curl -fsS https://platform.mastra.ai/v1/auth/orgs \
 | `POST /v1/projects/{projectId}/environments` | Create an environment. Body `{"name": "production", "type": "production", "region": "us"}` (`region` optional). Not in the public spec; called by the CLI. |
 | `GET /v1/projects/{projectId}/environment-deploys` | `{ deploys: [{ id, environmentName, status, error, errorCode, createdAt, ... }] }`. Not in the public spec; called by the CLI. |
 
-`/v1/projects` itself is list-only; project creation is under `/v1/studio/projects`. There is no documented API to create an organization; that is a human dashboard step.
+`/v1/projects` itself is list-only; project creation is under `/v1/studio/projects`. The spec also lists `POST /v1/auth/orgs` (create organization), but creating or choosing an organization is the user's decision: ask the user, do not create one.
 
 Before calling a route not listed here, check it exists with the method you need:
 
@@ -114,7 +114,7 @@ Projects created before workspaces were on by default may have `workspacesEnable
 
 In headless mode the project must already exist and `MASTRA_PROJECT_ID` must be its ID. For a new app, create it first with `POST /v1/studio/projects`, read `project.id`, and export it. Headless mode auto-accepts prompts.
 
-Other useful flags: `--env <name>`, `--region <region>` (new environments only, e.g. `us`, `eu`), `--env-file <file>`, `--workers dedicated|in-process`, `--skip-build`. Avoid `--skip-preflight`; it skips the checks that prevent broken deploys.
+Other useful flags: `--env <name>`, `--region us|eu` (new environments only), `--env-file <file>`, `--workers dedicated|in-process`, `--skip-build`. Avoid `--skip-preflight`; it skips the checks that prevent broken deploys.
 
 **App environment variables.** Variables stored on the Platform environment are used at deploy time. `--env-file <file>` layers a local file on top (overriding stored keys); with several `.env*` files present, headless mode requires an explicit `--env-file`. A missing model-provider key fails at runtime, not at deploy. Before deploying, check which keys the app needs (for example `OPENAI_API_KEY`); if they are not already stored on the environment, ask the user to put them in a gitignored env file in the project (for example `.env.production`) and deploy with `--env-file <file>` (path relative to the project). Deploy saves those variables on the environment, so later deploys reuse them. Never fill that file from your own shell (for example `printf 'KEY=%s' "$KEY" > .env.production`): the value persists on the Platform environment. If a key was deployed that the user did not provide, tell the user so they can remove or rotate it; do not change stored environment credentials yourself.
 
