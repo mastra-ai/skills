@@ -12,7 +12,7 @@ The browser is only for the human: signing up, creating an organization, and `ma
 
 Everything else is agent work: scaffolding, REST discovery and provisioning, `mastra deploy`, and verification. When credentials are missing, stop and ask the user to do one of:
 
-- Run `mastra auth login` in an interactive terminal (browser sign-in), then rerun. Works only when the agent's shell has a TTY.
+- Run `mastra auth login` in their own terminal (browser sign-in). The CLI saves the session, and later CLI commands reuse it without a TTY.
 - Create an API token themselves (`mastra auth tokens create <name>` in their own terminal, or the dashboard) and put it in the environment or an ignored env file.
 
 Do not run `mastra auth tokens create` yourself: it prints the secret to stdout. Never ask for secret values in chat, never print or log them, and never commit them.
@@ -30,7 +30,7 @@ Two credential models exist. Do not mix them.
 | `MASTRA_PLATFORM_ACCESS_TOKEN` | App runtime (workspaces, observability) | Not a deploy credential. Injected on deploy; locally, an org API token the user creates. |
 | `MASTRA_ENVIRONMENT_ID`, `MASTRA_PLATFORM_BUCKET_NAME` | App runtime (workspaces) | Injected on deploy; set manually only for local runs. |
 
-Without `MASTRA_API_TOKEN` and without a TTY, the CLI cannot log in, so a non-interactive agent needs token mode.
+Check for a saved session with `mastra auth whoami` before asking for credentials. With a saved session, CLI commands (including `mastra deploy`) work without a TTY and use the current org (`mastra auth orgs`; override with `--org <id>`). Only signing in, or signing in again after the session expires, needs a TTY. Do not read the saved credentials file; in session mode use CLI commands instead of the REST calls below, which need `MASTRA_API_TOKEN`.
 
 Keep control-plane credentials (`MASTRA_API_TOKEN`, `MASTRA_ORG_ID`) in the shell environment, not in the app's `.env`: deploy uploads app env files as-is and does not filter them.
 
@@ -104,7 +104,7 @@ Projects created before workspaces were on by default may have `workspacesEnable
 
 | Situation | Command |
 | - | - |
-| Interactive, logged in with `mastra auth login` | `mastra deploy --project <name> --yes` (creates the project if not found) |
+| Saved `mastra auth login` session (no `MASTRA_API_TOKEN` set) | `mastra deploy --project <name> --yes` (creates the project in the current org if not found) |
 | Headless, token in env | Export `MASTRA_API_TOKEN`, `MASTRA_ORG_ID`, `MASTRA_PROJECT_ID`, then `mastra deploy --yes` |
 | Directory already linked | `mastra deploy --yes` (reads `.mastra-project.json`) |
 
