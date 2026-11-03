@@ -18,7 +18,7 @@ mastra api --url "$FACTORY_URL" factory work-item list "$PROJECT_ID" \
 
 This finds creator/starter relationships, not every assignment, mention, or contribution. Say what was matched. Confirm the actual envelope and pagination before claiming complete coverage; use leaf schema to discover server-side filters rather than guessing them.
 
-A stage such as `execute` or `review` is not proof a model is running. Correlate `runningSessionIds`, session bindings, current decisions, recent messages, timestamps, and health findings. A stale running-session entry is not proof of recent progress. `board: null` can represent a Slack/chat item rather than a card on the work board; report it separately and don't automatically restart it as pipeline work.
+A stage such as `execute` or `review` is not proof a model is running. Correlate `runningSessionIds`, session bindings, current decisions, recent messages, timestamps, and attention items. A stale running-session entry is not proof of recent progress. `board: null` can represent a Slack/chat item rather than a card on the work board; report it separately and don't automatically restart it as pipeline work.
 
 ## Follow a work item into its thread
 
@@ -80,7 +80,7 @@ mastra api --url "$FACTORY_URL" memory status \
 
 Status can expose `enabled`, `hasRecord`, `lastObservedAt`, `observationTokenCount`, and observing/reflecting flags. It is not the observation text. A missing status block is not proof of an empty memory: verify the agent and resource first. A record with zero observation tokens is not evidence that observation succeeded.
 
-In the verified CLI surface (Mastra 1.30.0), `memory` exposes `search`, `current`, and `status`, not a dedicated OM-content command. The server's authenticated `GET /memory/observational-memory` returns `{record, history}` (under the runtime API prefix), but route metadata alone does not make it a CLI command. Do not extract saved tokens or invent a passthrough command to call it. If authoritative current OM is needed, use a supported authenticated UI/client or report the CLI limitation. Do not call the buffer-status POST as a substitute for a read.
+In the CLI surface verified for this skill, `memory` exposes `search`, `current`, and `status`, not a dedicated OM-content command. The server's authenticated `GET /memory/observational-memory` returns `{record, history}` (under the runtime API prefix), but route metadata alone does not make it a CLI command. Do not extract saved tokens or invent a passthrough command to call it. If authoritative current OM is needed, use a supported authenticated UI/client or report the CLI limitation. Do not call the buffer-status POST as a substitute for a read.
 
 Historical observation text can also be present in stored message parts. This is a version-dependent diagnostic fallback, not a reconstruction of the authoritative current record:
 
@@ -97,22 +97,13 @@ mastra api --url "$FACTORY_URL" thread messages "$THREAD_ID" '{"page":0,"perPage
 - Start-only events do not prove a hard kill; persistence may be partial. Likewise an OM error near a stopped run is evidence, not proof of causation.
 - `remembered`/pinned-knowledge signals are distinct from the full OM record. Missing markers don't prove that OM never ran.
 
-## Interpret supervisor findings before suggesting repairs
+## Interpret attention items before suggesting repairs
 
-A **seat** is an active run binding assigning an agent role to a work item, not a paid-user license. Stage-to-role mapping depends on the board and deployment; use returned evidence rather than deriving the role from a stage label.
+Attention items are notifications, not commands. Report only items actually returned by the deployment, and correlate each with its work item, decisions, and session before suggesting a repair. A proposed run awaiting approval (`automation-proposed`) is not the same as a failed dispatch (`automation-failed`), and a parked run (`agent-waiting`) needs input rather than a restart.
 
-| Finding | Meaning / next inspection |
-| --- | --- |
-| `seat-missing` | Working-stage item has no active binding and no in-flight decision. Check whether work is already complete, intentionally parked, or awaiting a real restart. It is not itself proof of a crash and need not have an age threshold. |
-| `seat-orphaned` | Active binding references a missing or terminal item. Inspect binding/item state before revocation. |
-| `start-stalled` | A pending start failed or exceeded the supervisor's stall threshold. Inspect its failure and session before restarting. |
-| `decision-stuck` | Pending/retry decision has waited too long, or a lease has expired. Inspect status, attempts, and errors before retry. |
-| `held-waiting` | Work is waiting for human acceptance. Check acceptance and triage state rather than launching an agent. |
-| `label-drift` | External labels disagree with acceptance state. Inspect synchronization state. |
+A **seat** is an active run binding that assigns an agent role to a work item on a specific thread and session; it is not a paid-user license. Stage-to-role mapping depends on the board and deployment, so use returned bindings rather than deriving the role from a stage label.
 
-Report only findings actually returned by the deployment. Proposals awaiting approval are not the same as a failed dispatch. The `health thresholds` command describes queue-age buckets; it is not the configuration of supervisor decision/start/lease timeouts. Use supervisor evidence for those findings, not a queue-aging cutoff.
-
-A suggested repair is not authorization. Apply the supervisor reference's mutation protocol and durable-session requirements; a completed task may need reconciliation rather than rerunning expensive work. Never use the supervisor session as a replacement work session.
+A failed or proposed decision, or any attention item, is not authorization to repair. Apply the CLI reference's mutation protocol and durable-session requirements; a completed task may need reconciliation rather than rerunning expensive work.
 
 ## Pagination and compatibility failures
 

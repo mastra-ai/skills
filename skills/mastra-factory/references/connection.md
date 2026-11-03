@@ -12,13 +12,13 @@ mastra api factory --help
 
 Confirm `factory` is actually listed; some older CLIs print parent help for an unknown command. If the repository has a local CLI, use `./node_modules/.bin/mastra` instead. Do not upgrade the project's dependencies just to inspect a remote Factory.
 
-If no compatible CLI is available, this temporary invocation was verified with Mastra 1.30.0:
+If no compatible CLI is available, use a temporary invocation:
 
 ```bash
-npm exec --yes --package=mastra@1.30.0 --package=@mastra/core@latest --package=typescript@latest -- mastra api factory --help
+npm exec --yes --package=mastra@latest --package=@mastra/core@latest --package=typescript@latest -- mastra api factory --help
 ```
 
-Substitute the same `npm exec ... -- mastra` prefix for `mastra` below. The extra packages address missing `@mastra/core` and `typescript` dependencies encountered with a bare `npx mastra`. This is a tested fallback, not a minimum-version guarantee; check help/schema again when versions change. If npm reports engine incompatibility, use a Node version supported by the selected packages.
+Substitute the same `npm exec ... -- mastra` prefix for `mastra` below. The extra packages address missing `@mastra/core` and `typescript` dependencies encountered with a bare `npx mastra`. Check help/schema again whenever the CLI changes. If npm reports engine incompatibility, use a Node version supported by the selected packages.
 
 ## 2. Establish the target and authentication
 

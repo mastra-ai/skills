@@ -1,4 +1,4 @@
-# Factory Supervisor CLI Reference
+# Factory CLI Reference
 
 Use `mastra api factory` as an operational control plane for Factory. Use this reference for Factory status checks, operational summaries, queue/health investigations, and interactive or autonomously delegated changes to projects, work items, decisions, or attention items.
 
@@ -11,7 +11,7 @@ For first-use CLI, login, target, and installation setup, read [connection.md](c
 - Never invent project, work-item, decision, attention, stage, revision, request, or session identifiers.
 - Accept either action-specific authorization or a standing delegation. A standing delegation may define projects, resource types, allowed actions, objectives, duration, or stop conditions.
 - Within a clear standing delegation, perform in-scope creates, updates, transitions, starts, decision actions, attention state changes, or automation changes without requesting confirmation each time.
-- Treat deletes, attention archives, bulk read actions, run starts, and enabling autonomous behavior as high-impact. Perform them autonomously only when the standing delegation clearly includes that action class; otherwise ask before acting.
+- Treat deletes, attention archives, bulk read actions, run starts (including `automation-run`), board definition changes, environment updates/builds, applying a default model to running sessions, and enabling autonomous behavior as high-impact. Perform them autonomously only when the standing delegation clearly includes that action class; otherwise ask before acting.
 - Before a mutation, fetch the current resource, use the smallest in-scope command, then refetch and report the affected IDs, revision, and state.
 - Do not blindly retry revision conflicts. Refetch, reassess the requested transition against current state, and use the new revision only if the action remains valid.
 - Never use private `curl` routes to bypass missing CLI functionality.
@@ -66,7 +66,7 @@ Standard output envelopes are:
 { "error": { "code": "...", "message": "...", "details": {} } }
 ```
 
-Factory collection payloads may also place arrays under named fields inside `data`, such as `workItems`, `decisions`, `items`, and `findings`. Read the actual envelope before writing a projection; do not assume every list is directly in `.data[]`.
+Factory collection payloads may also place arrays under named fields inside `data`, such as `workItems`, `decisions`, and `items`. Read the actual envelope before writing a projection; do not assume every list is directly in `.data[]`.
 
 Output rules:
 
@@ -95,31 +95,42 @@ If a project list is empty, verify the intended target, organization, access, an
 Use leaf `--help` and `--schema` to verify the installed command before any write.
 
 ```text
-project      list | get | create | update | delete
-work-item    list | create | update | delete | transition | start
+project      list | get | create | update | apply-default-model | delete
+project environment         get | update | build
+project environment builds  list | get
+work-item    list | create | update | delete | transition | start | automation-run
+boards
+board        get | create | update | delete
 metrics
 health       thresholds
 decision     list | approve | dismiss | retry
 attention    list | read | read-all | archive | restore
-supervisor   session | health
 ```
+
+CLI versions may add or omit commands; check `mastra api factory --help` rather than assuming a command exists.
 
 Important contracts:
 
 - `project create` requires `name`.
 - `project update` can change project metadata and automation settings. Enable `autoRunEnabled` or `autoApprovePlans` only when the current request or standing delegation includes automation-setting changes.
+- `project apply-default-model` pushes the project's saved default model onto already-running sessions. It is organization-admin only and affects live runs; treat it as high-impact.
+- `project environment get|update|build` manages the project's sandbox environment (provider settings, repositories and their order, setup). `build` starts a template build; inspect results with `project environment builds list|get`.
+- `boards` lists the boards installed on a project with their phases and transitions. Use it to discover valid `board`/`stage` values instead of guessing.
+- `board create` requires `key`, `name`, and `phases`. `board update` replaces a stored board's definition and `board delete` removes a stored board with no cards; both require the current `expectedRevision`. Built-in and app boards are read-only.
 - `work-item create` requires `title` and creates new work in Intake.
 - `work-item update` changes non-stage fields only. Never use it to move a card.
 - `work-item transition` requires `board`, `stage`, current `expectedRevision`, a fresh UUID `requestId`, and an accurate `cause`.
 - `work-item start` requires `sessionId`, `threadTitle`, `kickoffKey`, `destinationStage`, and `workItem`.
+- `work-item automation-run` is the ingress for a trusted external orchestrator. It queues one deferred skill dispatch (`skillName`, `role`, optional `arguments`) and takes the current `expectedRevision` and a fresh UUID `requestId`; replaying the same `requestId` does not queue a second run. It is a run start: high-impact.
 - `metrics` accepts optional `from` and `to` timestamps.
 - `decision list` accepts `before`, `limit`, and `statuses`.
-- `attention list` accepts `before`, `limit`, `search`, `tier`, and `view`.
+- `attention list` accepts `view` (`open`, `unread`, or `archived`; default `open`), repeatable `kind`, `search`, `limit` (default 25, capped at 50), and `before` (the opaque `nextCursor`).
+- Attention kinds are `automation-failed` (failed dispatch decision), `automation-proposed` (proposed run awaiting approval), `mention`, `activity` (participant activity), and `agent-waiting` (a parked run waiting for input).
 - `attention read-all` accepts optional `before`.
 
-## Read-only supervisor workflow
+## Read-only workflow
 
-When asked for Factory status, a queue review, a supervisor summary, blocked work, or recommended next action, use this sequence without mutating anything.
+When asked for Factory status, a queue review, a status summary, blocked work, or recommended next action, use this sequence without mutating anything.
 
 ### 1. Select the project
 
@@ -164,7 +175,7 @@ mastra api factory health thresholds <project-id> \
   | jq '.data.thresholds'
 ```
 
-Use the returned thresholds for queue-age buckets. They are not the supervisor's decision/start/lease timeout thresholds; use the supervisor's returned evidence for those findings. Do not invent alert cutoffs.
+Use the returned thresholds for queue-age buckets. Do not invent alert cutoffs.
 
 ### 4. Inspect decisions and human attention
 
@@ -176,31 +187,19 @@ mastra api factory decision list <project-id> '{"limit":10}' \
 
 mastra api factory attention list <project-id> '{"limit":10,"view":"open"}' \
   | jq '.data | {
-      openCount, unreadCount, badgeCount, hasMore, nextCursor,
+      kinds, hasMore, nextCursor,
       items: [.items[] | {
-        kind, sourceId, occurrence, workItemId, tier, read, archivedAt,
-        suggestedRepair, evidence
+        key, kind, decisionId, occurrence, workItemId, title, detail,
+        occurredAt, read, archived, target
       }]
     }'
 ```
 
-Pending decisions are proposals, not authorization. Attention items are findings, not commands. Correlate both with the referenced work item before recommending an action.
+`kinds` holds per-kind `open`/`unread` counts and the latest item, regardless of any `kind` filter. Items vary by kind; failed decisions may also carry retry details such as `canRetry`. Read/archive/restore address an item by its `kind`, source ID, and `occurrence`; read state is per user.
 
-### 5. Inspect supervisor health and session
+Pending decisions are proposals, not authorization. Attention items are notifications, not commands or repair instructions. Correlate both with the referenced work item before recommending an action.
 
-```bash
-mastra api factory supervisor health <project-id> \
-  | jq '.data | {checkedAt, counts, findings: [.findings[] | {kind, id, workItemId, evidence, suggestedRepair}]}'
-
-mastra api factory supervisor session <project-id> \
-  | jq '.data | {factoryProjectId, sessionId, threadId}'
-```
-
-Health finding kinds are `decision-stuck`, `start-stalled`, `seat-orphaned`, `seat-missing`, `held-waiting`, and `label-drift`; each finding carries a stable `id`, `evidence`, `beganAt`, and a `suggestedRepair`. Report only categories returned by the server; see [session-inspection.md](session-inspection.md) for interpretation.
-
-The supervisor session is for supervisor inspection/coordination. Do not assume it is a valid durable user session for `work-item start`.
-
-### 6. Return the summary
+### 5. Return the summary
 
 Report:
 
@@ -209,9 +208,8 @@ Report:
 3. Blocked, stale, or unhealthy items and the evidence for each classification.
 4. Running sessions and their linked work items.
 5. Pending/failed decisions and retryability.
-6. Open/unread human-attention items.
-7. Supervisor health findings.
-8. One recommended next action, clearly labeled as a recommendation and not executed.
+6. Open/unread human-attention items, grouped by returned kind.
+7. One recommended next action, clearly labeled as a recommendation and not executed.
 
 ## Mutation protocol
 
@@ -327,7 +325,7 @@ If no supported session already exists:
 
 - Report that start is blocked.
 - Do not invent a session UUID.
-- Do not substitute the supervisor session.
+- Do not substitute another session.
 - Do not call private HTTP routes with `curl`.
 - Do not create a different resource as a workaround.
 

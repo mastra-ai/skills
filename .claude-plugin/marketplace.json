@@ -10,7 +10,7 @@
   "plugins": [
     {
       "name": "mastra-skills",
-      "description": "Mastra framework and Factory supervisor skills with progressive disclosure for development, API inspection, troubleshooting, and operations.",
+      "description": "Mastra framework and Factory operations skills with progressive disclosure for development, API inspection, troubleshooting, and operations.",
       "skills": ["./skills/mastra", "./skills/mastra-factory"],
       "source": "./",
       "strict": false
