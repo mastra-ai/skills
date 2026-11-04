@@ -112,7 +112,7 @@ CLI versions may add or omit commands; check `mastra api factory --help` rather 
 Important contracts:
 
 - `project create` requires `name`.
-- `project update` can change project metadata and automation settings. Enable `autoRunEnabled` or `autoApprovePlans` only when the current request or standing delegation includes automation-setting changes.
+- `project update` can change project metadata and automation settings. Enable `autoRunEnabled` only when the current request or standing delegation includes automation-setting changes. `autoApprovePlans` is deprecated and ignored: plan approval is configured per board (the stage's `exitTool.autoApprove`), and Work board plans always wait for a person.
 - `project apply-default-model` pushes the project's saved default model onto already-running sessions. It is organization-admin only and affects live runs; treat it as high-impact.
 - `project environment get|update|build` manages the project's sandbox environment (provider settings, repositories and their order, setup). `build` starts a template build; inspect results with `project environment builds list|get`.
 - `boards` lists the boards installed on a project with their phases and transitions. Use it to discover valid `board`/`stage` values instead of guessing.
@@ -148,7 +148,7 @@ Fetch the selected project:
 
 ```bash
 mastra api factory project get <project-id> \
-  | jq '.data.project | {id, name, description, autoRunEnabled, autoApprovePlans}'
+  | jq '.data.project | {id, name, description, autoRunEnabled}'
 ```
 
 ### 2. Inspect work and running sessions

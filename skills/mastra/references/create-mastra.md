@@ -44,12 +44,6 @@ npm create mastra@latest my-project --empty
 
 `--empty` and `--template` are separate creation modes. The `--llm` (`-l`) and `--llm-api-key` options apply only to the default starter.
 
-**Skip the example agent:**
-
-```bash
-npm create mastra@latest --no-example
-```
-
 **Use a specific template:**
 
 ```bash
