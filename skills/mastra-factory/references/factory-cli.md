@@ -120,7 +120,7 @@ Important contracts:
 - `work-item create` requires `title` and creates new work in Intake.
 - `work-item update` changes non-stage fields only. Never use it to move a card.
 - `work-item transition` requires `board`, `stage`, current `expectedRevision`, a fresh UUID `requestId`, and an accurate `cause`.
-- `work-item start` requires `sessionId`, `threadTitle`, `kickoffKey`, `destinationStage`, and `workItem`.
+- `work-item start` requires `sessionId`, `threadTitle`, `kickoffKey`, and `workItem`.
 - `work-item automation-run` is the ingress for a trusted external orchestrator. It queues one deferred skill dispatch (`skillName`, `role`, optional `arguments`) and takes the current `expectedRevision` and a fresh UUID `requestId`; replaying the same `requestId` does not queue a second run. It is a run start: high-impact.
 - `metrics` accepts optional `from` and `to` timestamps.
 - `decision list` accepts `before`, `limit`, and `statuses`.
