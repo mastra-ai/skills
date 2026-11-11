@@ -116,8 +116,8 @@ Important contracts:
 - `project apply-default-model` pushes the project's saved default model onto already-running sessions. It is organization-admin only and affects live runs; treat it as high-impact.
 - `project environment get|update|build` manages the project's sandbox environment (provider settings, repositories and their order, setup). `build` starts a template build; inspect results with `project environment builds list|get`.
 - `boards` lists the boards installed on a project with their phases and transitions. Use it to discover valid `board`/`stage` values instead of guessing.
-- `board create` requires `key`, `name`, and `phases`. `board update` replaces a stored board's definition and `board delete` removes a stored board with no cards; both require the current `expectedRevision`. Built-in and app boards are read-only.
-- `work-item create` requires `title` and creates new work in Intake.
+- `board create` requires `key`, `name`, and `phases`; it can't create a board over a built-in or app board's key. `board update` replaces a board's stored definition, including a built-in or app board's; an edit the board's code behaviour can't honour is refused with `code_behaviour`. `board delete` removes a board with no cards; the built-in Work board can't be deleted. Both `board update` and `board delete` require the current `expectedRevision`.
+- `work-item create` requires `title`. Without `board` or `stages`, the new item follows the project's intake routes, which can place it on another board or phase; with no matching route it enters the first phase of the Work board (or of the project's first board when Work isn't installed).
 - `work-item update` changes non-stage fields only. Never use it to move a card.
 - `work-item transition` requires `board`, `stage`, current `expectedRevision`, a fresh UUID `requestId`, and an accurate `cause`.
 - `work-item start` requires `sessionId`, `threadTitle`, `kickoffKey`, and `workItem`.
@@ -237,7 +237,7 @@ Project deletion is destructive. Fetch the project and delete it only when the c
 
 ### Create or update a work item
 
-New work enters Intake:
+New work follows the project's intake routes; with no matching route it enters the Work board's first phase:
 
 ```bash
 mastra api factory work-item create --schema \
