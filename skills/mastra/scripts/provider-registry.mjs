@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import { existsSync, readFileSync, readdirSync } from "node:fs";
+import { existsSync, readFileSync, readdirSync, realpathSync } from "node:fs";
 import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -20,12 +20,20 @@ function findRegistryPath() {
     }
   }
 
+  const cwd = process.cwd();
+  const cwdRegistry = join(cwd, rel);
+  if (existsSync(cwdRegistry)) return cwdRegistry;
+
   // Package managers with isolated linkers expose dependencies inside each workspace.
-  const directoriesToSearch = [process.cwd()];
+  const matches = new Map();
+  const directoriesToSearch = [cwd];
   for (let index = 0; index < directoriesToSearch.length; index++) {
     const dir = directoriesToSearch[index];
     const candidate = join(dir, rel);
-    if (existsSync(candidate)) return candidate;
+    if (existsSync(candidate)) {
+      const realPath = realpathSync(candidate);
+      if (!matches.has(realPath)) matches.set(realPath, candidate);
+    }
 
     try {
       for (const entry of readdirSync(dir, { withFileTypes: true })) {
@@ -38,7 +46,14 @@ function findRegistryPath() {
     }
   }
 
-  return join(process.cwd(), rel);
+  if (matches.size > 1) {
+    console.error("Error: Multiple @mastra/core installations found:");
+    for (const path of matches.values()) console.error(`  ${path}`);
+    console.error("Run this command from the application directory you intend to use.");
+    process.exit(1);
+  }
+
+  return matches.values().next().value ?? cwdRegistry;
 }
 
 function loadRegistry() {
