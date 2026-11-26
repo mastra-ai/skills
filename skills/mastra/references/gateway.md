@@ -43,7 +43,7 @@ Validate the model ID before writing it:
 node scripts/provider-registry.mjs --provider mastra
 ```
 
-The script prints the live Gateway chat-model catalog as `mastra/<provider>/<model>` IDs. With `MASTRA_GATEWAY_API_KEY` set, it sends the key, so the list reflects that key's allowed models. Set `MASTRA_GATEWAY_URL` only when the user points Mastra at a different Gateway base URL.
+The script prints the live Gateway chat-model catalog as `mastra/<provider>/<model>` IDs. With `MASTRA_GATEWAY_API_KEY` set, it sends the key, so the list reflects that key's allowed models. Without a key, it prints the full catalog, so a listed model is not necessarily allowed for the user's key. Set `MASTRA_GATEWAY_URL` only when the user points Mastra at a different Gateway base URL.
 
 ## Other SDKs
 

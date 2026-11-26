@@ -119,7 +119,7 @@ Examples:
   node provider-registry.mjs --provider anthropic
   node provider-registry.mjs --provider mastra
 
-Mastra Gateway (--provider mastra) fetches the live model catalog and uses:
+Mastra Gateway (--provider mastra) fetches the live model catalog used with v2 (msk-gateway-) keys and uses:
   MASTRA_GATEWAY_API_KEY   Gateway API key (optional for listing; may limit the list)
   MASTRA_GATEWAY_URL       Gateway base URL (default https://gateway-api.mastra.ai)`);
 }
@@ -142,10 +142,13 @@ function listProviders(registry) {
   console.log(`\nMastra Gateway (mastra): run --provider mastra for its live catalog.`);
 }
 
-// Mirrors MastraGateway in @mastra/core: fetch /v1/models and keep chat models.
+// Mirrors MastraGateway in @mastra/core for v2 (msk-gateway-) keys: fetch /v1/models and keep chat models.
 async function listGatewayModels() {
-  const raw = process.env.MASTRA_GATEWAY_URL || "https://gateway-api.mastra.ai";
-  const base = raw.replace(/\/+$/, "").replace(/\/v1$/, "");
+  const raw = process.env.MASTRA_GATEWAY_URL ?? "https://gateway-api.mastra.ai";
+  // Loop instead of /\/+$/ to match core and avoid a quadratic regex on long runs of "/".
+  let end = raw.length;
+  while (end > 0 && raw[end - 1] === "/") end--;
+  const base = raw.slice(0, end).replace(/\/v1$/, "");
   const key = process.env.MASTRA_GATEWAY_API_KEY;
 
   let response;
