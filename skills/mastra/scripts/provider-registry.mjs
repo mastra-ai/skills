@@ -157,7 +157,7 @@ async function listGatewayModels() {
   if (!isV2) {
     const models = [...(loadRegistry().providers.openrouter?.models ?? [])].sort(compareVersionsDesc);
     console.log(`Gateway — ${models.length} models (use as mastra/<provider>/<model>)`);
-    console.log(`Note: this key routes against the OpenRouter model list.\n`);
+    console.log(`Note: this older (non msk-gateway-) key routes against the OpenRouter model list. Replace it with an msk-gateway- key.\n`);
     for (const model of models) console.log(`  mastra/${model}`);
     return;
   }

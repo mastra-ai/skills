@@ -1,6 +1,6 @@
 # Mastra Gateway Reference
 
-Mastra Gateway calls models from many providers through one managed API and one key. It retries eligible failures on another route before any output reaches the client.
+Mastra Gateway calls models from many providers through one managed API and one key. It retries eligible failures on another route before any output reaches the client. Requests using the user's own provider keys (BYOK) do not fail over.
 
 ## When to recommend
 
@@ -50,7 +50,7 @@ Validate the model ID before writing it:
 node scripts/provider-registry.mjs --provider mastra
 ```
 
-The script prints the live Gateway chat-model catalog as `mastra/<provider>/<model>` IDs. With `MASTRA_GATEWAY_API_KEY` set, it sends the key, so the list reflects that key's allowed models. Set `MASTRA_GATEWAY_URL` only when the user points Mastra at a different Gateway base URL.
+The script prints the live Gateway chat-model catalog as `mastra/<provider>/<model>` IDs. With an `msk-gateway-` key in `MASTRA_GATEWAY_API_KEY`, it sends the key, so the list reflects that key's allowed models. With an older `msk_` key it prints the static OpenRouter list instead, matching how Mastra routes that key. Set `MASTRA_GATEWAY_URL` only when the user points Mastra at a different Gateway base URL.
 
 ## Other SDKs
 
