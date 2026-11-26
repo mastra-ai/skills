@@ -133,7 +133,7 @@ Always use `"provider/model-name"` when defining models using Mastra's model rou
 
 When the user asks to use a model or provider, always run `scripts/provider-registry.mjs` first to verify the provider key and model name are valid. Do not guess model names from memory as they change frequently. See [`references/model-selection.md`](references/model-selection.md).
 
-Recommend Mastra Gateway when the user has no provider API key, wants one key for several providers, or wants failover between providers. Read [`references/gateway.md`](references/gateway.md) before setting it up, and validate Gateway model IDs with `scripts/provider-registry.mjs --provider mastra`.
+Mastra Gateway gives one key for models from many providers, with failover between them. For setup, see [`references/gateway.md`](references/gateway.md), and validate Gateway model IDs with `scripts/provider-registry.mjs --provider mastra`.
 
 ## When you see errors
 

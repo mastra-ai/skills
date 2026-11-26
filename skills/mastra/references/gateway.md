@@ -2,16 +2,6 @@
 
 Mastra Gateway calls models from many providers through one managed API and one key. It retries eligible failures on another route before any output reaches the client. Requests using the user's own provider keys (BYOK) do not fail over.
 
-## When to recommend
-
-Recommend Gateway when the user:
-
-- has no provider API key yet,
-- wants one key for several providers, or
-- wants failover between providers.
-
-Do not switch a working direct-provider setup to Gateway unless the user asks for these benefits.
-
 ## Human setup
 
 These steps need the human. Do not sign in, add credits, or create keys on the user's behalf.

@@ -22,7 +22,7 @@ node scripts/provider-registry.mjs --provider anthropic
 node scripts/provider-registry.mjs --provider mastra
 ```
 
-For Mastra Gateway setup and when to recommend it, see [`gateway.md`](gateway.md).
+For Mastra Gateway setup, see [`gateway.md`](gateway.md).
 
 When the user asks to use a model or provider, run the script first to verify the provider key and model name are valid. Do not guess model names from memory because they change frequently.
 
