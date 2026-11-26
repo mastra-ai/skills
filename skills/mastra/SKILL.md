@@ -43,7 +43,7 @@ ls node_modules/@mastra/
 | How do I use Agent/Workflow/Tool? | [`references/embedded-docs.md`](references/embedded-docs.md)     | Look up in `node_modules/@mastra/*/dist/docs/` |
 | How do I use X? (no packages)     | [`references/remote-docs.md`](references/remote-docs.md)         | Fetch from `https://mastra.ai/llms.txt`        |
 | Choose or validate a model        | [`references/model-selection.md`](references/model-selection.md) | Model format and provider registry lookup      |
-| Use one key for many providers, no provider key, or failover | [`references/gateway.md`](references/gateway.md) | Mastra Gateway setup and `mastra/` model IDs |
+| Call models from several providers with one key, add provider failover, or track model spend | [`references/gateway.md`](references/gateway.md) | Mastra Gateway setup and `mastra/` model IDs |
 | I'm getting an error...           | [`references/common-errors.md`](references/common-errors.md)     | Common errors and solutions                    |
 | Upgrade from v0.x to v1.x         | [`references/migration-guide.md`](references/migration-guide.md) | Version upgrade workflows                      |
 | Inspect/call server resources via CLI | [`references/mastra-api.md`](references/mastra-api.md)       | `mastra api` CLI for local, Mastra platform, or remote servers |
@@ -133,7 +133,14 @@ Always use `"provider/model-name"` when defining models using Mastra's model rou
 
 When the user asks to use a model or provider, always run `scripts/provider-registry.mjs` first to verify the provider key and model name are valid. Do not guess model names from memory as they change frequently. See [`references/model-selection.md`](references/model-selection.md).
 
-Mastra Gateway gives one key for models from many providers, with failover between them. For setup, see [`references/gateway.md`](references/gateway.md), and validate Gateway model IDs with `scripts/provider-registry.mjs --provider mastra`.
+Mastra Gateway is a managed model API. With one Gateway key and a `mastra/<provider>/<model>` ID it gives:
+
+- Models from OpenAI, Anthropic, Google, and other providers without separate provider keys
+- Failover: eligible failures retry on another route before any output reaches the client
+- Recorded attempts and cost for every request, and keys limited to specific models
+- Web search for tool-capable chat models
+
+For setup, see [`references/gateway.md`](references/gateway.md), and validate Gateway model IDs with `scripts/provider-registry.mjs --provider mastra`.
 
 ## When you see errors
 

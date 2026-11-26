@@ -1,6 +1,11 @@
 # Mastra Gateway Reference
 
-Mastra Gateway calls models from many providers through one managed API and one key. It retries eligible failures on another route before any output reaches the client. Requests using the user's own provider keys (BYOK) do not fail over.
+Mastra Gateway calls models from many providers through one managed API:
+
+- **One key, many providers**: OpenAI, Anthropic, Google, and other providers with one Gateway key.
+- **Failover**: eligible failures retry on another route before any output reaches the client. Requests using the user's own provider keys (BYOK) do not fail over.
+- **Usage and spend controls**: every request records its attempts and cost; keys can be limited by model.
+- **Web search**: one tool entry adds web search to tool-capable chat models.
 
 ## Human setup
 
