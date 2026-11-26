@@ -116,7 +116,13 @@ Options:
 Examples:
   node provider-registry.mjs --list
   node provider-registry.mjs --provider openai
-  node provider-registry.mjs --provider anthropic`);
+  node provider-registry.mjs --provider anthropic
+  node provider-registry.mjs --provider mastra
+
+Mastra Gateway (--provider mastra) fetches the live model catalog and uses:
+  MASTRA_GATEWAY_API_KEY   Gateway API key (optional for listing; may limit the list)
+  MASTRA_GATEWAY_URL       Gateway base URL (default https://gateway-api.mastra.ai)
+  MASTRA_GATEWAY_VERSION   Set to v2 to force the live catalog for older keys`);
 }
 
 function listProviders(registry) {
@@ -134,6 +140,62 @@ function listProviders(registry) {
     console.log(`${entry.key.padEnd(maxKey)}  ${entry.name.padEnd(maxName)}  ${modelCount}`);
   }
   console.log(`\n${entries.length} providers`);
+  console.log(`\nMastra Gateway (mastra): run --provider mastra for its live catalog.`);
+}
+
+// Mirrors MastraGateway in @mastra/core: v2 keys use the live catalog, older keys use the OpenRouter list.
+async function listGatewayModels() {
+  const raw = process.env.MASTRA_GATEWAY_URL || "https://gateway-api.mastra.ai";
+  const base = raw.replace(/\/+$/, "").replace(/\/v1$/, "");
+  const key = process.env.MASTRA_GATEWAY_API_KEY;
+  const isV2 =
+    process.env.MASTRA_GATEWAY_VERSION === "v2" ||
+    !key ||
+    key.startsWith("msk-gateway-") ||
+    key.startsWith("mskv2_");
+
+  if (!isV2) {
+    const models = [...(loadRegistry().providers.openrouter?.models ?? [])].sort(compareVersionsDesc);
+    console.log(`Gateway — ${models.length} models (use as mastra/<provider>/<model>)`);
+    console.log(`Note: this key routes against the OpenRouter model list.\n`);
+    for (const model of models) console.log(`  mastra/${model}`);
+    return;
+  }
+
+  let response;
+  try {
+    response = await fetch(`${base}/v1/models`, {
+      headers: key ? { Authorization: `Bearer ${key}` } : {},
+      signal: AbortSignal.timeout(10000),
+    });
+  } catch (e) {
+    console.error(`Error: Could not reach Mastra Gateway at ${base}: ${e.message}`);
+    process.exit(1);
+  }
+  if (!response.ok) {
+    const hint = response.status === 401 || response.status === 403 ? " Check MASTRA_GATEWAY_API_KEY." : "";
+    console.error(`Error: Gateway model catalog unavailable (HTTP ${response.status}).${hint}`);
+    process.exit(1);
+  }
+  let body;
+  try {
+    body = await response.json();
+  } catch {
+    body = null;
+  }
+  if (!body || !Array.isArray(body.data)) {
+    console.error("Error: Gateway model catalog has an invalid response");
+    process.exit(1);
+  }
+
+  const models = body.data
+    .filter((item) => item && typeof item.id === "string" && Array.isArray(item.endpoints) && item.endpoints.includes("chat"))
+    .map((item) => item.id)
+    .sort((a, b) => a.localeCompare(b));
+
+  console.log(`Gateway — ${models.length} chat models (use as mastra/<provider>/<model>)\n`);
+  for (const model of models) console.log(`  mastra/${model}`);
+  if (!key) console.error("\nNote: set MASTRA_GATEWAY_API_KEY to use these models; your key may limit the list.");
 }
 
 function listModels(registry, providerName) {
@@ -170,6 +232,10 @@ if (providerIdx !== -1) {
   if (!name) {
     console.error("Error: --provider requires a provider name.");
     process.exit(1);
+  }
+  if (name === "mastra") {
+    await listGatewayModels();
+    process.exit(0);
   }
   listModels(loadRegistry(), name);
   process.exit(0);
