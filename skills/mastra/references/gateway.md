@@ -10,8 +10,6 @@ These steps need the human. Do not sign in, add credits, or create keys on the u
 2. Open **Billing** and add credits. Gateway uses prepaid credit; without it, requests return `402`.
 3. Open **Gateway** > **API keys** and select **Create key**. The key starts with `msk-gateway-` and is shown only once.
 
-Keys starting with `msk_` belong to the previous Memory Gateway, which shuts down on December 31, 2026. Ask the user to create an `msk-gateway-` key instead.
-
 ## Configure Mastra
 
 Have the user set the key in the project's environment:
@@ -40,7 +38,7 @@ Validate the model ID before writing it:
 node scripts/provider-registry.mjs --provider mastra
 ```
 
-The script prints the live Gateway chat-model catalog as `mastra/<provider>/<model>` IDs. With an `msk-gateway-` key in `MASTRA_GATEWAY_API_KEY`, it sends the key, so the list reflects that key's allowed models. With an older `msk_` key it prints the static OpenRouter list instead, matching how Mastra routes that key. Set `MASTRA_GATEWAY_URL` only when the user points Mastra at a different Gateway base URL.
+The script prints the live Gateway chat-model catalog as `mastra/<provider>/<model>` IDs. With `MASTRA_GATEWAY_API_KEY` set, it sends the key, so the list reflects that key's allowed models. Set `MASTRA_GATEWAY_URL` only when the user points Mastra at a different Gateway base URL.
 
 ## Other SDKs
 

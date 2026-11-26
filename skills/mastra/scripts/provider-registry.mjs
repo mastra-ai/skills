@@ -121,8 +121,7 @@ Examples:
 
 Mastra Gateway (--provider mastra) fetches the live model catalog and uses:
   MASTRA_GATEWAY_API_KEY   Gateway API key (optional for listing; may limit the list)
-  MASTRA_GATEWAY_URL       Gateway base URL (default https://gateway-api.mastra.ai)
-  MASTRA_GATEWAY_VERSION   Set to v2 to force the live catalog for older keys`);
+  MASTRA_GATEWAY_URL       Gateway base URL (default https://gateway-api.mastra.ai)`);
 }
 
 function listProviders(registry) {
@@ -143,24 +142,11 @@ function listProviders(registry) {
   console.log(`\nMastra Gateway (mastra): run --provider mastra for its live catalog.`);
 }
 
-// Mirrors MastraGateway in @mastra/core: v2 keys use the live catalog, older keys use the OpenRouter list.
+// Mirrors MastraGateway in @mastra/core: fetch /v1/models and keep chat models.
 async function listGatewayModels() {
   const raw = process.env.MASTRA_GATEWAY_URL || "https://gateway-api.mastra.ai";
   const base = raw.replace(/\/+$/, "").replace(/\/v1$/, "");
   const key = process.env.MASTRA_GATEWAY_API_KEY;
-  const isV2 =
-    process.env.MASTRA_GATEWAY_VERSION === "v2" ||
-    !key ||
-    key.startsWith("msk-gateway-") ||
-    key.startsWith("mskv2_");
-
-  if (!isV2) {
-    const models = [...(loadRegistry().providers.openrouter?.models ?? [])].sort(compareVersionsDesc);
-    console.log(`Gateway — ${models.length} models (use as mastra/<provider>/<model>)`);
-    console.log(`Note: this older (non msk-gateway-) key routes against the OpenRouter model list. Replace it with an msk-gateway- key.\n`);
-    for (const model of models) console.log(`  mastra/${model}`);
-    return;
-  }
 
   let response;
   try {
