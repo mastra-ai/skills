@@ -17,7 +17,12 @@ node scripts/provider-registry.mjs --list
 # List all models for a specific provider, sorted newest first
 node scripts/provider-registry.mjs --provider openai
 node scripts/provider-registry.mjs --provider anthropic
+
+# List live Mastra Gateway chat models as mastra/<provider>/<model> IDs
+node scripts/provider-registry.mjs --provider mastra
 ```
+
+For Mastra Gateway setup, see [`gateway.md`](gateway.md).
 
 When the user asks to use a model or provider, run the script first to verify the provider key and model name are valid. Do not guess model names from memory because they change frequently.
 

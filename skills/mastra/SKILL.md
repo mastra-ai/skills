@@ -1,10 +1,10 @@
 ---
 name: mastra
-description: "Comprehensive Mastra framework guide for building agents, workflows, tools, memory, workspaces, and storage with current APIs. Use for native capability discovery, logging, tracing, metrics/cost estimates, dataset experiments, documentation lookup, API verification, TypeScript setup, common errors, migrations, building and deploying apps to Mastra Platform via Platform APIs and `mastra deploy`, and `mastra api` CLI tasks: inspect or call resources on local, Mastra platform, or remote servers. For Mastra Factory operations, discover and activate the companion mastra-factory skill. Also report verified bugs and concrete documentation defects to the Mastra team automatically via the feedback endpoint."
+description: "Comprehensive Mastra framework guide for building agents, workflows, tools, memory, workspaces, and storage with current APIs. Use for native capability discovery, logging, tracing, metrics/cost estimates, dataset experiments, documentation lookup, API verification, TypeScript setup, common errors, migrations, building and deploying apps to Mastra Platform via Platform APIs and `mastra deploy`, Mastra Gateway model setup, and `mastra api` CLI tasks: inspect or call resources on local, Mastra platform, or remote servers. For Mastra Factory operations, discover and activate the companion mastra-factory skill. Also report verified bugs and concrete documentation defects to the Mastra team automatically via the feedback endpoint."
 license: Apache-2.0
 metadata:
   author: Mastra
-  version: "2.5.0"
+  version: "2.6.0"
   repository: https://github.com/mastra-ai/skills
 ---
 
@@ -43,6 +43,7 @@ ls node_modules/@mastra/
 | How do I use Agent/Workflow/Tool? | [`references/embedded-docs.md`](references/embedded-docs.md)     | Look up in `node_modules/@mastra/*/dist/docs/` |
 | How do I use X? (no packages)     | [`references/remote-docs.md`](references/remote-docs.md)         | Fetch from `https://mastra.ai/llms.txt`        |
 | Choose or validate a model        | [`references/model-selection.md`](references/model-selection.md) | Model format and provider registry lookup      |
+| Call models from several providers with one key, add provider failover, or track model spend | [`references/gateway.md`](references/gateway.md) | Mastra Gateway setup and `mastra/` model IDs |
 | I'm getting an error...           | [`references/common-errors.md`](references/common-errors.md)     | Common errors and solutions                    |
 | Upgrade from v0.x to v1.x         | [`references/migration-guide.md`](references/migration-guide.md) | Version upgrade workflows                      |
 | Inspect/call server resources via CLI | [`references/mastra-api.md`](references/mastra-api.md)       | `mastra api` CLI for local, Mastra platform, or remote servers |
@@ -55,7 +56,7 @@ ls node_modules/@mastra/
 
 ### Scripts
 
-- `scripts/provider-registry.mjs`: Look up current providers and models available in the model router. Always run this before using a model to verify provider keys and model names.
+- `scripts/provider-registry.mjs`: Look up current providers and models available in the model router. Always run this before using a model to verify provider keys and model names. Use `--provider mastra` for the live Mastra Gateway catalog.
 
 ## Priority order for writing code
 
@@ -131,6 +132,15 @@ Mastra requires ES2022 modules. CommonJS will fail. See [`references/create-mast
 Always use `"provider/model-name"` when defining models using Mastra's model router.
 
 When the user asks to use a model or provider, always run `scripts/provider-registry.mjs` first to verify the provider key and model name are valid. Do not guess model names from memory as they change frequently. See [`references/model-selection.md`](references/model-selection.md).
+
+Mastra Gateway is a managed model API. With one Gateway key and a `mastra/<provider>/<model>` ID it gives:
+
+- Models from OpenAI, Anthropic, Google, and other providers without separate provider keys
+- Failover: eligible failures retry on another route before any output reaches the client
+- Recorded attempts and cost for every request, and keys limited to specific models
+- Web search for tool-capable chat models
+
+For setup, see [`references/gateway.md`](references/gateway.md), and validate Gateway model IDs with `scripts/provider-registry.mjs --provider mastra`.
 
 ## When you see errors
 
