@@ -8,6 +8,12 @@ Official Mastra skills for agents working with the [Mastra framework](https://ma
 npx skills add mastra-ai/skills
 ```
 
+Or install them with the GitHub CLI:
+
+```bash
+gh skill install mastra-ai/skills
+```
+
 Mastra also supports the [`.well-known` skills discovery standard](https://github.com/cloudflare/agent-skills-discovery-rfc):
 
 ```bash
